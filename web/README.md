@@ -1,27 +1,31 @@
-# Global Plastics Watch — web app
+# Global Plastics Watch — Compare Dashboard (web app)
 
-An open, dependency-free static site: an interactive world map of where plastic pollution
-comes from (country emissions + river hotspots), a self-serve dashboard, a global
-production timeline, and downloadable open data. No build step, no framework — plain
-HTML/CSS/JS that hosts anywhere (GitHub Pages, Netlify, S3, `python -m http.server`).
+An open, dependency-free static site: a **structured analytics dashboard** for where ocean
+plastic comes from. A world choropleth is one prominent panel among insight cards — built for
+the jobs of *find hotspots, compare countries, drill into one, watch trends, and export*.
+No build step, no framework — plain HTML/CSS/JS that hosts anywhere (GitHub Pages, Netlify,
+S3, `python -m http.server`). Implemented from the design handoff in
+`../design_handoff_plastics_compare_dashboard/`.
 
-Features: choropleth with a metric switcher, river-hotspot overlay, **zoom/pan** (wheel,
-drag, or the +/−/⤢ controls), **country search**, click a country to drill in (click again to
-deselect), a **continent/region rollup** in the dashboard (for additive metrics, incl. the trade layer),
-**animated time layers** that change the map year-by-year, a **narrated Story tour** (the ▶ Story
-button — also deep-linkable via `?story=1`), an **About the data** panel, shareable URLs, and a
-download menu.
+**Layout:** gradient header (brand · search · About · Export) › KPI strip (4 computed stats) ›
+left rail (lens selector · region filter · river toggle · compare basket) › main column
+(map panel · Top-emitters / Trend / River-hotspots cards · Compare panel) › country Drawer,
+About modal, and Toasts as overlays.
 
-**Animated time layers** (the timeline scrubs/plays and recolors the map):
-- *Plastic in oceans (over time)* — OECD accumulated ocean-plastic, **2000–2019**, at 9 macro-region
-  resolution (every country shaded by its region). On-theme pollution.
-- *Plastic waste exports (trade)* — UN Comtrade, **1988–2024**, true per-country (the global
-  waste-trade story, e.g. China's 2018 import ban). This is *trade*, not pollution.
+**Four lenses** color the map: Mismanaged waste, Ocean-emission share, Waste per person
+(snapshots), and **Waste exports** (a 1988–2024 *time series* with a play/scrub timeline).
 
-> Why two resolutions? No per-country **pollution** time series exists — every per-country
-> pollution metric (mismanaged, ocean-share, per-capita) is a single-year snapshot. The only
-> real multi-year pollution data is regional (OECD); the only real per-country time series is
-> trade. The map is honest about which is which.
+Features: warm sextile choropleth + river hotspots, **zoom/pan** (wheel, drag, +/−/⤢),
+**country search**, **region filter** that scopes the whole dashboard (dims out-of-scope
+countries), a **multi-country Compare** workflow (add from map/rank/drawer, max 6 → side-by-side
+table + CSV), a **country drawer** drill-down with an exports sparkline, a **Top-emitters** card,
+a **Production / In-ocean trend** card, a **River-hotspots** card (click to zoom to an outlet),
+an **About** modal, **Toasts**, and an **Export** menu (map PNG · country CSV · compare CSV).
+
+> Note on time: no per-country **pollution** time series exists (mismanaged/ocean-share/per-capita
+> are single-year snapshots), so the only animated *map* lens is **trade exports** (the real
+> per-country time series). Ocean-plastic accumulation over time (OECD, regional) appears as the
+> "In the ocean now" KPI and the **In ocean** trend line, not as a country-shaded map lens.
 
 ## Run locally
 

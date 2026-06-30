@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:#eef2f5;font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .gpw-co{transition:opacity .16s ease}
+  .gpw-co:hover{stroke:#0c1e2e !important;stroke-width:1.2px !important}
+  .gpw-river{transition:fill-opacity .12s}
+  .gpw-river:hover{fill-opacity:.95 !important}
+  .gpw-row{transition:background .12s}
+  .gpw-row:hover{background:rgba(14,116,144,.08)}
+  .gpw-row:hover .gpw-add{opacity:1}
+  .gpw-lens{transition:background .12s,border-color .12s,box-shadow .12s}
+  .gpw-lens:hover{border-color:var(--accent,#0e7490)}
+  .gpw-btn{transition:filter .12s,background .12s,border-color .12s}
+  .gpw-btn:hover{filter:brightness(.97)}
+  .gpw-ghost:hover{background:rgba(255,255,255,.13)}
+  .gpw-chipx{opacity:.5;transition:opacity .12s}
+  .gpw-chipx:hover{opacity:1}
+  .gpw-scroll::-webkit-scrollbar{width:9px;height:9px}
+  .gpw-scroll::-webkit-scrollbar-thumb{background:rgba(12,30,46,.16);border-radius:9px}
+  .gpw-scroll::-webkit-scrollbar-track{background:transparent}
+  input.gpw-search::placeholder{color:#9db4c9}
+  input.gpw-search:focus{border-color:var(--cyan,#3fd0e6);outline:none}
+  @keyframes gpwspin{to{transform:rotate(360deg)}}
+  @keyframes gpwsh{to{background-position:-200% 0}}
+  .gpw-skel{background:linear-gradient(90deg,#e9eef2 25%,#dfe6ec 37%,#e9eef2 63%);background-size:200% 100%;animation:gpwsh 1.3s infinite;border-radius:6px}
+  @keyframes gpwdrawer{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
+  @keyframes gpwfade{from{opacity:0}to{opacity:1}}
+  @media(max-width:980px){
+    .gpw-app{height:auto !important;overflow:visible !important}
+    .gpw-body{flex-direction:column !important}
+    .gpw-rail{width:100% !important;border-right:none !important;border-bottom:1px solid #dde5ec !important;flex-direction:row !important;flex-wrap:wrap !important;overflow:visible !important;align-content:flex-start}
+    .gpw-railsec{flex:1 1 210px !important;border-bottom:none !important}
+    .gpw-cards{grid-template-columns:1fr !important}
+    .gpw-drawer{width:100% !important}
+  }
+  @media(max-width:620px){
+    .gpw-kpis{grid-template-columns:1fr 1fr !important}
+    .gpw-top-sub{display:none !important}
+    .gpw-main{padding:11px !important}
+  }
+</style>
+</helmet>
+<div class="gpw-app" style="height:100vh;overflow:hidden;display:flex;flex-direction:column;background:#eef2f5;color:#0c1e2e">
+  <header class="gpw-top" style="display:flex;align-items:center;gap:14px;padding:13px 20px;background:linear-gradient(180deg,#11314a,#0c1e2e);color:#fff;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:11px">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" fill="#0c1e2e" stroke="#3fd0e6" stroke-width="1.4" stroke-opacity=".5"></circle>
+        <path d="M4 18c3-3 6 0 9-1s5-3 8.5-1 5 0 6.5-1.5" stroke="#3fd0e6" stroke-width="2.2" stroke-linecap="round" fill="none"></path>
+        <path d="M5 23c3-2.4 6 0 9-1s5-2.4 8-1" stroke="#2a90a8" stroke-width="1.7" stroke-linecap="round" fill="none" opacity=".7"></path>
+      </svg>
+      <div>
+        <div style="font-weight:700;font-size:16px;letter-spacing:.2px;line-height:1.05">Global Plastics <span style="color:var(--cyan,#3fd0e6)">Watch</span></div>
+        <div class="gpw-top-sub" style="font-size:11px;color:#9db4c9;margin-top:1px;font-family:'IBM Plex Mono',monospace;letter-spacing:.2px">Where ocean plastic comes from</div>
+      </div>
+    </div>
+    <div style="flex:1"></div>
+    {{ search }}
+    <button class="gpw-btn gpw-ghost" onClick="{{ onAbout }}" style="background:transparent;border:1px solid rgba(255,255,255,.22);color:#dbe7f0;padding:8px 13px;border-radius:8px;font:600 12.5px 'IBM Plex Sans';cursor:pointer">About &amp; data</button>
+    {{ exportControl }}
+  </header>
+
+  <div class="gpw-kpis" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#dde5ec;border-bottom:1px solid #dde5ec">{{ kpis }}</div>
+
+  <div class="gpw-body" style="display:flex;flex:1;min-height:0">
+    <aside class="gpw-rail gpw-scroll" style="width:258px;flex:none;overflow:auto;border-right:1px solid #dde5ec;background:#fff;display:flex;flex-direction:column">
+      <div class="gpw-railsec" style="padding:15px 15px 14px;border-bottom:1px solid #eef2f5">
+        <div style="font:600 10.5px 'IBM Plex Mono';letter-spacing:.9px;text-transform:uppercase;color:#7c8b97;margin-bottom:9px">Lens — color the map by</div>
+        {{ lensList }}
+      </div>
+      <div class="gpw-railsec" style="padding:14px 15px;border-bottom:1px solid #eef2f5">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px">
+          <div style="font:600 10.5px 'IBM Plex Mono';letter-spacing:.9px;text-transform:uppercase;color:#7c8b97">Filter by region</div>
+          {{ regionReset }}
+        </div>
+        {{ regionList }}
+      </div>
+      <div class="gpw-railsec" style="padding:14px 15px;border-bottom:1px solid #eef2f5">
+        <div style="font:600 10.5px 'IBM Plex Mono';letter-spacing:.9px;text-transform:uppercase;color:#7c8b97;margin-bottom:9px">River hotspots</div>
+        {{ riverToggle }}
+      </div>
+      <div class="gpw-railsec" style="padding:14px 15px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px">
+          <div style="font:600 10.5px 'IBM Plex Mono';letter-spacing:.9px;text-transform:uppercase;color:#7c8b97">Compare basket</div>
+          {{ compareClear }}
+        </div>
+        {{ compareBasket }}
+      </div>
+    </aside>
+
+    <main class="gpw-main gpw-scroll" style="flex:1;min-width:0;overflow:auto;padding:16px">
+      {{ mapPanel }}
+      <div class="gpw-cards" style="display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:14px;margin-top:14px;align-items:start">
+        <section style="background:#fff;border:1px solid #dde5ec;border-radius:12px;padding:14px 15px 15px;box-shadow:0 1px 2px rgba(12,30,46,.04)">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
+            <h3 style="margin:0;font:600 14.5px 'IBM Plex Sans';color:#0c1e2e">Top emitters</h3>
+            <span style="font:500 10.5px 'IBM Plex Mono';color:#8b98a3">{{ rankSub }}</span>
+          </div>
+          {{ rankRows }}
+        </section>
+        <section style="background:#fff;border:1px solid #dde5ec;border-radius:12px;padding:14px 15px 15px;box-shadow:0 1px 2px rgba(12,30,46,.04)">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px">
+            <h3 style="margin:0;font:600 14.5px 'IBM Plex Sans';color:#0c1e2e">The material explosion</h3>
+            {{ trendToggle }}
+          </div>
+          {{ trendBody }}
+        </section>
+        <section style="background:#fff;border:1px solid #dde5ec;border-radius:12px;padding:14px 15px 15px;box-shadow:0 1px 2px rgba(12,30,46,.04)">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
+            <h3 style="margin:0;font:600 14.5px 'IBM Plex Sans';color:#0c1e2e">River hotspots</h3>
+            <span style="font:500 10.5px 'IBM Plex Mono';color:#8b98a3">top 10 of 150</span>
+          </div>
+          {{ riverRows }}
+        </section>
+      </div>
+
+      <section style="background:#fff;border:1px solid #dde5ec;border-radius:12px;padding:15px;margin-top:14px;box-shadow:0 1px 2px rgba(12,30,46,.04)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:4px">
+          <h3 style="margin:0;font:600 15px 'IBM Plex Sans';color:#0c1e2e">Compare countries <span style="font:500 12px 'IBM Plex Mono';color:#8b98a3">{{ compareCount }}</span></h3>
+          {{ compareActions }}
+        </div>
+        {{ compareBody }}
+      </section>
+
+      <footer style="margin:16px 2px 6px;font:500 11px 'IBM Plex Mono';color:#8593a0;line-height:1.6">
+        Open data · CC-BY · Sources: Our World in Data, Lebreton et al. 2017, OECD, UN Comtrade, Natural Earth. Modeled estimates — relative hotspots, not exact tonnages. Generated {{ generated }}.
+      </footer>
+    </main>
+  </div>
+
+  {{ drawer }}
+  {{ aboutModal }}
+  {{ toast }}
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultLens&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;mis&quot;,&quot;ocean&quot;,&quot;pc&quot;,&quot;exports&quot;],&quot;default&quot;:&quot;mis&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Defaults&quot;},&quot;riversOn&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Defaults&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#0e7490&quot;,&quot;#1565c0&quot;,&quot;#0f7a6b&quot;,&quot;#2596be&quot;],&quot;default&quot;:&quot;#0e7490&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;ramp&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;warm&quot;,&quot;teal&quot;],&quot;default&quot;:&quot;warm&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    const h = React.createElement;
+    this.h = h;
+    this.BASE = { x:0, y:14, w:720, h:292 };
+    this.PAL_warm = ['#fde2c4','#fbc985','#f6a049','#ee7a2d','#d4521b','#991f0f'];
+    this.PAL_teal = ['#d4ebee','#a3d8dd','#69bfc7','#36a0aa','#1d7882','#0c4f57'];
+    this.NODATA = '#d8e0e6';
+    this.SEA = '#e7eef3';
+    this.LENSES = {
+      mis:    { label:'Mismanaged waste', short:'Mismanaged', unit:'tonnes / year', kind:'snap', key:'mis', blurb:'Plastic littered, dumped or openly burned — the stuff most likely to leak to nature.' },
+      ocean:  { label:'Ocean-emission share', short:'Ocean share', unit:'% of world', kind:'snap', key:'ocean', blurb:'Each country\u2019s share of all plastic entering the sea.' },
+      pc:     { label:'Waste per person', short:'Per capita', unit:'kg / person / day', kind:'snap', key:'pc', blurb:'Plastic waste generated per person — high in rich economies.' },
+      exports:{ label:'Waste exports', short:'Exports', unit:'tonnes / year', kind:'time', key:'exports', blurb:'Plastic scrap shipped abroad. Scrub the years to watch China\u2019s 2018 import ban reshape the trade.' }
+    };
+    this.LORDER = ['mis','ocean','pc','exports'];
+    this.CONTS = ['Asia','Africa','Europe','North America','South America','Oceania'];
+    const dl = (this.LENSES[props && props.defaultLens]) ? props.defaultLens : 'mis';
+    this.state = {
+      loaded:false, err:null, lens: dl, year:null, regions:[], rivers:(props && props.riversOn===false)?false:true,
+      selIso:null, compare:[], trendMode:'prod', playing:false, exportOpen:false, aboutOpen:false, search:'', toast:null
+    };
+    this.view = { scale:1, cx:this.BASE.x+this.BASE.w/2, cy:this.BASE.y+this.BASE.h/2 };
+    this._pan = { active:false, x:0, y:0, moved:false };
+    this._raf = null; this._play = null; this._toastT = null;
+  }
+
+  /* ---------- lifecycle ---------- */
+  componentDidMount(){
+    this.applyTheme();
+    this._mm = (e)=>{
+      if(!this._pan.active) return;
+      const dx=e.clientX-this._pan.x, dy=e.clientY-this._pan.y;
+      if(Math.abs(dx)+Math.abs(dy)>3) this._pan.moved=true;
+      const v=this.curVBobj(), r=this._svg?this._svg.getBoundingClientRect():null;
+      if(!r) return;
+      this.view.cx -= dx / r.width * v.w; this.view.cy -= dy / r.height * v.h;
+      this.clampView(); this.applyView();
+      this._pan.x=e.clientX; this._pan.y=e.clientY;
+    };
+    this._mu = ()=>{ this._pan.active=false; };
+    this._key = (e)=>{ if(e.key==='Escape'){ if(this.state.aboutOpen) this.setState({aboutOpen:false}); else if(this.state.exportOpen) this.setState({exportOpen:false}); else if(this.state.selIso) this.closeDrawer(); } };
+    window.addEventListener('mousemove', this._mm);
+    window.addEventListener('mouseup', this._mu);
+    window.addEventListener('keydown', this._key);
+    Promise.all([
+      fetch('data/countries.geojson').then(r=>r.json()),
+      fetch('data/rivers.json').then(r=>r.json()),
+      fetch('data/meta.json').then(r=>r.json()),
+      fetch('data/production.json').then(r=>r.json()),
+      fetch('data/timeline-regions.json').then(r=>r.json()),
+      fetch('data/timeline-trade.json').then(r=>r.json())
+    ]).then(res=>{
+      this.DATA=res[0]; this.RIVERS=res[1]; this.META=res[2]; this.PROD=res[3].series;
+      this.REGIONS=res[4]; this.TRADE=res[5];
+      this.process();
+      this.setState({ loaded:true, year:this.expSeries[this.expSeries.length-1][0] });
+    }).catch(err=>{ console.error(err); this.setState({err:String(err)}); });
+  }
+  componentDidUpdate(prev){ if(prev.exportOpen!==this.state.exportOpen || true) this.applyTheme(); }
+  componentWillUnmount(){
+    window.removeEventListener('mousemove', this._mm);
+    window.removeEventListener('mouseup', this._mu);
+    window.removeEventListener('keydown', this._key);
+    if(this._play) clearInterval(this._play);
+    if(this._raf) cancelAnimationFrame(this._raf);
+  }
+  applyTheme(){
+    const a = (this.props && this.props.accent) || '#0e7490';
+    document.documentElement.style.setProperty('--accent', a);
+    document.documentElement.style.setProperty('--cyan', '#3fd0e6');
+  }
+  accent(){ return (this.props && this.props.accent) || '#0e7490'; }
+  pal(){ return ((this.props && this.props.ramp)==='teal') ? this.PAL_teal : this.PAL_warm; }
+
+  /* ---------- data prep ---------- */
+  process(){
+    this.DATA.features.forEach(f=>{ f._d=this.geomPath(f.geometry); f._bbox=this.bbox(f); });
+    this.RIVERS.sort((a,b)=>b.mid-a.mid);
+    const by={}; const T=this.TRADE.byIso; Object.keys(T).forEach(iso=>{const r=T[iso];Object.keys(r).forEach(y=>{by[y]=(by[y]||0)+r[y];});});
+    this.expSeries=Object.keys(by).map(y=>[+y,by[y]]).sort((a,b)=>a[0]-b[0]);
+    const R=this.REGIONS.regions; const oy={}; Object.keys(R).forEach(rg=>{const rec=R[rg];Object.keys(rec).forEach(y=>{oy[y]=(oy[y]||0)+rec[y];});});
+    this.oceanSeries=Object.keys(oy).map(y=>[+y,oy[y]]).sort((a,b)=>a[0]-b[0]);
+    this.byIso={}; this.DATA.features.forEach(f=>{ this.byIso[f.properties.iso]=f; });
+    this.kMis=this.DATA.features.reduce((s,f)=>s+(f.properties.mis||0),0);
+    this.kRiver=this.RIVERS.reduce((s,r)=>s+r.mid,0);
+    this.kProdL=this.PROD[this.PROD.length-1]; this.kProdF=this.PROD[0];
+    this.kOceL=this.oceanSeries[this.oceanSeries.length-1]; this.kOceF=this.oceanSeries[0];
+  }
+
+  /* ---------- geometry / projection ---------- */
+  proj(lon,lat){ return [(lon+180)*2,(90-lat)*2]; }
+  ringPath(ring){ let d=''; for(let i=0;i<ring.length;i++){ const p=this.proj(ring[i][0],ring[i][1]); d+=(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1); } return d+'Z'; }
+  geomPath(g){ let d=''; const polys=g.type==='Polygon'?[g.coordinates]:g.coordinates; for(let a=0;a<polys.length;a++) for(let b=0;b<polys[a].length;b++) d+=this.ringPath(polys[a][b]); return d; }
+  bbox(f){ let mnx=180,mxx=-180,mny=90,mxy=-90; const polys=f.geometry.type==='Polygon'?[f.geometry.coordinates]:f.geometry.coordinates; polys.forEach(p=>p.forEach(r=>r.forEach(pt=>{ if(pt[0]<mnx)mnx=pt[0]; if(pt[0]>mxx)mxx=pt[0]; if(pt[1]<mny)mny=pt[1]; if(pt[1]>mxy)mxy=pt[1]; }))); return {mnx,mxx,mny,mxy}; }
+
+  /* ---------- value model ---------- */
+  lensCfg(){ return this.LENSES[this.state.lens]; }
+  isTime(){ return this.lensCfg().kind==='time'; }
+  activeValue(p){ const L=this.lensCfg(); if(L.kind==='time'){ const rec=this.TRADE.byIso[p.iso]; const y=String(this.state.year); return rec&&rec[y]!=null?rec[y]:null; } return p[L.key]; }
+  activeValues(){ return this.DATA.features.map(f=>this.activeValue(f.properties)).filter(v=>v!=null&&!isNaN(v)).sort((a,b)=>a-b); }
+  thresholds(){ const v=this.activeValues(), q=[]; for(let i=1;i<6;i++) q.push(v[Math.floor(i/6*v.length)]); return q; }
+  color(val,th){ if(val==null||isNaN(val)) return this.NODATA; let i=0; while(i<th.length && val>=th[i]) i++; return this.pal()[i]; }
+  inScope(cont){ return this.state.regions.length===0 || this.state.regions.indexOf(cont)>=0; }
+
+  fmtT(v){ if(v==null||isNaN(v)) return 'no data'; v=+v; if(v>=1e6) return (v/1e6).toFixed(1)+'M t'; if(v>=1e3) return (v/1e3).toFixed(0)+'k t'; return Math.round(v)+' t'; }
+  fmtSnap(m,v){ if(v==null||isNaN(v)) return 'no data'; if(m==='mis') return this.fmtT(v); if(m==='ocean') return (+v).toFixed(2)+'%'; return (+v).toFixed(3)+' kg'; }
+  fmtActive(v){ const L=this.lensCfg(); return L.kind==='time'?this.fmtT(v):this.fmtSnap(L.key,v); }
+  compact(v){ v=+v; if(v>=1e9) return (v/1e9).toFixed(1)+'B'; if(v>=1e6) return (v/1e6).toFixed(v>=1e8?0:1)+'M'; if(v>=1e3) return (v/1e3).toFixed(0)+'k'; return ''+Math.round(v); }
+
+  /* ---------- view / zoom / pan ---------- */
+  clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+  curVBobj(){ const B=this.BASE; const w=B.w/this.view.scale, h=B.h/this.view.scale; const x=this.clamp(this.view.cx-w/2,B.x,B.x+B.w-w); const y=this.clamp(this.view.cy-h/2,B.y,B.y+B.h-h); return {x,y,w,h}; }
+  curVB(){ const v=this.curVBobj(); return v.x.toFixed(1)+' '+v.y.toFixed(1)+' '+v.w.toFixed(1)+' '+v.h.toFixed(1); }
+  clampView(){ const v=this.curVBobj(); this.view.cx=v.x+v.w/2; this.view.cy=v.y+v.h/2; }
+  applyView(){ if(this._svg) this._svg.setAttribute('viewBox', this.curVB()); }
+  zoomAt(cx,cy,factor){
+    const r=this._svg.getBoundingClientRect(), v=this.curVBobj();
+    const px=v.x+(cx-r.left)/r.width*v.w, py=v.y+(cy-r.top)/r.height*v.h;
+    this.view.scale=this.clamp(this.view.scale*factor,1,9);
+    const B=this.BASE, w=B.w/this.view.scale, h=B.h/this.view.scale;
+    const fx=(px-v.x)/v.w, fy=(py-v.y)/v.h;
+    this.view.cx=(px-fx*w)+w/2; this.view.cy=(py-fy*h)+h/2; this.clampView(); this.applyView();
+  }
+  zoomCenter(f){ if(!this._svg) return; const r=this._svg.getBoundingClientRect(); this.zoomAt(r.left+r.width/2, r.top+r.height/2, f); }
+  resetView(){ this.animateView({scale:1,cx:this.BASE.x+this.BASE.w/2,cy:this.BASE.y+this.BASE.h/2}); }
+  animateView(target){
+    if(this._raf) cancelAnimationFrame(this._raf);
+    const s={scale:this.view.scale,cx:this.view.cx,cy:this.view.cy}; let t0=null;
+    const ease=(t)=> t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+    const step=(ts)=>{ if(t0==null)t0=ts; const k=Math.min((ts-t0)/430,1), e=ease(k); this.view.scale=s.scale+(target.scale-s.scale)*e; this.view.cx=s.cx+(target.cx-s.cx)*e; this.view.cy=s.cy+(target.cy-s.cy)*e; this.clampView(); this.applyView(); if(k<1) this._raf=requestAnimationFrame(step); };
+    this._raf=requestAnimationFrame(step);
+  }
+  focusCountry(iso){ const f=this.byIso[iso]; if(!f) return; const b=f._bbox; const x1=(b.mnx+180)*2,x2=(b.mxx+180)*2,y1=(90-b.mxy)*2,y2=(90-b.mny)*2; const bw=Math.max(x2-x1,4),bh=Math.max(y2-y1,4); const sc=this.clamp(Math.min(this.BASE.w/(bw*1.9),this.BASE.h/(bh*1.9)),1,6); this.animateView({scale:sc,cx:(x1+x2)/2,cy:(y1+y2)/2}); }
+  focusPoint(lon,lat,scale){ const p=this.proj(lon,lat); this.animateView({scale:scale,cx:p[0],cy:p[1]}); }
+
+  /* ---------- interactions ---------- */
+  setLens=(k)=>{ const st={lens:k, selIso:this.state.selIso}; if(this.LENSES[k].kind==='time' && this.state.year==null) st.year=this.expSeries[this.expSeries.length-1][0]; this.stopPlay(); this.setState(st); }
+  toggleRegion=(c)=>{ const r=this.state.regions.slice(); const i=r.indexOf(c); if(i>=0) r.splice(i,1); else r.push(c); this.setState({regions:r}); }
+  clearRegions=()=>{ this.setState({regions:[]}); }
+  toggleRivers=()=>{ this.setState({rivers:!this.state.rivers}); }
+  selectCountry=(iso)=>{ const next=(iso===this.state.selIso)?null:iso; this.setState({selIso:next}); if(next) this.focusCountry(next); else this.resetView(); }
+  closeDrawer=()=>{ this.setState({selIso:null}); this.resetView(); }
+  addCompare=(iso)=>{ if(this.state.compare.indexOf(iso)>=0) return; if(this.state.compare.length>=6){ this.flash('Compare holds up to 6 countries'); return; } this.setState({compare:this.state.compare.concat(iso)}); const f=this.byIso[iso]; this.flash((f?f.properties.name:iso)+' added to compare'); }
+  removeCompare=(iso)=>{ this.setState({compare:this.state.compare.filter(x=>x!==iso)}); }
+  clearCompare=()=>{ this.setState({compare:[]}); }
+  flash=(msg)=>{ this.setState({toast:msg}); if(this._toastT) clearTimeout(this._toastT); this._toastT=setTimeout(()=>this.setState({toast:null}),1900); }
+  onPanStart=(e)=>{ this._pan={active:true,moved:false,x:e.clientX,y:e.clientY}; }
+  onWheel=(e)=>{ e.preventDefault(); this.zoomAt(e.clientX,e.clientY, e.deltaY<0?1.18:1/1.18); }
+  setYear=(y)=>{ this.setState({year:y}); }
+  togglePlay=()=>{ if(this.state.playing) return this.stopPlay(); const yrs=this.expSeries.map(p=>p[0]); let idx=yrs.indexOf(this.state.year); if(idx>=yrs.length-1) idx=0; this.setState({playing:true, year:yrs[idx]}); this._play=setInterval(()=>{ const ys=this.expSeries.map(p=>p[0]); let i=ys.indexOf(this.state.year); if(i>=ys.length-1){ this.stopPlay(); return; } this.setState({year:ys[i+1]}); }, 360); }
+  stopPlay=()=>{ if(this._play){ clearInterval(this._play); this._play=null; } if(this.state.playing) this.setState({playing:false}); }
+
+  /* ---------- export ---------- */
+  download(name, blob){ const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1500); }
+  exportCSV=(scope)=>{
+    this.setState({exportOpen:false});
+    let feats=this.DATA.features.slice();
+    if(scope==='compare'){ if(!this.state.compare.length){ this.flash('Add countries to compare first'); return; } feats=this.state.compare.map(i=>this.byIso[i]).filter(Boolean); }
+    const L=this.lensCfg(); const head=['iso','name','continent','mismanaged_tonnes_yr','ocean_share_pct','per_capita_kg_day'];
+    if(L.kind==='time') head.push('exports_'+this.state.year+'_tonnes');
+    const rows=[head.join(',')];
+    feats.forEach(f=>{ const p=f.properties; const r=[p.iso,'"'+p.name.replace(/"/g,'')+'"',p.continent||'',p.mis==null?'':p.mis,p.ocean==null?'':p.ocean,p.pc==null?'':p.pc]; if(L.kind==='time'){ const v=this.activeValue(p); r.push(v==null?'':v); } rows.push(r.join(',')); });
+    this.download('global-plastics-'+(scope==='compare'?'compare':'all')+'.csv', new Blob([rows.join('\n')],{type:'text/csv'}));
+    this.flash('CSV downloaded');
+  }
+  exportPNG=()=>{
+    this.setState({exportOpen:false});
+    if(!this._svg){ return; }
+    try{
+      const clone=this._svg.cloneNode(true); clone.setAttribute('viewBox', this.curVB());
+      const W=1440,H=Math.round(1440*this.BASE.h/this.BASE.w);
+      clone.setAttribute('width',W); clone.setAttribute('height',H);
+      const xml=new XMLSerializer().serializeToString(clone);
+      const img=new Image();
+      img.onload=()=>{ const c=document.createElement('canvas'); c.width=W; c.height=H; const ctx=c.getContext('2d'); ctx.fillStyle='#eef2f5'; ctx.fillRect(0,0,W,H); ctx.drawImage(img,0,0,W,H); c.toBlob(b=>{ if(b){ this.download('global-plastics-map.png',b); this.flash('Map image downloaded'); } }); };
+      img.onerror=()=>this.flash('Could not render PNG');
+      img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml);
+    }catch(e){ this.flash('Could not render PNG'); }
+  }
+
+  /* ================= BUILDERS ================= */
+  skel(w,h,style){ return this.h('div',{className:'gpw-skel',style:Object.assign({width:w,height:h},style||{})}); }
+
+  buildSearch(){
+    const h=this.h;
+    return h('div',{style:{position:'relative'}},
+      h('input',{className:'gpw-search', list:'gpw-countries', placeholder:'Search a country\u2026', value:this.state.search,
+        onChange:(e)=>{ const q=e.target.value; this.setState({search:q}); const f=this.DATA && this.DATA.features.find(x=>x.properties.name.toLowerCase()===q.trim().toLowerCase()); if(f){ this.selectCountry(f.properties.iso); this.setState({search:''}); } },
+        style:{background:'rgba(255,255,255,.08)',border:'1px solid rgba(255,255,255,.22)',color:'#fff',padding:'8px 11px',borderRadius:'8px',font:'500 12.5px "IBM Plex Sans"',width:'168px'} }),
+      this.DATA ? h('datalist',{id:'gpw-countries'}, this.DATA.features.slice().sort((a,b)=>a.properties.name<b.properties.name?-1:1).map(f=>h('option',{key:f.properties.iso,value:f.properties.name}))) : null
+    );
+  }
+
+  buildExport(){
+    const h=this.h, open=this.state.exportOpen, A=this.accent();
+    const item=(label,sub,fn,dis)=> h('button',{onClick:dis?null:fn,disabled:dis,style:{display:'flex',flexDirection:'column',gap:'1px',width:'100%',textAlign:'left',background:'transparent',border:'none',padding:'9px 12px',cursor:dis?'default':'pointer',opacity:dis?.45:1,borderRadius:'7px'},onMouseEnter:e=>{if(!dis)e.currentTarget.style.background='#f1f5f8';},onMouseLeave:e=>e.currentTarget.style.background='transparent'},
+      h('span',{style:{font:'600 12.5px "IBM Plex Sans"',color:'#0c1e2e'}},label),
+      h('span',{style:{font:'500 10.5px "IBM Plex Mono"',color:'#8b98a3'}},sub));
+    return h('div',{style:{position:'relative'}},
+      h('button',{className:'gpw-btn',onClick:()=>this.setState({exportOpen:!open}),style:{display:'flex',alignItems:'center',gap:'7px',background:A,border:'1px solid '+A,color:'#fff',padding:'8px 14px',borderRadius:'8px',font:'600 12.5px "IBM Plex Sans"',cursor:'pointer'}},
+        h('span',{style:{fontSize:'13px'}},'\u2913'),'Export'),
+      open ? h('div',{style:{position:'absolute',right:0,top:'42px',background:'#fff',border:'1px solid #dde5ec',borderRadius:'11px',boxShadow:'0 14px 38px rgba(12,30,46,.22)',padding:'6px',minWidth:'246px',zIndex:60,animation:'gpwfade .12s'}},
+        item('Map image','PNG of the current view',this.exportPNG,false),
+        item('Country data','CSV \u00b7 all countries, current lens',()=>this.exportCSV('all'),false),
+        item('Compare set','CSV \u00b7 '+this.state.compare.length+' selected',()=>this.exportCSV('compare'),this.state.compare.length===0)
+      ) : null
+    );
+  }
+
+  buildKpis(){
+    const h=this.h;
+    if(!this.state.loaded){ return [0,1,2,3].map(i=>h('div',{key:i,style:{background:'#fff',padding:'15px 18px'}}, this.skel('60%','13px',{marginBottom:'9px'}), this.skel('45%','24px'))); }
+    const A=this.accent();
+    const card=(val,unit,label,sub,key)=> h('div',{key,style:{background:'#fff',padding:'14px 18px 15px',display:'flex',flexDirection:'column',gap:'2px'}},
+      h('div',{style:{display:'flex',alignItems:'baseline',gap:'4px'}},
+        h('span',{style:{font:'500 30px "Newsreader"',color:'#0c1e2e',lineHeight:1,letterSpacing:'-.5px'}},val),
+        h('span',{style:{font:'600 12px "IBM Plex Mono"',color:A}},unit)),
+      h('div',{style:{font:'600 11.5px "IBM Plex Sans"',color:'#33485a',marginTop:'5px'}},label),
+      h('div',{style:{font:'500 10.5px "IBM Plex Mono"',color:'#8b98a3'}},sub));
+    const oceRatio=(this.kOceL[1]/this.kOceF[1]);
+    const prodRatio=Math.round(this.kProdL[1]/this.kProdF[1]);
+    return [
+      card(this.compact(this.kMis),'t/yr','Mismanaged plastic','littered, dumped or burned \u00b7 2019','k1'),
+      card(this.compact(this.kOceL[1]),'t','In the ocean now','\u00d7'+oceRatio.toFixed(1)+' since 2000','k2'),
+      card('150','rivers','Carry most of it','\u2248'+this.compact(this.kRiver)+' t/yr to the sea','k3'),
+      card(this.compact(this.kProdL[1]),'t/yr','Plastic produced','\u00d7'+prodRatio+' since 1950','k4')
+    ];
+  }
+
+  buildLensList(){
+    const h=this.h;
+    if(!this.state.loaded) return [0,1,2,3].map(i=>this.skel('100%','46px',{marginBottom:'7px',key:i}));
+    const A=this.accent();
+    return this.LORDER.map(k=>{
+      const L=this.LENSES[k], on=this.state.lens===k;
+      return h('button',{key:k,className:'gpw-lens',onClick:()=>this.setLens(k),style:{display:'block',width:'100%',textAlign:'left',background:on?'#0c1e2e':'#fff',border:'1px solid '+(on?'#0c1e2e':'#dde5ec'),borderRadius:'9px',padding:'9px 11px',marginBottom:'7px',cursor:'pointer'}},
+        h('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'6px'}},
+          h('span',{style:{font:'600 13px "IBM Plex Sans"',color:on?'#fff':'#0c1e2e'}},L.label),
+          L.kind==='time'?h('span',{style:{font:'600 8.5px "IBM Plex Mono"',color:on?'#3fd0e6':A,border:'1px solid '+(on?'rgba(63,208,230,.5)':'#cfe0e4'),borderRadius:'5px',padding:'1px 5px',letterSpacing:'.3px'}},'TIME'):null),
+        h('div',{style:{font:'500 10.5px "IBM Plex Mono"',color:on?'#9db4c9':'#8b98a3',marginTop:'2px'}},L.unit));
+    });
+  }
+
+  buildRegionList(){
+    const h=this.h;
+    if(!this.state.loaded) return this.skel('100%','30px');
+    const A=this.accent();
+    return h('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px'}}, this.CONTS.map(c=>{
+      const on=this.state.regions.indexOf(c)>=0;
+      return h('button',{key:c,className:'gpw-btn',onClick:()=>this.toggleRegion(c),style:{background:on?A:'#fff',border:'1px solid '+(on?A:'#dde5ec'),color:on?'#fff':'#48586a',borderRadius:'20px',padding:'5px 11px',font:'600 11.5px "IBM Plex Sans"',cursor:'pointer'}}, c);
+    }));
+  }
+  buildRegionReset(){
+    if(this.state.regions.length===0) return null;
+    return this.h('button',{onClick:this.clearRegions,style:{background:'transparent',border:'none',color:this.accent(),font:'600 10.5px "IBM Plex Sans"',cursor:'pointer',padding:0}},'reset');
+  }
+
+  buildRiverToggle(){
+    const h=this.h, on=this.state.rivers, A=this.accent();
+    return h('button',{className:'gpw-btn',onClick:this.toggleRivers,style:{display:'flex',alignItems:'center',gap:'9px',width:'100%',background:'#fff',border:'1px solid #dde5ec',borderRadius:'9px',padding:'8px 11px',cursor:'pointer'}},
+      h('span',{style:{width:'34px',height:'18px',borderRadius:'10px',background:on?A:'#cdd7df',position:'relative',flex:'none',transition:'background .15s'}},
+        h('span',{style:{position:'absolute',top:'2px',left:on?'18px':'2px',width:'14px',height:'14px',borderRadius:'50%',background:'#fff',transition:'left .15s',boxShadow:'0 1px 2px rgba(0,0,0,.25)'}})),
+      h('span',{style:{font:'600 12.5px "IBM Plex Sans"',color:'#0c1e2e'}}, on?'Showing 150 outlets':'Hidden'),
+      h('span',{style:{marginLeft:'auto',width:'11px',height:'11px',borderRadius:'50%',background:'#1565c0',opacity:.62,border:'1.5px solid #fff'}}));
+  }
+
+  buildCompareBasket(){
+    const h=this.h;
+    if(!this.state.compare.length) return h('div',{style:{font:'500 11.5px/1.5 "IBM Plex Sans"',color:'#9aa7b2',padding:'4px 0'}},'Click a country on the map, a ranking row, or search — then ',h('b',{style:{color:'#6b7c89'}},'Add to compare'),'.');
+    const A=this.accent();
+    return h('div',{style:{display:'flex',flexWrap:'wrap',gap:'6px'}}, this.state.compare.map(iso=>{
+      const f=this.byIso[iso]; if(!f) return null;
+      return h('span',{key:iso,style:{display:'inline-flex',alignItems:'center',gap:'6px',background:'#eaf3f4',border:'1px solid #cfe3e6',borderRadius:'7px',padding:'4px 6px 4px 9px',font:'600 11.5px "IBM Plex Sans"',color:'#0c4f57'}},
+        f.properties.name,
+        h('span',{className:'gpw-chipx',onClick:()=>this.removeCompare(iso),style:{cursor:'pointer',fontSize:'13px',lineHeight:1,color:'#0c4f57'}},'\u00d7'));
+    }));
+  }
+  buildCompareClear(){ if(!this.state.compare.length) return null; return this.h('button',{onClick:this.clearCompare,style:{background:'transparent',border:'none',color:this.accent(),font:'600 10.5px "IBM Plex Sans"',cursor:'pointer',padding:0}},'clear'); }
+
+  /* ---------- MAP ---------- */
+  buildMap(){
+    const h=this.h;
+    if(!this.state.loaded){
+      return h('section',{style:{background:'#fff',border:'1px solid #dde5ec',borderRadius:'12px',overflow:'hidden',boxShadow:'0 1px 2px rgba(12,30,46,.04)'}},
+        h('div',{style:{height:'56px',borderBottom:'1px solid #eef2f5',display:'flex',alignItems:'center',padding:'0 16px'}}, this.skel('220px','16px')),
+        h('div',{style:{height:'min(52vh,440px)',display:'flex',alignItems:'center',justifyContent:'center',background:this.SEA}}, this.state.err? h('div',{style:{textAlign:'center',color:'#6b7c89',font:'500 13px "IBM Plex Sans"',maxWidth:'320px'}},'Couldn\u2019t load the data files.',h('div',{style:{font:'500 11px "IBM Plex Mono"',marginTop:'8px',color:'#9aa7b2'}},'data/ must sit next to this page.')) : h('div',{style:{width:'30px',height:'30px',border:'3px solid #cfdcea',borderTopColor:this.accent(),borderRadius:'50%',animation:'gpwspin .8s linear infinite'}})));
+    }
+    const L=this.lensCfg(), th=this.thresholds(), A=this.accent();
+    const sea=h('rect',{x:0,y:0,width:720,height:360,fill:this.SEA});
+    const paths=this.DATA.features.map(f=>{
+      const p=f.properties, v=this.activeValue(p), sc=this.inScope(p.continent);
+      const sel=p.iso===this.state.selIso, cmp=this.state.compare.indexOf(p.iso)>=0;
+      return h('path',{key:p.iso,className:'gpw-co',d:f._d,fill:this.color(v,th),
+        stroke:sel?'#0c1e2e':(cmp?A:'#ffffff'), strokeWidth:sel?1.7:(cmp?1.4:0.4),
+        opacity:sc?1:0.2,
+        onMouseMove:(e)=>this.showTip(e, '<b>'+p.name+'</b><br>'+L.label+(L.kind==='time'?' \u00b7 '+this.state.year:'')+': '+this.fmtActive(v)),
+        onMouseLeave:this.hideTip,
+        onClick:()=>{ if(!this._pan.moved) this.selectCountry(p.iso); }});
+    });
+    let rivers=null;
+    if(this.state.rivers){ const max=this.RIVERS[0].mid; rivers=this.RIVERS.map((r,i)=>{ const pt=this.proj(r.lon,r.lat); return h('circle',{key:'r'+i,className:'gpw-river',cx:pt[0].toFixed(1),cy:pt[1].toFixed(1),r:(1.2+Math.sqrt(r.mid/max)*7).toFixed(2),fill:'#1565c0',fillOpacity:.6,stroke:'#fff',strokeWidth:.4,onMouseMove:(e)=>this.showTip(e,'<b>River outlet</b><br>'+Math.round(r.mid).toLocaleString()+' t/yr<br>'+r.lat.toFixed(2)+', '+r.lon.toFixed(2)),onMouseLeave:this.hideTip}); }); }
+    const svg=h('svg',{ref:el=>{ this._svg=el; if(el) el.setAttribute('viewBox', this.curVB()); }, width:'100%',height:'100%',preserveAspectRatio:'xMidYMid meet',style:{display:'block',cursor:'grab',touchAction:'none'},onMouseDown:this.onPanStart,onWheel:this.onWheel}, sea, h('g',null,paths), rivers?h('g',null,rivers):null);
+
+    // legend
+    const pal=this.pal();
+    const legend=h('div',{style:{position:'absolute',left:'14px',bottom:'14px',background:'rgba(255,255,255,.95)',border:'1px solid #dde5ec',borderRadius:'9px',padding:'10px 12px',font:'500 11px "IBM Plex Sans"',maxWidth:'200px',boxShadow:'0 2px 10px rgba(12,30,46,.08)'}},
+      h('div',{style:{font:'600 11px "IBM Plex Sans"',color:'#0c1e2e',marginBottom:'6px'}}, L.label+(L.kind==='time'?' \u00b7 '+this.state.year:'')),
+      pal.map((c,i)=>h('div',{key:i,style:{display:'flex',alignItems:'center',gap:'7px',margin:'2px 0'}},h('span',{style:{width:'16px',height:'11px',borderRadius:'2px',background:c,flex:'none'}}),h('span',{style:{font:'500 10.5px "IBM Plex Mono"',color:'#6b7c89'}}, i===0?'lowest':(i===pal.length-1?'highest':'\u2265 '+this.fmtActive(th[i-1]))))),
+      h('div',{style:{display:'flex',alignItems:'center',gap:'7px',marginTop:'2px'}},h('span',{style:{width:'16px',height:'11px',borderRadius:'2px',background:this.NODATA,flex:'none'}}),h('span',{style:{font:'500 10.5px "IBM Plex Mono"',color:'#6b7c89'}},'no data')),
+      this.state.rivers?h('div',{style:{display:'flex',alignItems:'center',gap:'7px',marginTop:'7px',paddingTop:'7px',borderTop:'1px solid #eef2f5'}},h('span',{style:{width:'11px',height:'11px',borderRadius:'50%',background:'#1565c0',opacity:.62,flex:'none'}}),h('span',{style:{font:'500 10.5px "IBM Plex Mono"',color:'#6b7c89'}},'river outlet \u00b7 size = input')):null);
+    // zoom
+    const zb=(t,fn)=>h('button',{onClick:fn,className:'gpw-btn',style:{width:'30px',height:'30px',border:'1px solid #dde5ec',background:'rgba(255,255,255,.95)',borderRadius:'8px',font:'600 15px "IBM Plex Sans"',color:'#0c1e2e',cursor:'pointer',lineHeight:1,boxShadow:'0 1px 4px rgba(12,30,46,.1)'}},t);
+    const zoom=h('div',{style:{position:'absolute',right:'14px',top:'14px',display:'flex',flexDirection:'column',gap:'5px'}}, zb('+',()=>this.zoomCenter(1.5)), zb('\u2212',()=>this.zoomCenter(1/1.5)), zb('\u2922',()=>this.resetView()));
+    const tip=h('div',{ref:el=>this._tip=el,style:{position:'absolute',pointerEvents:'none',background:'#0c1e2e',color:'#fff',padding:'6px 9px',borderRadius:'7px',font:'500 11.5px "IBM Plex Sans"',opacity:0,transition:'opacity .08s',whiteSpace:'nowrap',boxShadow:'0 4px 14px rgba(0,0,0,.28)',zIndex:20,left:0,top:0}});
+
+    const header=h('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'10px',padding:'13px 16px',borderBottom:'1px solid #eef2f5',flexWrap:'wrap'}},
+      h('div',null,
+        h('div',{style:{display:'flex',alignItems:'baseline',gap:'9px'}},
+          h('h2',{style:{margin:0,font:'500 19px "Newsreader"',color:'#0c1e2e'}}, L.label),
+          h('span',{style:{font:'600 11px "IBM Plex Mono"',color:A}}, L.unit)),
+        h('div',{style:{font:'500 11.5px "IBM Plex Sans"',color:'#8b98a3',marginTop:'2px',maxWidth:'520px'}}, L.blurb)),
+      this.state.regions.length? h('span',{style:{font:'600 11px "IBM Plex Mono"',color:'#48586a',background:'#f1f5f8',border:'1px solid #dde5ec',borderRadius:'7px',padding:'4px 9px'}},'scoped: '+this.state.regions.join(', ')):null);
+
+    const timeline = L.kind==='time' ? this.buildTimeline() : null;
+    return h('section',{style:{background:'#fff',border:'1px solid #dde5ec',borderRadius:'12px',overflow:'hidden',boxShadow:'0 1px 2px rgba(12,30,46,.04)'}},
+      header,
+      h('div',{ref:el=>this._mapWrap=el,style:{position:'relative',height:'min(52vh,440px)',background:this.SEA}}, svg, legend, zoom, tip),
+      timeline);
+  }
+  showTip(e,html){ const el=this._tip, wrap=this._mapWrap; if(!el||!wrap) return; const r=wrap.getBoundingClientRect(); el.style.opacity=1; el.style.left=(e.clientX-r.left+14)+'px'; el.style.top=(e.clientY-r.top+12)+'px'; el.innerHTML=html; }
+  hideTip=()=>{ if(this._tip) this._tip.style.opacity=0; }
+
+  buildTimeline(){
+    const h=this.h, A=this.accent(); const s=this.expSeries, n=s.length;
+    const idx=Math.max(0,s.findIndex(p=>p[0]===this.state.year));
+    const max=Math.max.apply(null,s.map(p=>p[1]))||1;
+    const W=600,H=34; let area='M0 '+H, line='';
+    s.forEach((p,i)=>{ const x=(i/(n-1)*W), y=H-(p[1]/max)*(H-4); area+='L'+x.toFixed(1)+' '+y.toFixed(1); if(i===0) line='M'+x.toFixed(1)+' '+y.toFixed(1); else line+='L'+x.toFixed(1)+' '+y.toFixed(1); });
+    area+='L'+W+' '+H+'Z';
+    const markX=(idx/(n-1)*W);
+    return h('div',{style:{display:'flex',alignItems:'center',gap:'13px',padding:'11px 16px',borderTop:'1px solid #eef2f5',background:'#fafbfc'}},
+      h('button',{className:'gpw-btn',onClick:this.togglePlay,style:{width:'34px',height:'34px',borderRadius:'50%',border:'none',background:A,color:'#fff',cursor:'pointer',font:'12px "IBM Plex Sans"',flex:'none'}}, this.state.playing?'\u275a\u275a':'\u25b6'),
+      h('div',{style:{textAlign:'center',minWidth:'58px',flex:'none'}}, h('div',{style:{font:'500 22px "Newsreader"',color:'#0c1e2e',lineHeight:1}}, this.state.year), h('div',{style:{font:'600 8.5px "IBM Plex Mono"',color:'#9aa7b2',textTransform:'uppercase',letterSpacing:'.5px'}},'year')),
+      h('div',{style:{flex:1,minWidth:0}},
+        h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:'2px'}}, h('span',{style:{font:'600 10px "IBM Plex Mono"',color:'#8b98a3',textTransform:'uppercase',letterSpacing:'.4px'}},'World plastic-waste exports'), h('span',{style:{font:'600 13px "IBM Plex Sans"',color:A}}, this.fmtT(s[idx][1]))),
+        h('svg',{viewBox:'0 0 '+W+' '+H,preserveAspectRatio:'none',style:{width:'100%',height:'30px',display:'block',overflow:'visible'}}, h('path',{d:area,fill:'#dce6ef'}), h('path',{d:line,fill:'none',stroke:A,strokeWidth:1.6}), h('line',{x1:markX,x2:markX,y1:0,y2:H,stroke:'#0c1e2e',strokeWidth:1.2}), h('circle',{cx:markX,cy:H-(s[idx][1]/max)*(H-4),r:3.4,fill:A,stroke:'#fff',strokeWidth:1.2})),
+        h('input',{type:'range',min:0,max:n-1,value:idx,step:1,onChange:(e)=>{ this.stopPlay(); this.setYear(s[+e.target.value][0]); },style:{width:'100%',marginTop:'2px',accentColor:A}})));
+  }
+
+  /* ---------- ranking ---------- */
+  rankData(){
+    const L=this.lensCfg();
+    return this.DATA.features.map(f=>({iso:f.properties.iso,name:f.properties.name,cont:f.properties.continent,v:this.activeValue(f.properties)}))
+      .filter(x=>x.v!=null && this.inScope(x.cont)).sort((a,b)=>b.v-a.v);
+  }
+  buildRankSub(){ if(!this.state.loaded) return ''; const L=this.lensCfg(); return 'by '+L.short.toLowerCase()+(L.kind==='time'?' \u00b7 '+this.state.year:''); }
+  buildRank(){
+    const h=this.h;
+    if(!this.state.loaded) return h('div',{style:{marginTop:'12px'}},[0,1,2,3,4].map(i=>h('div',{key:i,style:{marginBottom:'9px'}},this.skel('100%','13px'))));
+    const A=this.accent(); const rows=this.rankData(); const top=rows.slice(0,12); const max=top.length?top[0].v:1;
+    if(!top.length) return h('div',{style:{marginTop:'14px',font:'500 12px "IBM Plex Sans"',color:'#9aa7b2'}},'No countries with data in this scope.');
+    return h('div',{style:{marginTop:'11px',display:'flex',flexDirection:'column',gap:'1px'}}, top.map((r,i)=>{
+      const cmp=this.state.compare.indexOf(r.iso)>=0;
+      return h('div',{key:r.iso,className:'gpw-row',style:{display:'flex',alignItems:'center',gap:'9px',padding:'5px 6px',borderRadius:'7px',cursor:'pointer'},onClick:()=>this.selectCountry(r.iso)},
+        h('span',{style:{font:'600 10px "IBM Plex Mono"',color:'#aeb9c2',width:'15px',flex:'none',textAlign:'right'}}, i+1),
+        h('span',{style:{font:'600 12px "IBM Plex Sans"',color:'#1f3140',width:'92px',flex:'none',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}, r.name),
+        h('span',{style:{flex:1,height:'9px',background:'#eef2f5',borderRadius:'5px',overflow:'hidden'}}, h('span',{style:{display:'block',height:'100%',width:Math.max(2,(r.v/max*100))+'%',background:A,borderRadius:'5px'}})),
+        h('span',{style:{font:'600 10.5px "IBM Plex Mono"',color:'#6b7c89',width:'62px',flex:'none',textAlign:'right'}}, this.fmtActive(r.v)),
+        h('span',{className:'gpw-add',onClick:(e)=>{e.stopPropagation(); cmp?this.removeCompare(r.iso):this.addCompare(r.iso);},title:cmp?'Remove from compare':'Add to compare',style:{opacity:cmp?1:0,width:'18px',height:'18px',flex:'none',borderRadius:'5px',display:'flex',alignItems:'center',justifyContent:'center',background:cmp?A:'#eef2f5',color:cmp?'#fff':'#6b7c89',font:'600 13px "IBM Plex Sans"',lineHeight:1}}, cmp?'\u2713':'+'));
+    }));
+  }
+
+  /* ---------- trend ---------- */
+  buildTrendToggle(){
+    if(!this.state.loaded) return null;
+    const h=this.h, A=this.accent();
+    const b=(k,t)=>{ const on=this.state.trendMode===k; return h('button',{key:k,onClick:()=>this.setState({trendMode:k}),style:{background:on?'#0c1e2e':'#fff',border:'1px solid '+(on?'#0c1e2e':'#dde5ec'),color:on?'#fff':'#6b7c89',font:'600 10.5px "IBM Plex Sans"',padding:'4px 9px',cursor:'pointer',borderRadius:'6px'}},t); };
+    return h('div',{style:{display:'flex',gap:'4px'}}, b('prod','Production'), b('ocean','In ocean'));
+  }
+  buildTrend(){
+    const h=this.h;
+    if(!this.state.loaded) return h('div',{style:{marginTop:'10px'}},this.skel('100%','120px'));
+    const A=this.accent(); const ocean=this.state.trendMode==='ocean';
+    const s=ocean?this.oceanSeries:this.PROD; const n=s.length;
+    const W=300,H=118,pad=2; const max=Math.max.apply(null,s.map(p=>p[1]))||1;
+    let area='M0 '+(H-pad), line='';
+    s.forEach((p,i)=>{ const x=(i/(n-1)*W), y=(H-pad)-(p[1]/max)*(H-pad-8); area+='L'+x.toFixed(1)+' '+y.toFixed(1); line+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1); });
+    area+='L'+W+' '+(H-pad)+'Z';
+    const first=s[0],last=s[n-1];
+    const ratio = ocean? (last[1]/first[1]).toFixed(1) : Math.round(last[1]/first[1]);
+    return h('div',{style:{marginTop:'8px'}},
+      h('div',{style:{position:'relative'}},
+        h('svg',{viewBox:'0 0 '+W+' '+H,preserveAspectRatio:'none',style:{width:'100%',height:'120px',display:'block'}},
+          h('defs',null,h('linearGradient',{id:'tg'+(ocean?'o':'p'),x1:0,y1:0,x2:0,y2:1},h('stop',{offset:'0%',stopColor:A,stopOpacity:.28}),h('stop',{offset:'100%',stopColor:A,stopOpacity:.02}))),
+          h('path',{d:area,fill:'url(#tg'+(ocean?'o':'p')+')'}),
+          h('path',{d:line,fill:'none',stroke:A,strokeWidth:2,strokeLinejoin:'round'})),
+        h('div',{style:{position:'absolute',left:0,bottom:'2px',font:'600 9.5px "IBM Plex Mono"',color:'#9aa7b2'}}, first[0]),
+        h('div',{style:{position:'absolute',right:0,bottom:'2px',font:'600 9.5px "IBM Plex Mono"',color:'#9aa7b2'}}, last[0])),
+      h('div',{style:{display:'flex',alignItems:'baseline',gap:'7px',marginTop:'9px'}},
+        h('span',{style:{font:'500 23px "Newsreader"',color:'#0c1e2e',lineHeight:1}}, this.compact(last[1])),
+        h('span',{style:{font:'600 11px "IBM Plex Mono"',color:A}}, ocean?'t accumulated':'t / year')),
+      h('div',{style:{font:'500 11.5px/1.4 "IBM Plex Sans"',color:'#8b98a3',marginTop:'4px'}}, ocean? ('Plastic in the ocean has grown \u00d7'+ratio+' since 2000.') : ('Annual output is up \u00d7'+ratio+' since '+first[0]+' \u2014 a material explosion.')));
+  }
+
+  /* ---------- rivers ---------- */
+  buildRivers(){
+    const h=this.h;
+    if(!this.state.loaded) return h('div',{style:{marginTop:'12px'}},[0,1,2,3,4].map(i=>h('div',{key:i,style:{marginBottom:'9px'}},this.skel('100%','13px'))));
+    const A=this.accent(); const top=this.RIVERS.slice(0,10); const max=top[0].mid;
+    return h('div',{style:{marginTop:'11px',display:'flex',flexDirection:'column',gap:'1px'}}, top.map((r,i)=>h('div',{key:i,className:'gpw-row',style:{display:'flex',alignItems:'center',gap:'9px',padding:'5px 6px',borderRadius:'7px',cursor:'pointer'},onClick:()=>this.focusPoint(r.lon,r.lat,5.5),title:'Zoom to this outlet'},
+      h('span',{style:{font:'600 10px "IBM Plex Mono"',color:'#aeb9c2',width:'15px',flex:'none',textAlign:'right'}}, i+1),
+      h('span',{style:{width:'9px',height:'9px',borderRadius:'50%',background:'#1565c0',opacity:.66,flex:'none'}}),
+      h('span',{style:{font:'600 11px "IBM Plex Mono"',color:'#48586a',width:'94px',flex:'none'}}, r.lat.toFixed(1)+', '+r.lon.toFixed(1)),
+      h('span',{style:{flex:1,height:'9px',background:'#eef2f5',borderRadius:'5px',overflow:'hidden'}}, h('span',{style:{display:'block',height:'100%',width:Math.max(3,r.mid/max*100)+'%',background:'#1565c0',opacity:.72,borderRadius:'5px'}})),
+      h('span',{style:{font:'600 10.5px "IBM Plex Mono"',color:'#6b7c89',width:'56px',flex:'none',textAlign:'right'}}, this.fmtT(r.mid)))));
+  }
+
+  /* ---------- compare ---------- */
+  buildCompareCount(){ return this.state.compare.length?('\u00b7 '+this.state.compare.length):''; }
+  buildCompareActions(){
+    const h=this.h; if(!this.state.compare.length) return null; const A=this.accent();
+    return h('div',{style:{display:'flex',gap:'8px'}},
+      h('button',{className:'gpw-btn',onClick:()=>this.exportCSV('compare'),style:{background:'#fff',border:'1px solid #dde5ec',color:'#0c1e2e',font:'600 11.5px "IBM Plex Sans"',padding:'6px 11px',borderRadius:'7px',cursor:'pointer'}},'\u2913 Export CSV'),
+      h('button',{className:'gpw-btn',onClick:this.clearCompare,style:{background:'transparent',border:'1px solid #dde5ec',color:'#6b7c89',font:'600 11.5px "IBM Plex Sans"',padding:'6px 11px',borderRadius:'7px',cursor:'pointer'}},'Clear all'));
+  }
+  miniSpark(iso){
+    const h=this.h; const rec=this.TRADE.byIso[iso]; if(!rec) return h('span',{style:{font:'500 10px "IBM Plex Mono"',color:'#bcc6cf'}},'\u2014');
+    const pts=Object.keys(rec).map(y=>[+y,rec[y]]).sort((a,b)=>a[0]-b[0]); if(pts.length<2) return h('span',{style:{font:'500 10px "IBM Plex Mono"',color:'#bcc6cf'}},'\u2014');
+    const W=72,H=20,max=Math.max.apply(null,pts.map(p=>p[1]))||1,minY=pts[0][0],maxY=pts[pts.length-1][0],span=(maxY-minY)||1;
+    let d=''; pts.forEach((p,i)=>{ const x=(p[0]-minY)/span*W, y=H-2-(p[1]/max)*(H-4); d+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1); });
+    return h('svg',{viewBox:'0 0 '+W+' '+H,style:{width:W+'px',height:H+'px'}}, h('path',{d,fill:'none',stroke:this.accent(),strokeWidth:1.4}));
+  }
+  buildCompareBody(){
+    const h=this.h;
+    if(!this.state.loaded) return this.skel('100%','90px',{marginTop:'12px'});
+    const A=this.accent(); const isos=this.state.compare;
+    if(!isos.length) return h('div',{style:{marginTop:'12px',padding:'26px 18px',textAlign:'center',background:'#fafbfc',border:'1px dashed #d4dde4',borderRadius:'10px'}},
+      h('div',{style:{font:'500 16px "Newsreader"',color:'#48586a'}},'Build a side-by-side comparison'),
+      h('div',{style:{font:'500 12px/1.5 "IBM Plex Sans"',color:'#9aa7b2',marginTop:'5px',maxWidth:'440px',marginInline:'auto'}},'Add countries from the map, the Top-emitters list (hover \u2192 +), or search. Each one becomes a column here — then export the set as CSV.'));
+    const feats=isos.map(i=>this.byIso[i]).filter(Boolean);
+    const metrics=[
+      {k:'Mismanaged waste',f:p=>this.fmtSnap('mis',p.mis),rank:p=>this.rankOf(p.iso,'mis')},
+      {k:'Ocean-emission share',f:p=>this.fmtSnap('ocean',p.ocean),rank:p=>this.rankOf(p.iso,'ocean')},
+      {k:'Waste per person',f:p=>this.fmtSnap('pc',p.pc),rank:p=>this.rankOf(p.iso,'pc')}
+    ];
+    const colW='minmax(96px,1fr)';
+    const grid=(cells,head)=> h('div',{style:{display:'grid',gridTemplateColumns:'170px repeat('+feats.length+','+colW+')',gap:'1px',background:'#eef2f5'}},cells);
+    const headRow=[h('div',{key:'h0',style:{background:'#fff',padding:'10px 12px',font:'600 10.5px "IBM Plex Mono"',color:'#9aa7b2',textTransform:'uppercase',letterSpacing:'.5px'}},'metric')]
+      .concat(feats.map(f=>h('div',{key:'h'+f.properties.iso,style:{background:'#fff',padding:'10px 12px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'6px'}},
+        h('span',{style:{font:'600 13px "IBM Plex Sans"',color:'#0c1e2e',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}},f.properties.name),
+        h('span',{className:'gpw-chipx',onClick:()=>this.removeCompare(f.properties.iso),style:{cursor:'pointer',color:'#9aa7b2',fontSize:'14px',lineHeight:1}},'\u00d7'))));
+    const rows=[];
+    metrics.forEach((m,ri)=>{
+      rows.push(h('div',{key:'m'+ri,style:{background:'#fff',padding:'10px 12px',font:'600 12px "IBM Plex Sans"',color:'#48586a'}},m.k));
+      feats.forEach(f=>{ const p=f.properties; rows.push(h('div',{key:'m'+ri+f.properties.iso,style:{background:'#fff',padding:'10px 12px'}}, h('div',{style:{font:'600 13.5px "IBM Plex Mono"',color:'#0c1e2e'}},m.f(p)), h('div',{style:{font:'500 10px "IBM Plex Mono"',color:'#9aa7b2',marginTop:'1px'}},'rank '+(m.rank(p)||'\u2014')))); });
+    });
+    // exports sparkline row
+    rows.push(h('div',{key:'sp',style:{background:'#fff',padding:'10px 12px',font:'600 12px "IBM Plex Sans"',color:'#48586a'}},'Exports trend'));
+    feats.forEach(f=>rows.push(h('div',{key:'sp'+f.properties.iso,style:{background:'#fff',padding:'10px 12px'}}, this.miniSpark(f.properties.iso))));
+    return h('div',{style:{marginTop:'12px',border:'1px solid #eef2f5',borderRadius:'10px',overflow:'hidden'}}, grid(headRow.concat(rows)));
+  }
+  rankOf(iso,m){ const arr=this.DATA.features.filter(f=>f.properties[m]!=null).sort((a,b)=>b.properties[m]-a.properties[m]); const i=arr.findIndex(f=>f.properties.iso===iso); return i<0?null:(i+1)+' of '+arr.length; }
+
+  /* ---------- drawer ---------- */
+  buildDrawer(){
+    if(!this.state.selIso || !this.state.loaded) return null;
+    const f=this.byIso[this.state.selIso]; if(!f) return null;
+    const h=this.h, p=f.properties, A=this.accent(); const cmp=this.state.compare.indexOf(p.iso)>=0;
+    const stat=(label,val,sub,hot)=> h('div',{style:{padding:'11px 13px',border:'1px solid #e6ecf1',borderRadius:'10px',marginBottom:'9px',background:hot?'#fff7f1':'#fff'}},
+      h('div',{style:{font:'600 10px "IBM Plex Mono"',color:'#9aa7b2',textTransform:'uppercase',letterSpacing:'.5px'}},label),
+      h('div',{style:{font:'500 23px "Newsreader"',color:'#0c1e2e',margin:'2px 0',lineHeight:1.05}},val),
+      h('div',{style:{font:'500 11px "IBM Plex Mono"',color:'#8b98a3'}},sub));
+    const expRec=this.TRADE.byIso[p.iso];
+    return h('div',{onClick:(e)=>{ if(e.target===e.currentTarget) this.closeDrawer(); },style:{position:'fixed',inset:0,background:'rgba(8,20,32,.32)',zIndex:80,display:'flex',justifyContent:'flex-end'}},
+      h('div',{className:'gpw-drawer gpw-scroll',style:{width:'380px',maxWidth:'100%',height:'100%',background:'#fff',overflow:'auto',boxShadow:'-12px 0 40px rgba(8,20,32,.2)',animation:'gpwdrawer .22s ease'}},
+        h('div',{style:{position:'sticky',top:0,background:'linear-gradient(180deg,#11314a,#0c1e2e)',color:'#fff',padding:'16px 18px',display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:'10px'}},
+          h('div',null, h('div',{style:{font:'500 24px "Newsreader"',lineHeight:1.05}},p.name), h('div',{style:{font:'600 11px "IBM Plex Mono"',color:'#9db4c9',marginTop:'3px'}}, (p.continent||'')+' \u00b7 '+p.iso)),
+          h('button',{onClick:this.closeDrawer,style:{background:'rgba(255,255,255,.12)',border:'none',color:'#fff',width:'30px',height:'30px',borderRadius:'8px',cursor:'pointer',fontSize:'16px',flex:'none'}},'\u00d7')),
+        h('div',{style:{padding:'16px 18px'}},
+          stat('Mismanaged plastic waste', this.fmtSnap('mis',p.mis), 'rank '+(this.rankOf(p.iso,'mis')||'\u2014'), true),
+          stat('Share of ocean plastic emissions', this.fmtSnap('ocean',p.ocean), 'rank '+(this.rankOf(p.iso,'ocean')||'\u2014')),
+          stat('Plastic waste per capita', this.fmtSnap('pc',p.pc), 'rank '+(this.rankOf(p.iso,'pc')||'\u2014')),
+          expRec? h('div',{style:{padding:'11px 13px',border:'1px solid #e6ecf1',borderRadius:'10px',marginBottom:'9px'}},
+            h('div',{style:{font:'600 10px "IBM Plex Mono"',color:'#9aa7b2',textTransform:'uppercase',letterSpacing:'.5px',marginBottom:'6px'}},'Plastic-waste exports over time'),
+            this.miniSparkBig(p.iso)) : null,
+          h('div',{style:{display:'flex',gap:'8px',marginTop:'4px'}},
+            h('button',{className:'gpw-btn',onClick:()=>cmp?this.removeCompare(p.iso):this.addCompare(p.iso),style:{flex:1,background:cmp?'#fff':A,border:'1px solid '+(cmp?'#dde5ec':A),color:cmp?'#48586a':'#fff',font:'600 13px "IBM Plex Sans"',padding:'10px',borderRadius:'9px',cursor:'pointer'}}, cmp?'\u2713 In compare \u2014 remove':'+ Add to compare'),
+            h('button',{className:'gpw-btn',onClick:()=>this.focusCountry(p.iso),style:{background:'#fff',border:'1px solid #dde5ec',color:'#0c1e2e',font:'600 13px "IBM Plex Sans"',padding:'10px 13px',borderRadius:'9px',cursor:'pointer'}},'\u2922 Zoom')),
+          h('div',{style:{font:'500 11px/1.5 "IBM Plex Mono"',color:'#9aa7b2',marginTop:'12px'}},'Estimates are modeled single-year snapshots \u2014 relative, not exact.'))));
+  }
+  miniSparkBig(iso){
+    const h=this.h; const rec=this.TRADE.byIso[iso]; const pts=Object.keys(rec).map(y=>[+y,rec[y]]).sort((a,b)=>a[0]-b[0]); if(pts.length<2) return h('div',{style:{font:'500 12px "IBM Plex Sans"',color:'#9aa7b2'}},'Not enough data.');
+    const A=this.accent(); const W=320,H=64,max=Math.max.apply(null,pts.map(p=>p[1]))||1,minY=pts[0][0],maxY=pts[pts.length-1][0],span=(maxY-minY)||1;
+    let area='M0 '+H, line='';
+    pts.forEach((p,i)=>{ const x=(p[0]-minY)/span*W, y=H-3-(p[1]/max)*(H-8); area+='L'+x.toFixed(1)+' '+y.toFixed(1); line+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1); });
+    area+='L'+W+' '+H+'Z';
+    return h('div',null, h('svg',{viewBox:'0 0 '+W+' '+H,preserveAspectRatio:'none',style:{width:'100%',height:'64px',display:'block'}}, h('path',{d:area,fill:A,fillOpacity:.12}), h('path',{d:line,fill:'none',stroke:A,strokeWidth:1.8})),
+      h('div',{style:{display:'flex',justifyContent:'space-between',font:'600 9.5px "IBM Plex Mono"',color:'#9aa7b2',marginTop:'2px'}}, h('span',null,minY), h('span',null, this.fmtT(pts[pts.length-1][1])+' \u00b7 '+maxY)));
+  }
+
+  /* ---------- about ---------- */
+  buildAbout(){
+    if(!this.state.aboutOpen) return null;
+    const h=this.h, m=this.META, A=this.accent();
+    const caveats=['Modeled estimates that disagree across studies \u2014 read them as relative hotspots, not exact tonnages.','The map shows where plastic is emitted, not where it washes up. Manufactured-in \u2260 consumed-in \u2260 emitted-from.','Country metrics are single-year snapshots (mismanaged 2019, per-capita 2010, ocean-share 2019).'];
+    const sources=(m && m.sources)||[];
+    return h('div',{onClick:(e)=>{ if(e.target===e.currentTarget) this.setState({aboutOpen:false}); },style:{position:'fixed',inset:0,background:'rgba(8,20,32,.5)',zIndex:90,display:'flex',alignItems:'center',justifyContent:'center',padding:'24px'}},
+      h('div',{className:'gpw-scroll',style:{background:'#fff',borderRadius:'14px',maxWidth:'660px',width:'100%',maxHeight:'86vh',overflow:'auto',boxShadow:'0 30px 80px rgba(8,20,32,.45)'}},
+        h('div',{style:{position:'sticky',top:0,background:'linear-gradient(180deg,#11314a,#0c1e2e)',color:'#fff',padding:'17px 22px',display:'flex',alignItems:'center',justifyContent:'space-between'}},
+          h('h2',{style:{margin:0,font:'500 21px "Newsreader"'}},'About this data'),
+          h('button',{onClick:()=>this.setState({aboutOpen:false}),style:{background:'rgba(255,255,255,.12)',border:'none',color:'#fff',width:'30px',height:'30px',borderRadius:'8px',cursor:'pointer',fontSize:'16px'}},'\u00d7')),
+        h('div',{style:{padding:'20px 22px'}},
+          h('p',{style:{font:'400 14px/1.6 "IBM Plex Sans"',color:'#33485a',marginTop:0}},'An open map of where ocean plastic ',h('b',null,'originates'),' \u2014 country emission estimates, the river outlets carrying the most plastic to sea, and trade flows over time. Switch the lens, filter by region, click a country, and build a side-by-side comparison.'),
+          h('h3',{style:{font:'600 11px "IBM Plex Mono"',letterSpacing:'.5px',textTransform:'uppercase',color:'#0c1e2e',margin:'18px 0 8px'}},'Lenses'),
+          h('ul',{style:{margin:0,paddingLeft:'18px'}}, this.LORDER.map(k=>{ const L=this.LENSES[k]; return h('li',{key:k,style:{font:'400 13px/1.6 "IBM Plex Sans"',color:'#33485a'}},h('b',null,L.label),' \u2014 '+L.unit+'. '+L.blurb); })),
+          h('h3',{style:{font:'600 11px "IBM Plex Mono"',letterSpacing:'.5px',textTransform:'uppercase',color:'#0c1e2e',margin:'18px 0 8px'}},'Sources & licences'),
+          sources.map((s,i)=>h('div',{key:i,style:{display:'flex',justifyContent:'space-between',gap:'12px',border:'1px solid #e6ecf1',borderRadius:'9px',padding:'10px 12px',marginBottom:'7px'}},
+            h('div',null,h('a',{href:s.url,target:'_blank',rel:'noopener',style:{font:'600 13px "IBM Plex Sans"',color:A,textDecoration:'none'}},s.name),h('div',{style:{font:'500 11px "IBM Plex Mono"',color:'#9aa7b2'}},s.role)),
+            h('span',{style:{flex:'none',background:'#eaf3f4',color:'#0c4f57',borderRadius:'20px',padding:'2px 10px',font:'600 11px "IBM Plex Sans"',height:'fit-content'}},s.license))),
+          h('div',{style:{display:'flex',justifyContent:'space-between',gap:'12px',border:'1px solid #e6ecf1',borderRadius:'9px',padding:'10px 12px',marginBottom:'7px'}}, h('div',null,h('span',{style:{font:'600 13px "IBM Plex Sans"',color:'#33485a'}},'OECD Global Plastics Outlook \u00b7 UN Comtrade'),h('div',{style:{font:'500 11px "IBM Plex Mono"',color:'#9aa7b2'}},'time layers')),h('span',{style:{flex:'none',background:'#eaf3f4',color:'#0c4f57',borderRadius:'20px',padding:'2px 10px',font:'600 11px "IBM Plex Sans"',height:'fit-content'}},'CC-BY')),
+          h('h3',{style:{font:'600 11px "IBM Plex Mono"',letterSpacing:'.5px',textTransform:'uppercase',color:'#0c1e2e',margin:'18px 0 8px'}},'How to read it'),
+          caveats.map((c,i)=>h('div',{key:i,style:{background:'#fff7f1',borderLeft:'3px solid #d4521b',borderRadius:'4px',padding:'9px 13px',font:'400 12.5px/1.5 "IBM Plex Sans"',color:'#5a4636',marginBottom:'6px'}},c)),
+          h('p',{style:{font:'500 11px "IBM Plex Mono"',color:'#9aa7b2',marginTop:'14px'}},'Generated '+(m&&m.generated)+' \u00b7 open data, CC-BY.'))));
+  }
+
+  buildToast(){ if(!this.state.toast) return null; return this.h('div',{style:{position:'fixed',bottom:'22px',left:'50%',transform:'translateX(-50%)',background:'#0c1e2e',color:'#fff',padding:'10px 18px',borderRadius:'10px',font:'600 12.5px "IBM Plex Sans"',boxShadow:'0 10px 30px rgba(8,20,32,.32)',zIndex:100,animation:'gpwfade .15s'}}, this.state.toast); }
+
+  /* ================= RENDER VALS ================= */
+  renderVals(){
+    return {
+      search: this.buildSearch(),
+      onAbout: ()=>this.setState({aboutOpen:true}),
+      exportControl: this.buildExport(),
+      kpis: this.buildKpis(),
+      lensList: this.buildLensList(),
+      regionList: this.buildRegionList(),
+      regionReset: this.buildRegionReset(),
+      riverToggle: this.buildRiverToggle(),
+      compareBasket: this.buildCompareBasket(),
+      compareClear: this.buildCompareClear(),
+      mapPanel: this.buildMap(),
+      rankSub: this.buildRankSub(),
+      rankRows: this.buildRank(),
+      trendToggle: this.buildTrendToggle(),
+      trendBody: this.buildTrend(),
+      riverRows: this.buildRivers(),
+      compareCount: this.buildCompareCount(),
+      compareActions: this.buildCompareActions(),
+      compareBody: this.buildCompareBody(),
+      drawer: this.buildDrawer(),
+      aboutModal: this.buildAbout(),
+      toast: this.buildToast(),
+      generated: (this.META && this.META.generated) || '\u2014'
+    };
+  }
+}
+</script>
+</body>
+</html>
