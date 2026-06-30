@@ -50,3 +50,10 @@ input.gpw-search:focus{ border-color:var(--cyan); outline:none }
   .gpw-top-sub{ display:none !important }
   .gpw-main{ padding:11px !important }
 }
+
+/* Fund-a-Cleanup donation card (Option 1c) */
+.fund-cta-1:hover{ background:#0a565d !important; border-color:#0a565d !important }
+.fund-cta-2:hover{ background:rgba(15,107,115,.07) !important }
+.amtchip:hover{ border-color:rgba(15,107,115,.5) !important }
+.amtchip:focus-visible,.fund-cta-1:focus-visible,.fund-cta-2:focus-visible{ outline:2px solid #0f6b73; outline-offset:2px }
+@media(prefers-reduced-motion:reduce){ .bar-fill{ transition:none !important } }
