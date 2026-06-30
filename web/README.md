@@ -91,6 +91,13 @@ All data is **CC-BY**. Modeled estimates; treat as **ordinal / relative, not exa
 |---|---|---|
 | `lon`, `lat` | outlet coordinates | degrees |
 | `mid`, `low`, `high` | annual plastic input (midpoint / low / high) | tonnes/yr |
+| `country` | country the outlet sits in (computed point-in-country; nearest coast if not contained) | — |
+| `near` | `true` when snapped to the nearest country rather than strictly contained | — |
+| `name` | curated name for documented **major** outlets only (~37 of 150); absent otherwise | — |
+
+> River **names** are a curated overlay: the Lebreton source has no names, so the globally
+> documented major outlets (Yangtze, Ganges–Brahmaputra–Meghna, Pearl, Amazon, Mekong,
+> Irrawaddy, …) are identified by mouth coordinates; the rest are labeled by `country` only.
 
 **`data/production.json`** — the global plastic-production timeline:
 `{ label, unit, source, years:[1950,2019], series:[[year, tonnes], …] }`.

@@ -203,7 +203,7 @@
       return '<path class="gpw-co" data-act="select" data-arg="' + p.iso + '" data-iso="' + p.iso + '" d="' + f._d + '" fill="' + color(v, th) + '" stroke="' + (sel ? '#0c1e2e' : (cmp ? A : '#ffffff')) + '" stroke-width="' + (sel ? 1.7 : (cmp ? 1.4 : 0.4)) + '" opacity="' + (sc ? 1 : 0.2) + '" data-tip="' + esc(tipHtml(p, v)) + '"></path>';
     }).join('');
     var rivers = '';
-    if (state.rivers) { var max = RIVERS[0].mid; rivers = '<g>' + RIVERS.map(function (r) { var pt = proj(r.lon, r.lat); var tip = '<b>River outlet</b><br>' + Math.round(r.mid).toLocaleString() + ' t/yr<br>' + r.lat.toFixed(2) + ', ' + r.lon.toFixed(2); return '<circle class="gpw-river" cx="' + pt[0].toFixed(1) + '" cy="' + pt[1].toFixed(1) + '" r="' + (1.2 + Math.sqrt(r.mid / max) * 7).toFixed(2) + '" fill="#1565c0" fill-opacity=".6" stroke="#fff" stroke-width=".4" data-tip="' + esc(tip) + '"></circle>'; }).join('') + '</g>'; }
+    if (state.rivers) { var max = RIVERS[0].mid; rivers = '<g>' + RIVERS.map(function (r) { var pt = proj(r.lon, r.lat); var loc = (r.country ? esc(r.country) + (r.near ? ' (near)' : '') + ' · ' : ''); var tip = '<b>' + (r.name ? esc(r.name) : 'River outlet') + '</b><br>' + loc + Math.round(r.mid).toLocaleString() + ' t/yr<br>' + r.lat.toFixed(2) + ', ' + r.lon.toFixed(2); return '<circle class="gpw-river" cx="' + pt[0].toFixed(1) + '" cy="' + pt[1].toFixed(1) + '" r="' + (1.2 + Math.sqrt(r.mid / max) * 7).toFixed(2) + '" fill="#1565c0" fill-opacity=".6" stroke="#fff" stroke-width=".4" data-tip="' + esc(tip) + '"></circle>'; }).join('') + '</g>'; }
     return '<rect x="0" y="0" width="720" height="360" fill="' + SEA + '"></rect><g>' + paths + '</g>' + rivers;
   }
   function buildMap() {
@@ -264,7 +264,7 @@
       return '<div class="gpw-row" data-act="focus-river" data-arg="' + i + '" title="Zoom to this outlet" style="display:flex;align-items:center;gap:9px;padding:5px 6px;border-radius:7px;cursor:pointer">'
         + '<span style="font:600 10px \'IBM Plex Mono\';color:#aeb9c2;width:15px;flex:none;text-align:right">' + (i + 1) + '</span>'
         + '<span style="width:9px;height:9px;border-radius:50%;background:#1565c0;opacity:.66;flex:none"></span>'
-        + '<span style="font:600 11px \'IBM Plex Mono\';color:#48586a;width:94px;flex:none">' + r.lat.toFixed(1) + ', ' + r.lon.toFixed(1) + '</span>'
+        + '<span title="' + esc((r.name ? r.name + ' · ' : '') + r.lat.toFixed(2) + ', ' + r.lon.toFixed(2)) + '" style="font:600 11px \'IBM Plex Sans\';color:#48586a;width:104px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(r.name || r.country || (r.lat.toFixed(1) + ', ' + r.lon.toFixed(1))) + '</span>'
         + '<span style="flex:1;height:9px;background:#eef2f5;border-radius:5px;overflow:hidden"><span style="display:block;height:100%;width:' + Math.max(3, r.mid / max * 100) + '%;background:#1565c0;opacity:.72;border-radius:5px"></span></span>'
         + '<span style="font:600 10.5px \'IBM Plex Mono\';color:#6b7c89;width:56px;flex:none;text-align:right">' + fmtT(r.mid) + '</span></div>';
     }).join('') + '</div>';

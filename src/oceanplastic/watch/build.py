@@ -212,6 +212,77 @@ def _load_rivers(cache: Path, top: int, offline: bool) -> List[dict]:
     return rows[:top]
 
 
+# Curated identification of the major plastic-emitting river outlets, by mouth bounding box
+# (lat_min, lat_max, lon_min, lon_max, name). Sourced from the documented top-emitter rivers
+# in Lebreton et al. 2017 / Meijer et al. 2021 + river-mouth geography. Applied only to outlets
+# that fall inside a box; everything else is labeled by country only. Specific boxes first.
+RIVER_NAMES = [
+    (30.5, 32.2, 119.5, 122.2, "Yangtze (Changjiang)"),
+    (29.9, 30.9, 120.1, 121.2, "Qiantang"),
+    (21.8, 23.6, 112.4, 114.2, "Pearl (Zhujiang)"),
+    (21.5, 24.5, 88.5, 91.5, "Ganges–Brahmaputra–Meghna"),
+    (-2.0, 1.6, -52.2, -49.0, "Amazon"),
+    (8.4, 10.6, 105.4, 107.1, "Mekong"),
+    (19.7, 21.3, 105.9, 107.3, "Red River (Hồng)"),
+    (15.0, 17.6, 93.9, 96.6, "Irrawaddy (Ayeyarwady)"),
+    (14.2, 15.1, 120.4, 121.3, "Pasig / Manila Bay"),
+    (4.35, 5.2, 7.85, 8.8, "Cross River"),
+    (3.9, 5.2, 5.4, 7.85, "Niger Delta"),
+    (10.6, 11.5, -75.3, -74.3, "Magdalena"),
+    (24.8, 25.5, 121.1, 121.8, "Tamsui (Danshui)"),
+    (-7.95, -7.3, 112.4, 113.3, "Brantas"),
+    (-7.25, -6.6, 112.1, 112.9, "Bengawan Solo"),
+]
+
+
+def _point_in_ring(lon: float, lat: float, ring: list) -> bool:
+    inside = False
+    n = len(ring)
+    j = n - 1
+    for i in range(n):
+        xi, yi = ring[i][0], ring[i][1]
+        xj, yj = ring[j][0], ring[j][1]
+        if (yi > lat) != (yj > lat) and lon < (xj - xi) * (lat - yi) / ((yj - yi) or 1e-12) + xi:
+            inside = not inside
+        j = i
+    return inside
+
+
+def _build_country_index(features_src):
+    """Precompute [(name, bbox, rings)] for point-in-country tests."""
+    idx = []
+    for f in features_src:
+        name = f["properties"].get("NAME") or f["properties"].get("ADMIN")
+        g = f["geometry"]
+        polys = [g["coordinates"]] if g["type"] == "Polygon" else g["coordinates"]
+        rings = [r for poly in polys for r in poly]
+        xs = [p[0] for r in rings for p in r]
+        ys = [p[1] for r in rings for p in r]
+        idx.append((name, (min(xs), max(xs), min(ys), max(ys)), rings))
+    return idx
+
+
+def _country_of(lon: float, lat: float, idx) -> tuple:
+    """Return (country_name, contained_bool); nearest-bbox-centre fallback if not contained."""
+    for name, (mnx, mxx, mny, mxy), rings in idx:
+        if mnx - 0.6 <= lon <= mxx + 0.6 and mny - 0.6 <= lat <= mxy + 0.6:
+            if any(_point_in_ring(lon, lat, r) for r in rings):
+                return name, True
+    best, bd = None, 1e18
+    for name, (mnx, mxx, mny, mxy), _ in idx:
+        d = ((mnx + mxx) / 2 - lon) ** 2 + ((mny + mxy) / 2 - lat) ** 2
+        if d < bd:
+            bd, best = d, name
+    return best, False
+
+
+def _river_name(lon: float, lat: float):
+    for la0, la1, lo0, lo1, nm in RIVER_NAMES:
+        if la0 <= lat <= la1 and lo0 <= lon <= lo1:
+            return nm
+    return None
+
+
 def build_dataset(out_dir: str | Path, cache: str | Path = ".cache", top_rivers: int = 150,
                   offline: bool = False, generated_date: Optional[str] = None) -> BuildResult:
     out_dir = Path(out_dir)
@@ -222,6 +293,19 @@ def build_dataset(out_dir: str | Path, cache: str | Path = ".cache", top_rivers:
     features_src = _load_geometry(cache, offline)
     rivers = _load_rivers(cache, top_rivers, offline)
     production = _fetch_series("global-plastics-production", cache, offline)
+
+    # Annotate each river outlet with its country (computed) and, for documented major
+    # outlets, a curated river name. `near: true` marks coastal/offshore points snapped to
+    # the nearest country rather than strictly contained.
+    _cidx = _build_country_index(features_src)
+    for r in rivers:
+        cname, contained = _country_of(r["lon"], r["lat"], _cidx)
+        r["country"] = cname
+        if not contained:
+            r["near"] = True
+        nm = _river_name(r["lon"], r["lat"])
+        if nm:
+            r["name"] = nm
 
     feats = []
     matched = 0
@@ -291,9 +375,9 @@ def build_dataset(out_dir: str | Path, cache: str | Path = ".cache", top_rivers:
             w.writerow([pr["iso"], pr["name"], pr["continent"], pr["mis"], pr["ocean"], pr["pc"]])
     with open(out_dir / "rivers.csv", "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
-        w.writerow(["lon", "lat", "plastic_input_mid_tonnes", "low", "high"])
+        w.writerow(["lon", "lat", "plastic_input_mid_tonnes", "low", "high", "river_name", "country"])
         for r in rivers:
-            w.writerow([r["lon"], r["lat"], r["mid"], r["low"], r["high"]])
+            w.writerow([r["lon"], r["lat"], r["mid"], r["low"], r["high"], r.get("name", ""), r.get("country", "")])
 
     meta = {
         "generated": generated_date or _dt.date.today().isoformat(),
