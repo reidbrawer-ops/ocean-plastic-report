@@ -34,6 +34,20 @@ python -m http.server 8000
 # open http://localhost:8000
 ```
 
+## Single-file build (editable, no server)
+
+The split files (`index.html` + `styles.css` + `app.js` + `data/*`) are the **editable
+design** — edit those. To get one self-contained file that renders anywhere with no server
+(double-click from disk, email, or hand to a design tool), bundle them:
+
+```bash
+oceanplastic bundle          # -> web/gpw-standalone.html (CSS + JS + data inlined)
+```
+
+It also regenerates automatically at the end of `oceanplastic build-data`. A tiny fetch-shim
+serves the embedded data, so `app.js` is unchanged. The bundle is a generated artifact
+(git-ignored) — regenerate it after editing the sources.
+
 ## Rebuild the data
 
 The data files in `web/data/` are generated from real sources by the project's CLI:

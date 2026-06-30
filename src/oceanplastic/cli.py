@@ -115,6 +115,24 @@ def cmd_build_data(args: argparse.Namespace) -> int:
     )
     print(f"✓ Wrote {res.out_dir}/ — {res.n_countries} countries "
           f"({res.n_matched} with data), {res.n_rivers} river hotspots", file=sys.stderr)
+    # Keep the self-contained bundle in sync with the freshly-built data.
+    if not args.no_bundle:
+        from .watch.bundle import build_standalone
+        web_dir = Path(args.out).parent
+        try:
+            out = build_standalone(web_dir=web_dir)
+            print(f"✓ Bundled {out} ({out.stat().st_size // 1024} KB, self-contained)", file=sys.stderr)
+        except FileNotFoundError as exc:
+            print(f"  (skipped bundle: {exc})", file=sys.stderr)
+    return 0
+
+
+def cmd_bundle(args: argparse.Namespace) -> int:
+    from .watch.bundle import build_standalone
+
+    out = build_standalone(web_dir=args.web, out=args.out)
+    print(f"✓ Wrote {out} ({out.stat().st_size // 1024} KB) — open it directly, no server needed.",
+          file=sys.stderr)
     return 0
 
 
@@ -128,7 +146,13 @@ def main(argv: list[str] | None = None) -> int:
     bd.add_argument("--top-rivers", type=int, default=150, help="How many top river hotspots to include")
     bd.add_argument("--offline", action="store_true", help="Use cached sources only")
     bd.add_argument("--date", default=None, help="Override the generated date (YYYY-MM-DD)")
+    bd.add_argument("--no-bundle", action="store_true", help="Skip refreshing the self-contained HTML bundle")
     bd.set_defaults(func=cmd_build_data)
+
+    bn = sub.add_parser("bundle", help="Bundle the web app into one self-contained gpw-standalone.html.")
+    bn.add_argument("--web", default="web", help="The web/ directory to bundle")
+    bn.add_argument("--out", default=None, help="Output HTML path (default web/gpw-standalone.html)")
+    bn.set_defaults(func=cmd_bundle)
 
     rep = sub.add_parser("report", help="Generate a source-attribution & cost-recovery report.")
     rep.add_argument("--pilot", required=True, help="Path to a pilot YAML (e.g. config/pilot.saint-lucia.yaml)")

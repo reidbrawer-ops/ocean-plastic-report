@@ -6,6 +6,8 @@ __pycache__/
 *.pyc
 *.egg-info/
 .pytest_cache/
+# Generated single-file bundle (regenerate with `oceanplastic bundle`)
+web/gpw-standalone.html
 # Generated reports are regenerable; keep the committed Saint Lucia samples only.
 output/*
 !output/.gitkeep
