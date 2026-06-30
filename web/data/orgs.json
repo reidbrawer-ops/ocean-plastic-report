@@ -1,82 +1,93 @@
 {
-  "note": "Curated, adversarially-vetted Philippine cleanup organizations for the Fund-a-Cleanup pilot. The tool LINKS to each org's own/official donation page and never holds funds. status 'verified' = confirmed real, active, on-theme org with a working official/platform donation path (NOT a financial audit). status 'pending' = real & on-theme but donation rail unconfirmed/broken — shown without a donate link until human diligence clears it.",
+  "note": "Curated, adversarially-vetted Philippine cleanup organizations for the Fund-a-Cleanup pilot. The tool LINKS to each org's own/official donation page and never holds funds. status 'verified' = confirmed real, active, on-theme org with a working official/platform donation path (NOT a financial audit). 'scope' records whether the donation page funds a SPECIFIC project or the whole ORG — verified 2026-06-30: only Nature Kids of Siargao has a true project-specific page; the rest only offer general org donation pages, so 'funds' states exactly what each donation supports and 'earmark' flags broad funds.",
   "vetted": "2026-06-30 (web vetting; financials NOT audited — see disclosures)",
   "orgs": [
     {
-      "id": "mcp", "name": "Marine Conservation Philippines", "status": "verified",
+      "id": "mcp", "name": "Marine Conservation Philippines", "status": "verified", "scope": "org",
       "focus": "Daily ocean-plastic & beach cleanups, reef and mangrove restoration, Bantay Dagat patrols",
       "location": "Zamboanguita, Negros Oriental",
       "official_url": "https://marineconservationphilippines.org/",
       "donate_url": "https://marineconservationphilippines.org/donate/", "donate_label": "Donate",
+      "funds": "MCP's general fund — pays the full-time daily beach-cleanup team (≈6M plastic pieces/yr) plus equipment, reef work and research.",
       "evidence": "PH SEC reg. #CN201506332 · own-domain donation page (PayPal/Wise/bank) with published Expenditures · independent 2025–26 cleanup activity."
     },
     {
-      "id": "pepsea", "name": "People and the Sea", "status": "verified",
+      "id": "pepsea", "name": "People and the Sea", "status": "verified", "scope": "org",
       "focus": "Island-community beach cleanups & solid-waste management (10–15 t/mo), sustainable fishing, marine research",
       "location": "Malapascua Island & Carnaza, Cebu",
       "official_url": "https://www.peopleandthesea.org/",
       "donate_url": "https://www.helloasso.com/associations/people-and-the-sea/formulaires/5", "donate_label": "Donate",
+      "funds": "People and the Sea's general fund (“Donate for 2026”) — beach cleanups, waste management and marine research on Malapascua.",
       "evidence": "Founded 2015 · 2024 Annual Report (89% of budget to PH programs) · donations via HelloAsso (zero-fee nonprofit platform)."
     },
     {
-      "id": "siargao", "name": "Nature Kids of Siargao", "status": "verified",
+      "id": "siargao", "name": "Nature Kids of Siargao", "status": "verified", "scope": "project",
       "focus": "Community recycling/upcycling studio diverting ~1,000 kg/mo of plastic from jungle and ocean",
       "location": "Burgos, Siargao Island (Surigao del Norte)",
       "official_url": "https://www.globalgiving.org/projects/siargao-recycling-art-studio/",
       "donate_url": "https://www.globalgiving.org/projects/siargao-recycling-art-studio/", "donate_label": "Donate via GlobalGiving",
+      "funds": "The specific Siargao Recycling Art Studio project — up-cycling ~1,000 kg of plastic/month into products. Project-scoped on GlobalGiving.",
       "evidence": "Hosted on GlobalGiving (independent KYC/due-diligence, 'Vetted since 2024') · corroborated by Epson–WWF 'Project UPcycle' (2024)."
     },
     {
-      "id": "abscbn", "name": "ABS-CBN Lingkod Kapamilya — Kapit Bisig para sa Ilog Pasig", "status": "verified",
+      "id": "abscbn", "name": "ABS-CBN Lingkod Kapamilya — Kapit Bisig para sa Ilog Pasig", "status": "verified", "scope": "org",
       "focus": "Pasig River & estero rehabilitation and cleanups draining to Manila Bay",
       "location": "Metro Manila",
       "official_url": "https://www.abs-cbnfoundation.org/",
       "donate_url": "https://www.globalgiving.org/donate/89482/abs-cbn-lingkod-kapamilya-foundation-inc/", "donate_label": "Donate via GlobalGiving",
-      "evidence": "PCNC-certified 2024–2029 · 2024 Impact Report · GlobalGiving-vetted. Earmark to Bantay Kalikasan / KBPIP so funds reach cleanup, not general welfare."
+      "funds": "The whole ABS-CBN Lingkod Kapamilya Foundation — which also covers child welfare and disaster relief, NOT only the river cleanup.",
+      "earmark": "No online way to restrict this to the cleanup — contact the foundation to earmark Bantay Kalikasan / Kapit Bisig para sa Ilog Pasig.",
+      "evidence": "PCNC-certified 2024–2029 · 2024 Impact Report · GlobalGiving-vetted (no project-specific Pasig page exists)."
     },
     {
-      "id": "sps", "name": "Save Philippine Seas", "status": "verified",
+      "id": "sps", "name": "Save Philippine Seas", "status": "verified", "scope": "org",
       "focus": "Marine-litter prevention & management, coastal cleanups, education (national)",
       "location": "Metro Manila (national reach)",
       "official_url": "https://www.savephilippineseas.org/",
       "donate_url": "https://www.savephilippineseas.org/donate", "donate_label": "Donate",
+      "funds": "Save Philippine Seas' general fund — marine-litter management, coastal cleanups and ocean education across the country.",
       "evidence": "SEC-registered 2013 (Philippine Seatizens, Inc.) · founder Anna Oposa (Ashoka Fellow) · active 2024–25 programming."
     },
     {
-      "id": "bantoxics", "name": "BAN Toxics", "status": "verified",
+      "id": "bantoxics", "name": "BAN Toxics", "status": "verified", "scope": "org",
       "focus": "Anti-single-use-plastic & Zero-Waste campaigns, policy advocacy",
       "location": "Quezon City (national)",
       "official_url": "https://bantoxics.org/",
-      "donate_url": "https://bantoxics.org/donate", "donate_label": "Donate",
-      "evidence": "Established ~2006 · GEF-funded projects · own-domain donation page (PayPal + GCash). Advocacy/prevention, not field cleanup."
+      "donate_url": "https://bantoxics.org/donate/", "donate_label": "Donate",
+      "funds": "BAN Toxics' general fund — anti-plastic / zero-waste advocacy and chemicals-and-waste work. Advocacy/prevention, not field cleanup.",
+      "evidence": "Established ~2006 · GEF-funded projects · own-domain donation page (PayPal + GCash)."
     },
     {
-      "id": "greenpeace", "name": "Greenpeace Philippines", "status": "verified",
+      "id": "greenpeace", "name": "Greenpeace Philippines", "status": "verified", "scope": "org",
       "focus": "Plastic-pollution campaigning, Manila Bay brand audits & cleanups, refill hubs ('Kuha sa Tingi')",
       "location": "Metro Manila (national)",
       "official_url": "https://www.greenpeace.org/philippines/",
       "donate_url": "https://give.seasia.greenpeace.org/philippines/", "donate_label": "Donate",
-      "evidence": "Live Stripe/Xendit PHP donation form on a greenpeace.org subdomain · refuses government & corporate money. Systemic/advocacy, not site-specific cleanup."
+      "funds": "Greenpeace PH's general campaign fund — plastics, oceans and climate (no plastic-only page exists). Systemic/advocacy, not site cleanup.",
+      "evidence": "Live Stripe/Xendit PHP donation form on a greenpeace.org subdomain · refuses government & corporate money."
     },
     {
-      "id": "cora", "name": "CORA (Communities Organized for Resource Allocation)", "status": "pending",
+      "id": "cora", "name": "CORA (Communities Organized for Resource Allocation)", "status": "pending", "scope": "org",
       "focus": "Coastal cleanups, mangrove restoration, USAID Clean Cities Blue Ocean",
       "location": "Parañaque / Las Piñas; Leyte; Cebu",
       "official_url": "https://www.wearecora.org/", "donate_url": "", "donate_label": "",
+      "funds": "",
       "evidence": "Real, active, on-theme — but the live donation checkout (JS widget) and SEC registration are unconfirmed. In the diligence queue."
     },
     {
-      "id": "seamovement", "name": "S.E.A. Movement (Siargao)", "status": "pending",
+      "id": "seamovement", "name": "S.E.A. Movement (Siargao)", "status": "pending", "scope": "org",
       "focus": "Island beach cleanups, Plastic X-Change, upcycling",
       "location": "General Luna, Siargao Island",
       "official_url": "https://www.seamovementph.org/", "donate_url": "", "donate_label": "",
+      "funds": "",
       "evidence": "Active org, but its on-site donate page is dead (404); a HelixPay store exists and must be confirmed as org-owned before listing."
     },
     {
-      "id": "plaf", "name": "The Plastic Flamingo (The Plaf)", "status": "pending",
+      "id": "plaf", "name": "The Plastic Flamingo (The Plaf)", "status": "pending", "scope": "org",
       "focus": "Collects hard-to-recycle plastic (300+ points), recycles into eco-boards & school chairs",
       "location": "Muntinlupa, Metro Manila",
       "official_url": "https://www.theplaf.com/", "donate_url": "", "donate_label": "",
+      "funds": "",
       "evidence": "Social enterprise (not a charity) — its tiers are recurring subscriptions, not tax-deductible donations. Needs clear 'support a social enterprise' framing before listing."
     }
   ]

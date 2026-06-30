@@ -16,16 +16,26 @@
   function chip(label, lvl) {
     return '<span style="display:inline-flex;gap:5px;align-items:baseline;background:#f1f5f8;border-radius:6px;padding:3px 8px;font:600 10.5px \'IBM Plex Mono\';color:#48586a">' + label + ' <b style="color:#0c1e2e">' + LV[lvl] + '</b></span>';
   }
+  function scopeTag(scope) {
+    return scope === 'project'
+      ? '<span style="background:#e7f4ed;color:#1b7f4b;border-radius:6px;padding:2px 8px;font:600 9.5px \'IBM Plex Mono\';text-transform:uppercase;letter-spacing:.3px">Funds this project</span>'
+      : '<span style="background:#f1f5f8;color:#56657a;border-radius:6px;padding:2px 8px;font:600 9.5px \'IBM Plex Mono\';text-transform:uppercase;letter-spacing:.3px">General org fund</span>';
+  }
   function orgCard(org) {
     if (!org) return '';
-    var action = (org.status === 'verified' && org.donate_url)
+    var verified = org.status === 'verified' && org.donate_url;
+    var action = verified
       ? '<a class="gpw-btn" href="' + esc(org.donate_url) + '" target="_blank" rel="noopener" style="flex:none;background:' + A + ';color:#fff;border:1px solid ' + A + ';padding:9px 14px;border-radius:8px;font:600 12.5px \'IBM Plex Sans\';text-decoration:none;white-space:nowrap">' + esc(org.donate_label || 'Donate') + ' ↗</a>'
       : '<span style="flex:none;background:#fafbfc;color:#9aa7b2;border:1px dashed #d4dde4;padding:9px 12px;border-radius:8px;font:600 12px \'IBM Plex Sans\'">Verification pending</span>';
-    return '<div style="display:flex;gap:12px;align-items:flex-start;justify-content:space-between;border:1px solid #e6ecf1;border-radius:10px;padding:12px 13px;margin-top:9px">'
-      + '<div style="min-width:0"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><a href="' + esc(org.official_url) + '" target="_blank" rel="noopener" style="font:600 13.5px \'IBM Plex Sans\';color:#0c1e2e;text-decoration:none">' + esc(org.name) + '</a> ' + badge(org.status) + '</div>'
-      + '<div style="font:500 11.5px \'IBM Plex Sans\';color:#6b7c89;margin-top:3px">' + esc(org.focus) + ' · ' + esc(org.location) + '</div>'
-      + '<div style="font:500 10.5px \'IBM Plex Mono\';color:#9aa7b2;margin-top:4px">' + esc(org.evidence) + '</div></div>'
-      + action + '</div>';
+    var funds = (verified && org.funds) ? '<div style="font:500 11.5px/1.45 \'IBM Plex Sans\';color:#33485a;margin-top:6px"><b style="font:600 11.5px \'IBM Plex Sans\'">Your donation funds:</b> ' + esc(org.funds) + '</div>' : '';
+    var earmark = org.earmark ? '<div style="font:500 11px/1.45 \'IBM Plex Sans\';color:#9a5a2a;background:#fff7f1;border-radius:6px;padding:6px 9px;margin-top:6px">⚠ ' + esc(org.earmark) + '</div>' : '';
+    return '<div style="border:1px solid #e6ecf1;border-radius:10px;padding:12px 13px;margin-top:9px">'
+      + '<div style="display:flex;gap:12px;align-items:flex-start;justify-content:space-between">'
+      + '<div style="min-width:0"><div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><a href="' + esc(org.official_url) + '" target="_blank" rel="noopener" style="font:600 13.5px \'IBM Plex Sans\';color:#0c1e2e;text-decoration:none">' + esc(org.name) + '</a> ' + badge(org.status) + (verified ? ' ' + scopeTag(org.scope) : '') + '</div>'
+      + '<div style="font:500 11.5px \'IBM Plex Sans\';color:#6b7c89;margin-top:3px">' + esc(org.focus) + ' · ' + esc(org.location) + '</div></div>'
+      + action + '</div>'
+      + funds + earmark
+      + '<div style="font:500 10px \'IBM Plex Mono\';color:#aeb9c2;margin-top:6px">' + esc(org.evidence) + '</div></div>';
   }
   function projectCard(p, orgs) {
     var prevention = p.type === 'prevention';
@@ -68,7 +78,7 @@
       + '<h1 style="margin:0 0 8px;font:500 30px \'Newsreader\';color:#0c1e2e;letter-spacing:-.3px">Fund a cleanup where it matters most</h1>'
       + '<p style="font:400 14.5px/1.6 \'IBM Plex Sans\';color:#33485a;margin:0 0 14px">Coastal sites ranked by a combined <b>Severity × Exposure × Ecology</b> score, with a modeled cost to address them — each matched to a vetted local organization you can support directly.</p>'
       + '<div style="background:#fff7f1;border-left:3px solid #d4521b;border-radius:5px;padding:12px 15px;font:400 12.5px/1.55 \'IBM Plex Sans\';color:#5a4636">'
-      + '<b>How this works (and what it isn\'t).</b> This tool <b>does not collect or hold any money</b>. Every <b>Donate</b> button opens the organization\'s <b>own official donation page</b>. Cost figures are <b>modeled estimates, not guarantees</b>. <b>“Vetted”</b> means we confirmed the org is real, active, locally-focused and donation-ready — <b>not</b> a financial audit. Orgs still in diligence are shown without a donate link.</div>'
+      + '<b>How this works (and what it isn\'t).</b> This tool <b>does not collect or hold any money</b>. Every <b>Donate</b> button opens the organization\'s <b>own official donation page</b>. Cost figures are <b>modeled estimates, not guarantees</b>. <b>“Vetted”</b> means we confirmed the org is real, active, locally-focused and donation-ready — <b>not</b> a financial audit. Most orgs pool gifts into one <b>general fund</b> (tagged on each card); only a <b>“Funds this project”</b> tag means the link is project-scoped. Orgs still in diligence are shown without a donate link.</div>'
       + '</div>';
 
     var siteHtml = '<div style="max-width:760px;margin:0 auto;padding:18px 18px 0">'
