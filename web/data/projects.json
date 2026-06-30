@@ -1,0 +1,49 @@
+{
+  "note": "Pilot cleanup projects (Philippines). Priority = Severity × Exposure × Ecology (each 1–5) → 0–100. Severity for Manila Bay uses our Lebreton river data (Pasig is a top global emitter); Exposure and Ecology are curated pilot estimates and are clearly illustrative. Cost = goal tonnes × local $0.50–$2.50/kg cleanup (modeled, banded — NOT a guarantee).",
+  "cost_per_kg": [0.5, 2.5],
+  "projects": [
+    {
+      "id": "manila-bay", "name": "Manila Bay & the Pasig River", "region": "Metro Manila", "type": "site",
+      "lat": 14.58, "lon": 120.98,
+      "severity": 5, "exposure": 5, "ecology": 4, "priority": 80,
+      "plastic_note": "The Pasig is among the world's highest-emitting plastic rivers (~41k t/yr in our data); its load lands in Manila Bay.",
+      "goal_tonnes": 40, "cost_low": 20000, "cost_high": 100000,
+      "why": "A megacity river-to-bay pathway: extreme plastic load, ~13M people, and a bay with mangroves and migratory-bird habitat.",
+      "org_ids": ["abscbn", "greenpeace"]
+    },
+    {
+      "id": "cebu-malapascua", "name": "Malapascua & northern Cebu", "region": "Cebu", "type": "site",
+      "lat": 11.32, "lon": 124.12,
+      "severity": 3, "exposure": 4, "ecology": 5, "priority": 48,
+      "plastic_note": "Island and nearshore plastic accumulation on fishing and dive-tourism coasts (illustrative).",
+      "goal_tonnes": 12, "cost_low": 6000, "cost_high": 30000,
+      "why": "World-renowned thresher-shark and reef diving plus fishing communities — high ecological and livelihood stakes.",
+      "org_ids": ["pepsea"]
+    },
+    {
+      "id": "siargao", "name": "Siargao Island", "region": "Surigao del Norte", "type": "site",
+      "lat": 9.86, "lon": 126.05,
+      "severity": 3, "exposure": 4, "ecology": 5, "priority": 48,
+      "plastic_note": "Beach and jungle plastic on a surf-tourism island with reefs and mangrove sanctuaries (illustrative).",
+      "goal_tonnes": 12, "cost_low": 6000, "cost_high": 30000,
+      "why": "A protected-reef surf island where tourism, mangroves, and a local recycling economy all hinge on clean coasts.",
+      "org_ids": ["siargao", "seamovement"]
+    },
+    {
+      "id": "negros", "name": "Negros Oriental coast (Zamboanguita)", "region": "Negros Oriental", "type": "site",
+      "lat": 9.1, "lon": 123.2,
+      "severity": 3, "exposure": 3, "ecology": 5, "priority": 36,
+      "plastic_note": "Nearshore and beach plastic along reef and seagrass coasts (illustrative).",
+      "goal_tonnes": 15, "cost_low": 7500, "cost_high": 37500,
+      "why": "Reef and seagrass coasts near Apo Island with a full-time local cleanup team doing daily removals.",
+      "org_ids": ["mcp"]
+    },
+    {
+      "id": "national-prevention", "name": "Stop it upstream — national prevention", "region": "Philippines (national)", "type": "prevention",
+      "lat": 12.8, "lon": 121.8,
+      "priority": null,
+      "why": "Cleanup is downstream. Preventing plastic from leaking in the first place — better waste systems, refill, brand accountability, policy — is usually far more cost-effective per tonne.",
+      "org_ids": ["sps", "bantoxics", "greenpeace"]
+    }
+  ]
+}

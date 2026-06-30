@@ -133,6 +133,7 @@
       + '<div class="gpw-top-sub" style="font-size:11px;color:#9db4c9;margin-top:1px;font-family:\'IBM Plex Mono\',monospace;letter-spacing:.2px">Where ocean plastic comes from</div></div></div>'
       + '<div style="flex:1"></div>'
       + '<div style="position:relative"><input id="gpwsearch" class="gpw-search" list="gpw-countries" placeholder="Search a country…" value="' + esc(state.search) + '" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);color:#fff;padding:8px 11px;border-radius:8px;font:500 12.5px \'IBM Plex Sans\';width:168px"><datalist id="gpw-countries">' + opts + '</datalist></div>'
+      + '<a class="gpw-btn" href="fund.html" style="background:#3fd0e6;border:1px solid #3fd0e6;color:#06283d;padding:8px 13px;border-radius:8px;font:600 12.5px \'IBM Plex Sans\';cursor:pointer;text-decoration:none">♥ Fund a cleanup</a>'
       + '<button class="gpw-btn gpw-ghost" data-act="about" style="background:transparent;border:1px solid rgba(255,255,255,.22);color:#dbe7f0;padding:8px 13px;border-radius:8px;font:600 12.5px \'IBM Plex Sans\';cursor:pointer">About &amp; data</button>'
       + '<div id="gpwexport" style="position:relative"><button class="gpw-btn" data-act="export-toggle" style="display:flex;align-items:center;gap:7px;background:' + A + ';border:1px solid ' + A + ';color:#fff;padding:8px 14px;border-radius:8px;font:600 12.5px \'IBM Plex Sans\';cursor:pointer"><span style="font-size:13px">⤓</span>Export</button>' + menu + '</div>'
       + '</header>';
