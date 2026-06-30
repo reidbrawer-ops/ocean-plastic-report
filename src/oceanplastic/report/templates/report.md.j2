@@ -1,0 +1,194 @@
+# Ocean Plastic — Source-Attribution & Cost-Recovery Report
+### {{ pilot.name }} ({{ pilot.region }}){{ " · " ~ pilot.iso3 if pilot.iso3 else "" }}
+
+*Generated {{ generated_date }} · oceanplastic v0.1 (MVP){{ " · commercial-safe data only" if commercial else "" }}*
+
+---
+
+> ## ⚠️ What this report is — and is not
+> {{ ceiling }}
+
+**How to read every claim below.** Each is tagged with a confidence tier:
+- **Tier A — defensible:** producer of a *branded* item; material type; item sector.
+- **Tier B — probabilistic (disclose uncertainty):** source *region* / emission *pathway*.
+- **Tier C — never asserted:** the emitting *country* of a specific item; a single deterministic origin.
+
+---
+
+## 1. Observed evidence on our shore
+{% if density.ok and density.n_observations > 0 %}
+**{{ density.n_observations }}** geotagged litter observations are documented along this coastline
+across **{{ density.n_clusters }}** clusters (source: **{{ density.source }}**, licence {{ density.license }}).
+This is a *documented sample*, not a census of everything that has washed up.
+{% else %}
+No geotagged litter observations are currently documented along this coastline in the live source.
+_{{ density.note }}_ The report proceeds on regional/global producer data and discloses the gap.
+{% endif %}
+
+---
+
+## 2. Axis 1 — Producer responsibility *(Tier A — corporate, not national)*
+
+Computed from the Break Free From Plastic brand-audit dataset (Cowger et al. 2024, CC-BY-4.0)
+at the **{{ attr.brand_level }}** level.
+
+| Parent company | Share of branded items | Tier |
+|---|---:|:--:|
+{% for s in attr.producer_axis %}
+| {{ s.name }} | {{ s.share | pct }} | {{ s.tier.value }} |
+{% endfor %}
+
+**Mandatory disclosures (this axis fails without them):**
+{% for d in producer_disclosures %}
+- {{ d }}
+{% endfor %}
+
+> This axis names **companies, never countries**. It does not say any nation polluted
+> {{ pilot.name }}.
+
+---
+
+## 3. Axis 2 — Emission pathway & source region *(Tier B — probabilistic)*
+
+> {{ drift_disclaimer }}
+
+**Likely emission pathway:**
+
+| Pathway | Prior probability | Tier |
+|---|---:|:--:|
+{% for s in attr.pathway_axis %}
+| {{ s.name }} | {{ s.share | pct }} | {{ s.tier.value }} |
+{% endfor %}
+
+**Illustrative source-region prior for this basin:**
+
+| Source region | Prior probability | Tier |
+|---|---:|:--:|
+{% for s in attr.region_axis %}
+| {{ s.name }} | {{ s.share | pct }} | {{ s.tier.value }} |
+{% endfor %}
+
+---
+
+## 4. What kind of plastic *(Tier A — composition only)*
+
+**By sector / use:**
+
+| Sector | Share | Tier |
+|---|---:|:--:|
+{% for s in attr.sector_axis %}
+| {{ s.name }} | {{ s.share | pct }} | {{ s.tier.value }} |
+{% endfor %}
+
+**By material / polymer** *(material type only — carries zero geographic provenance):*
+
+| Polymer | Share | Tier |
+|---|---:|:--:|
+{% for s in attr.material_axis %}
+| {{ s.name }} | {{ s.share | pct }} | {{ s.tier.value }} |
+{% endfor %}
+
+### The governing confound
+Where audited litter was *collected* (consumed-in) is **not** where it was made or emitted:
+
+| Collected in (consumed-in) | Share of audited items |
+|---|---:|
+{% for s in attr.consumed_in_countries %}
+| {{ s.name }} | {{ s.share | pct }} |
+{% endfor %}
+
+{% for n in attr.notes %}
+> {{ n }}
+
+{% endfor %}
+
+---
+
+## 5. The monetary ask *(banded — never point estimates)*
+
+{% if val.documented_mass_kg %}
+Estimated documented-sample mass: **{{ val.documented_mass_kg | band("kg") }}**.
+{% if val.scaled_mass_kg %}Illustrative coastline-scaled mass: {{ val.scaled_mass_kg | band("kg") }}.{% endif %}
+{% endif %}
+
+
+| Layer | Estimate (USD) | Role | Basis |
+|---|---|:--:|---|
+{% for l in val.layers %}
+| {{ l.name }} | {{ l.band | usd }} | {{ l.role }} | {{ l.method }} |
+{% endfor %}
+
+{% if val.headline %}
+**Headline ask (Layer 1 + Layer 2, the defensible floor): {{ val.headline | usd }}.**
+{% endif %}
+{% if val.producer_example %}
+Worked corporate example — **{{ val.producer_example[0] }}** at {{ val.producer_example[1] | pct }} of all
+documented items → attributable share of the headline ≈ **{{ val.producer_example[2] | usd }}**
+*(scales the harm by the producer's share of all items; an EPR/contribution figure, not a court award).*
+{% endif %}
+
+**Per-layer caveats:**
+{% for l in val.layers %}
+- *{{ l.name }}* ({{ l.role }}): {{ l.caveat }}
+{% endfor %}
+{% for n in val.notes %}
+- {{ n }}
+{% endfor %}
+
+Global context for the uncertainty bands: bottom-up river models put global input at
+{{ baselines.lebreton | band }} (Lebreton 2017), while the top-down seawater constraint is
+{{ baselines.strokal | band }} (Strokal 2023) — *cited so this report is not accused of
+cherry-picking the high end.*
+
+---
+
+## 6. Where this goes & the lever it pulls
+
+Primary forum: **{{ legal.primary_forum }}** · jurisdiction: **{{ legal.jurisdiction }}**{% if legal.regional_seas %} · regional: {{ legal.regional_seas }}{% endif %}.
+
+| Forum | Principle | Enforceability | Role |
+|---|---|---|---|
+{% for f in legal_forums %}
+| {{ f[0] }} | {{ f[1] }} | {{ f[2] }} | {{ f[3] }} |
+{% endfor %}
+
+**Framing:** lead with the enforceable **EPR cost-recovery** ask; present the regional-seas /
+UNEA asks as advocacy leverage; reserve the UNCLOS pathway as a *credible-but-untested* appendix.
+
+---
+
+## Appendix A — Global emission baseline *(context, not blame)*
+
+Top mismanaged-plastic emitters (Jambeck 2015 / Our World in Data, 2010 base year). These are
+**global context** — they are *not* a claim about who polluted {{ pilot.name }}; the basin drift
+prior in §3 is what speaks to this shoreline.
+
+| Country | Mismanaged plastic (Mt/yr, 2010) | Share of listed |
+|---|---:|---:|
+{% for c in baselines.top_emitters %}
+| {{ c[0] }} | {{ "%.2f"|format(c[1]) }} | {{ c[2] | pct }} |
+{% endfor %}
+
+## Appendix B — Limitations & credibility risks
+*The things that could get this report dismissed — and how each is caveated so it survives scrutiny.*
+
+{% for title, mitigation in limitations %}
+{{ loop.index }}. **{{ title }}.** {{ mitigation }}
+{% endfor %}
+
+## Appendix C — Data sources & licences
+
+| Source | Role | Licence | Commercial-safe |
+|---|---|---|:--:|
+{% for key, s in sources.items() %}
+| {{ s.name }} | {{ s.role }} | {{ s.license }} | {{ "yes" if s.commercial_ok else "QUARANTINED" }} |
+{% endfor %}
+
+{% if quarantined %}
+> **Quarantined (CC-BY-NC / unresolved terms), used for context only{% if commercial %}, excluded from this commercial-safe report{% endif %}:**
+> {% for key, s in quarantined.items() %}{{ s.name }}{% if not loop.last %}; {% endif %}{% endfor %}.
+{% endif %}
+
+---
+*Generated by the oceanplastic MVP. Replace illustrative defaults (per-item mass, $/kg, deterrence %,
+sampling fraction, drift prior) with locally-measured values before any real submission.*

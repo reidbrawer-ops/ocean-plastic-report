@@ -1,0 +1,64 @@
+# Pilot configuration — Saint Lucia (Eastern Caribbean SIDS).
+# The canonical "we receive everyone else's plastic" narrative; the IUCN St. Lucia
+# economic assessment (2023) is a ready-made valuation template.
+#
+# NUMBERS MARKED "illustrative" ARE DEFAULTS, NOT MEASURED VALUES. Replace them with
+# locally-sourced figures before submitting any real report. The model reports them as
+# bands and labels every figure with its tier and caveat for exactly this reason.
+
+pilot:
+  name: Saint Lucia
+  iso3: LCA
+  region: Eastern Caribbean (Lesser Antilles)
+  # Bounding box for the OpenLitterMap observation-density query (left,bottom,right,top).
+  bbox:
+    left: -61.10
+    bottom: 13.70
+    right: -60.85
+    top: 14.12
+  olm_zoom: 12               # OpenLitterMap clusters zoom (0-16)
+  coastline_km: 158          # CIA World Factbook
+
+  # ---- Local cleanup economics (Valuation Layer 1, the most defensible) ----
+  # Bottom-up labor + transport + treatment. ILLUSTRATIVE defaults — override locally.
+  cleanup_cost_usd_per_kg: {low: 0.50, central: 1.20, high: 2.50}
+  avg_item_mass_g: {low: 5, central: 12, high: 30}     # mixed beach litter, illustrative
+
+  # Optional: fraction of the coastline's true litter that the documented sample represents.
+  # Leave null to report ONLY the documented-sample figure (most honest). Set a band to also
+  # show a clearly-labeled scaled coastline estimate.
+  sample_fraction: {low: 0.30, central: 0.10, high: 0.02}   # smaller fraction -> bigger scale-up
+
+  # ---- Tourism exposure (Valuation Layer 2) ----
+  annual_tourism_revenue_usd: 1100000000                # ~Saint Lucia tourism receipts, illustrative
+  tourism_deterrence_pct: {low: 0.005, central: 0.02, high: 0.05}
+
+  # ---- Brand-audit regional filter ----
+  # BFFP has NO Saint Lucia audits, so the model falls back to these Caribbean-basin
+  # countries (present in BFFP) for a regionally-relevant producer share, and discloses it.
+  bffp_region_countries:
+    - jamaica
+    - puerto rico
+    - dominican republic
+    - colombia
+    - mexico
+    - panama
+    - venezuela
+    - trinidad and tobago
+    - belize
+    - guyana
+  bffp_min_regional_items: 5000        # below this, fall back to global shares (disclosed)
+
+  # ---- Drift source-region prior (Tier B STUB — NOT a calibrated ensemble) ----
+  # Illustrative basin prior for an Eastern Caribbean island. Replace with an OpenDrift
+  # backtracking ensemble in the full build.
+  drift_region_prior:
+    - {name: "Local — Saint Lucia & Lesser Antilles coast", prob: 0.40}
+    - {name: "Wider Caribbean basin (regional rivers & islands)", prob: 0.25}
+    - {name: "North Atlantic transport & shipping lanes", prob: 0.25}
+    - {name: "South American river plumes (Amazon / Orinoco)", prob: 0.10}
+
+legal:
+  jurisdiction: Saint Lucia
+  primary_forum: domestic_epr        # the one enforceable lever
+  regional_seas: "Cartagena Convention (Wider Caribbean Region)"

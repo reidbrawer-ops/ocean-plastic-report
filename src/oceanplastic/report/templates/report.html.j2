@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ocean Plastic Source-Attribution Report — {{ pilot.name }}</title>
+<style>
+  :root{
+    --navy:#16324f; --ink:#1f2933; --slate:#52606d; --muted:#7b8794;
+    --ocean:#0e7490; --ocean-soft:#e0f2f7; --line:#d9e2ec; --line-soft:#eef2f7;
+    --paper:#ffffff; --zebra:#f7fafc;
+    --tierA:#1b7f4b; --tierA-bg:#e7f4ed;
+    --tierB:#b45309; --tierB-bg:#fdf3e7;
+    --tierC:#b91c1c; --tierC-bg:#fbeaea;
+    --warn-bg:#fff7ed; --warn-bar:#c2410c;
+    --stub-bg:#fef9ec; --stub-bar:#b45309;
+    --note-bg:#eef6fb; --note-bar:#0e7490;
+  }
+  @page{ size:A4; margin:20mm 18mm 24mm 18mm; }
+  *{ box-sizing:border-box; }
+  html{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body{
+    font-family:Georgia,"Times New Roman",serif; color:var(--ink);
+    font-size:10.5pt; line-height:1.5; margin:0;
+  }
+  h1,h2,h3,.sans,th,.badge,.tier,.role,.eyebrow{ font-family:"Helvetica Neue",Arial,sans-serif; }
+  p{ margin:0 0 8pt; }
+  a{ color:var(--ocean); text-decoration:none; }
+  .muted{ color:var(--muted); }
+
+  /* ---------- Cover ---------- */
+  .cover{ height:247mm; display:flex; flex-direction:column; page-break-after:always; }
+  .cover .rule{ height:6px; background:var(--ocean); width:100%; }
+  .cover .eyebrow{ letter-spacing:.18em; text-transform:uppercase; font-size:9pt; color:var(--ocean); font-weight:700; margin-top:26mm; }
+  .cover h1{ font-size:30pt; line-height:1.12; color:var(--navy); margin:10pt 0 6pt; font-weight:700; }
+  .cover .sub{ font-size:15pt; color:var(--slate); margin-bottom:4pt; }
+  .cover .meta{ font-size:10pt; color:var(--muted); margin-top:2pt; }
+  .draft{ display:inline-block; margin-top:14pt; padding:5pt 12pt; border:1.5px solid var(--warn-bar);
+    color:var(--warn-bar); border-radius:3px; font-family:"Helvetica Neue",Arial,sans-serif;
+    font-weight:700; letter-spacing:.06em; font-size:9pt; text-transform:uppercase; }
+  .cover .spacer{ flex:1 1 auto; }
+  .cover .ceiling{ background:var(--warn-bg); border-left:5px solid var(--warn-bar);
+    padding:12pt 14pt; border-radius:3px; font-size:10pt; }
+  .cover .ceiling .h{ font-family:"Helvetica Neue",Arial,sans-serif; font-weight:700; color:var(--warn-bar);
+    text-transform:uppercase; letter-spacing:.05em; font-size:9.5pt; margin-bottom:4pt; }
+  .cover .prepared{ display:flex; gap:30pt; margin-top:14pt; font-size:9.5pt; color:var(--slate); }
+  .cover .prepared .k{ font-family:"Helvetica Neue",Arial,sans-serif; text-transform:uppercase; letter-spacing:.08em;
+    font-size:7.5pt; color:var(--muted); }
+
+  /* ---------- Sections ---------- */
+  section{ page-break-inside:auto; }
+  h2{ font-size:14pt; color:var(--navy); margin:18pt 0 8pt; padding-bottom:5pt;
+    border-bottom:2px solid var(--line); page-break-after:avoid; }
+  h2 .n{ color:var(--ocean); font-weight:700; margin-right:8pt; }
+  h2 .axis{ float:right; font-size:8.5pt; color:var(--muted); font-weight:600; letter-spacing:.04em;
+    text-transform:uppercase; padding-top:5pt; }
+  h3{ font-size:11pt; color:var(--navy); margin:12pt 0 5pt; page-break-after:avoid; }
+
+  /* ---------- Tables ---------- */
+  table{ width:100%; border-collapse:collapse; margin:6pt 0 10pt; font-size:9.7pt; page-break-inside:avoid; }
+  thead{ display:table-header-group; }
+  th{ background:var(--navy); color:#fff; text-align:left; padding:6pt 8pt; font-weight:600; font-size:8.6pt;
+    letter-spacing:.02em; }
+  td{ padding:5pt 8pt; border-bottom:1px solid var(--line); vertical-align:top; }
+  tbody tr:nth-child(even){ background:var(--zebra); }
+  .num{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  td.small,.small{ font-size:9pt; color:var(--slate); }
+
+  /* ---------- Tier + role badges ---------- */
+  .tier{ display:inline-block; min-width:16pt; text-align:center; padding:1pt 5pt; border-radius:10px;
+    font-size:8pt; font-weight:700; }
+  .tier-A{ background:var(--tierA-bg); color:var(--tierA); }
+  .tier-B{ background:var(--tierB-bg); color:var(--tierB); }
+  .tier-C{ background:var(--tierC-bg); color:var(--tierC); }
+  .role{ display:inline-block; padding:1pt 7pt; border-radius:3px; font-size:7.8pt; font-weight:700;
+    text-transform:uppercase; letter-spacing:.03em; }
+  .role-headline{ background:var(--ocean); color:#fff; }
+  .role-context{ background:#e3e8ee; color:var(--slate); }
+  .role-comparator{ background:#eceff3; color:var(--muted); }
+  .role-cross-check{ background:#eceff3; color:var(--muted); }
+
+  /* ---------- Bars ---------- */
+  .bars{ margin:6pt 0 10pt; page-break-inside:avoid; }
+  .bar-row{ display:flex; align-items:center; gap:8pt; margin:3pt 0; }
+  .bar-label{ flex:0 0 42%; font-size:9.3pt; }
+  .bar-label .tier{ margin-left:4pt; }
+  .bar-track{ flex:1 1 auto; height:13px; background:var(--line-soft); border-radius:7px; overflow:hidden; }
+  .bar-fill{ height:100%; background:var(--ocean); border-radius:7px; }
+  .bar-fill.b{ background:var(--stub-bar); }
+  .bar-val{ flex:0 0 52pt; text-align:right; font-size:9pt; font-variant-numeric:tabular-nums; color:var(--slate); }
+
+  /* ---------- Callouts ---------- */
+  .callout{ padding:9pt 12pt; border-radius:3px; margin:8pt 0; font-size:9.6pt; page-break-inside:avoid; }
+  .callout .h{ font-family:"Helvetica Neue",Arial,sans-serif; font-weight:700; font-size:9pt;
+    text-transform:uppercase; letter-spacing:.04em; margin-bottom:3pt; }
+  .callout.warn{ background:var(--warn-bg); border-left:5px solid var(--warn-bar); }
+  .callout.warn .h{ color:var(--warn-bar); }
+  .callout.stub{ background:var(--stub-bg); border-left:5px solid var(--stub-bar); }
+  .callout.stub .h{ color:var(--stub-bar); }
+  .callout.note{ background:var(--note-bg); border-left:5px solid var(--note-bar); }
+  .callout.note .h{ color:var(--note-bar); }
+  ul.tight{ margin:4pt 0; padding-left:16pt; } ul.tight li{ margin:2pt 0; }
+
+  /* ---------- Headline figure ---------- */
+  .headline{ background:var(--ocean-soft); border:1px solid #b6dde7; border-radius:5px; padding:12pt 14pt; margin:10pt 0;
+    page-break-inside:avoid; }
+  .headline .lbl{ font-family:"Helvetica Neue",Arial,sans-serif; font-size:8.5pt; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--ocean); font-weight:700; }
+  .headline .fig{ font-family:"Helvetica Neue",Arial,sans-serif; font-size:20pt; font-weight:700; color:var(--navy);
+    margin:2pt 0; }
+  .headline .note{ font-size:9pt; color:var(--slate); }
+
+  .tier-legend{ font-size:8.6pt; color:var(--slate); margin:2pt 0 0; }
+  .footnote{ font-size:8.5pt; color:var(--muted); }
+  .eyebrow-s{ font-family:"Helvetica Neue",Arial,sans-serif; font-size:8pt; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ocean); font-weight:700; }
+</style>
+</head>
+<body>
+
+{% macro tierbadge(t) %}<span class="tier tier-{{ t }}">{{ t }}</span>{% endmacro %}
+{% macro bar(label, share, tier='', b=False) %}
+  <div class="bar-row">
+    <div class="bar-label">{{ label }}{% if tier %} {{ tierbadge(tier) }}{% endif %}</div>
+    <div class="bar-track"><div class="bar-fill{% if b %} b{% endif %}" style="width:{{ (share*100)|round(1) }}%"></div></div>
+    <div class="bar-val">{{ (share*100)|round(1) }}%</div>
+  </div>
+{% endmacro %}
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="rule"></div>
+  <div class="eyebrow">Ocean Plastic · Source-Attribution &amp; Cost-Recovery</div>
+  <h1>Where Our Plastic Comes From,<br>and the Case for Cost-Recovery</h1>
+  <div class="sub">{{ pilot.name }} — {{ pilot.region }}</div>
+  <div class="meta">Prepared {{ generated_date }} · oceanplastic v0.1 (MVP){% if commercial %} · commercial-safe data only{% endif %}</div>
+  <div class="draft">Draft · figures are illustrative</div>
+
+  <div class="spacer"></div>
+
+  <div class="ceiling">
+    <div class="h">⚠ What this report is — and is not</div>
+    {{ ceiling | replace("**","") }}
+  </div>
+  <div class="prepared">
+    <div><div class="k">Prepared for</div>Government of {{ legal.jurisdiction }}</div>
+    <div><div class="k">Prepared by</div>[Your organization]</div>
+    <div><div class="k">Status</div>Draft for review</div>
+  </div>
+</div>
+
+<!-- ============ HOW TO READ ============ -->
+<section>
+  <div class="eyebrow-s">How to read every claim</div>
+  <p class="tier-legend">
+    {{ tierbadge('A') }} <strong>Defensible</strong> — producer of a branded item; material; item sector. &nbsp;
+    {{ tierbadge('B') }} <strong>Probabilistic</strong> — source region / emission pathway (disclose uncertainty). &nbsp;
+    {{ tierbadge('C') }} <strong>Never asserted</strong> — the emitting country of a specific item; a single origin.
+  </p>
+
+  <h2><span class="n">1</span>Observed evidence on our shore</h2>
+  {% if density.ok and density.n_observations > 0 %}
+  <p><strong>{{ density.n_observations }}</strong> geotagged litter observations are documented along this
+  coastline across <strong>{{ density.n_clusters }}</strong> clusters
+  (source: <strong>{{ density.source }}</strong>, licence {{ density.license }}). This is a
+  <em>documented sample</em>, not a census of everything that has washed up.</p>
+  {% else %}
+  <p>No geotagged litter observations are currently documented along this coastline in the live source.
+  <span class="muted">{{ density.note }}</span> The report proceeds on regional/global producer data and discloses the gap.</p>
+  {% endif %}
+</section>
+
+<!-- ============ AXIS 1 — PRODUCER ============ -->
+<section>
+  <h2><span class="axis">Tier A · corporate</span><span class="n">2</span>Producer responsibility</h2>
+  <p class="small">Computed from the Break Free From Plastic brand-audit dataset (Cowger et al. 2024, CC-BY-4.0)
+  at the <strong>{{ attr.brand_level }}</strong> level. Shares are of branded (attributable) items.</p>
+  <div class="bars">
+    {% for s in attr.producer_axis %}
+    {{ bar(s.name, s.share, s.tier.value) }}
+    {% endfor %}
+  </div>
+  <div class="callout note">
+    <div class="h">Mandatory disclosures</div>
+    <ul class="tight">
+      {% for d in producer_disclosures %}<li>{{ d }}</li>{% endfor %}
+    </ul>
+  </div>
+  <p class="small"><strong>This axis names companies, never countries.</strong> It does not say any nation polluted {{ pilot.name }}.</p>
+</section>
+
+<!-- ============ AXIS 2 — PATHWAY / REGION ============ -->
+<section>
+  <h2><span class="axis">Tier B · probabilistic</span><span class="n">3</span>Emission pathway &amp; source region</h2>
+  <div class="callout stub">
+    <div class="h">Illustrative prior — not a calibrated model</div>
+    {{ drift_disclaimer }}
+  </div>
+  <h3>Likely emission pathway</h3>
+  <div class="bars">
+    {% for s in attr.pathway_axis %}{{ bar(s.name, s.share, s.tier.value, b=True) }}{% endfor %}
+  </div>
+  <h3>Illustrative source-region prior for this basin</h3>
+  <div class="bars">
+    {% for s in attr.region_axis %}{{ bar(s.name, s.share, s.tier.value, b=True) }}{% endfor %}
+  </div>
+</section>
+
+<!-- ============ COMPOSITION ============ -->
+<section>
+  <h2><span class="axis">Tier A · composition only</span><span class="n">4</span>What kind of plastic</h2>
+  <table>
+    <thead><tr><th>By sector / use</th><th class="num">Share</th><th class="num">Tier</th>
+      <th>By material / polymer</th><th class="num">Share</th><th class="num">Tier</th></tr></thead>
+    <tbody>
+    {% set maxlen = [attr.sector_axis|length, attr.material_axis|length]|max %}
+    {% for i in range(maxlen) %}
+      <tr>
+        <td>{{ attr.sector_axis[i].name if i < attr.sector_axis|length else "" }}</td>
+        <td class="num">{{ (attr.sector_axis[i].share|pct) if i < attr.sector_axis|length else "" }}</td>
+        <td class="num">{% if i < attr.sector_axis|length %}{{ tierbadge(attr.sector_axis[i].tier.value) }}{% endif %}</td>
+        <td>{{ attr.material_axis[i].name if i < attr.material_axis|length else "" }}</td>
+        <td class="num">{{ (attr.material_axis[i].share|pct) if i < attr.material_axis|length else "" }}</td>
+        <td class="num">{% if i < attr.material_axis|length %}{{ tierbadge(attr.material_axis[i].tier.value) }}{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="small muted">Polymer is material type only — it carries zero geographic provenance.</p>
+
+  <div class="callout warn">
+    <div class="h">The governing confound — manufactured-in ≠ consumed-in ≠ emitted-from</div>
+    <p style="margin-bottom:4pt">Where audited litter was <em>collected</em> (consumed-in) is not where it was made or emitted:</p>
+    <ul class="tight">
+      {% for s in attr.consumed_in_countries %}<li>{{ s.name }} — {{ s.share|pct }} of audited items</li>{% endfor %}
+    </ul>
+  </div>
+</section>
+
+<!-- ============ MONETARY ============ -->
+<section>
+  <h2><span class="n">5</span>The monetary ask <span class="muted" style="font-size:9pt;font-weight:400">— banded, never point estimates</span></h2>
+  {% if val.documented_mass_kg %}
+  <p class="small">Estimated documented-sample mass: <strong>{{ val.documented_mass_kg|band("kg") }}</strong>.
+  {% if val.scaled_mass_kg %}Illustrative coastline-scaled mass: {{ val.scaled_mass_kg|band("kg") }}.{% endif %}</p>
+  {% endif %}
+  <table>
+    <thead><tr><th>Layer</th><th class="num">Estimate (USD)</th><th>Role</th><th>Basis</th></tr></thead>
+    <tbody>
+    {% for l in val.layers %}
+      <tr>
+        <td>{{ l.name }}</td>
+        <td class="num">{{ l.band|usd }}</td>
+        <td><span class="role role-{{ l.role }}">{{ l.role }}</span></td>
+        <td class="small">{{ l.method }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% if val.headline %}
+  <div class="headline">
+    <div class="lbl">Headline ask — defensible floor (Layer 1 + Layer 2)</div>
+    <div class="fig">{{ val.headline|usd }}</div>
+    {% if val.producer_example %}
+    <div class="note">Worked corporate example — <strong>{{ val.producer_example[0] }}</strong> at
+      {{ val.producer_example[1]|pct }} of all documented items → attributable share ≈
+      <strong>{{ val.producer_example[2]|usd }}</strong>
+      <span class="muted">(an EPR/contribution figure, not a court award).</span></div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <h3>Per-layer caveats</h3>
+  <ul class="tight small">
+    {% for l in val.layers %}<li><strong>{{ l.name }}</strong> ({{ l.role }}): {{ l.caveat }}</li>{% endfor %}
+    {% for n in val.notes %}<li>{{ n }}</li>{% endfor %}
+  </ul>
+  <p class="small muted">Uncertainty context: bottom-up river models put global input at
+    {{ baselines.lebreton|band }} (Lebreton 2017), while the top-down seawater constraint is
+    {{ baselines.strokal|band }} (Strokal 2023) — cited so this report is not accused of cherry-picking the high end.</p>
+</section>
+
+<!-- ============ LEGAL ============ -->
+<section>
+  <h2><span class="n">6</span>Where this goes &amp; the lever it pulls</h2>
+  <p class="small">Primary forum: <strong>{{ legal.primary_forum }}</strong> · jurisdiction:
+    <strong>{{ legal.jurisdiction }}</strong>{% if legal.regional_seas %} · regional: {{ legal.regional_seas }}{% endif %}.</p>
+  <table>
+    <thead><tr><th>Forum</th><th>Principle</th><th>Enforceability</th><th>Role</th></tr></thead>
+    <tbody>
+    {% for f in legal_forums %}
+      <tr><td><strong>{{ f[0] }}</strong></td><td class="small">{{ f[1] }}</td>
+        <td class="small">{{ f[2] }}</td><td class="small">{{ f[3] }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="small"><strong>Framing:</strong> lead with the enforceable EPR cost-recovery ask; present the
+    regional-seas / UNEA asks as advocacy leverage; reserve the UNCLOS pathway as a credible-but-untested appendix.</p>
+</section>
+
+<!-- ============ APPENDICES ============ -->
+<section>
+  <h2><span class="n">A</span>Global emission baseline <span class="muted" style="font-size:9pt;font-weight:400">— context, not blame</span></h2>
+  <p class="small">Top mismanaged-plastic emitters (Jambeck 2015 / Our World in Data, 2010 base year). Global
+    context — <em>not</em> a claim about who polluted {{ pilot.name }}; the basin drift prior in §3 speaks to this shoreline.</p>
+  <table>
+    <thead><tr><th>Country</th><th class="num">Mismanaged plastic (Mt/yr, 2010)</th><th class="num">Share of listed</th></tr></thead>
+    <tbody>
+    {% for c in baselines.top_emitters %}
+      <tr><td>{{ c[0] }}</td><td class="num">{{ "%.2f"|format(c[1]) }}</td><td class="num">{{ c[2]|pct }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <h2><span class="n">B</span>Limitations &amp; credibility risks</h2>
+  <p class="small">The things that could get this report dismissed — and how each is caveated so it survives scrutiny.</p>
+  <ol class="tight small">
+    {% for title, mitigation in limitations %}<li><strong>{{ title }}.</strong> {{ mitigation }}</li>{% endfor %}
+  </ol>
+
+  <h2><span class="n">C</span>Data sources &amp; licences</h2>
+  <table>
+    <thead><tr><th>Source</th><th>Role</th><th>Licence</th><th class="num">Commercial-safe</th></tr></thead>
+    <tbody>
+    {% for key, s in sources.items() %}
+      <tr><td>{{ s.name }}</td><td class="small">{{ s.role }}</td><td class="small">{{ s.license }}</td>
+        <td class="num">{% if s.commercial_ok %}yes{% else %}<span class="tier tier-C">quarantined</span>{% endif %}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if quarantined %}
+  <p class="footnote">Quarantined (CC-BY-NC / unresolved terms), used for context only{% if commercial %}, excluded from this commercial-safe report{% endif %}:
+    {% for key, s in quarantined.items() %}{{ s.name }}{% if not loop.last %}; {% endif %}{% endfor %}.</p>
+  {% endif %}
+
+  <p class="footnote" style="margin-top:14pt">Generated by the oceanplastic MVP. Replace illustrative defaults
+    (per-item mass, $/kg, deterrence %, sampling fraction, drift prior) with locally-measured values before any real submission.</p>
+</section>
+
+</body>
+</html>

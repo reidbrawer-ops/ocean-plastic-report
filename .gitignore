@@ -1,0 +1,14 @@
+.venv/
+.cache/
+.claude/
+.DS_Store
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+# Generated reports are regenerable; keep the committed Saint Lucia samples only.
+output/*
+!output/.gitkeep
+!output/sample_saint_lucia_report.md
+!output/sample_saint_lucia_report.html
+!output/sample_saint_lucia_report.pdf

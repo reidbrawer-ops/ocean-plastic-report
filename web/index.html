@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Global Plastics Watch</title>
+<meta name="description" content="An open map of where plastic pollution comes from — country emissions and river hotspots, with a production timeline and downloadable open data.">
+<meta name="theme-color" content="#13283d">
+<meta property="og:title" content="Global Plastics Watch">
+<meta property="og:description" content="An open, interactive map of where plastic pollution comes from — with downloadable data.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%2313283d'/%3E%3Ccircle cx='16' cy='16' r='15' fill='none' stroke='%235ad1e6' stroke-width='1.4' opacity='.55'/%3E%3Cpath d='M3.5 18c3-3 6 0 9-1s5-3 8.5-1 5 0 7.5-1.5' stroke='%235ad1e6' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css?v=5">
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">Global Plastics <span class="dot">Watch</span></div>
+    <div class="tag">Where plastic pollution comes from · open data</div>
+    <input id="search" class="search" list="countrylist" placeholder="Search a country…" autocomplete="off" aria-label="Search a country">
+    <datalist id="countrylist"></datalist>
+    <div class="spacer"></div>
+    <div class="metricsel" id="metricsel"></div>
+    <label class="toggle"><input type="checkbox" id="rivertoggle" checked> River hotspots</label>
+    <button class="story-btn" id="storybtn">▶ Story</button>
+    <button class="about-btn" id="aboutbtn">About the data</button>
+    <div class="dlwrap">
+      <button class="dl" id="dlbtn">↓ Download data</button>
+      <div class="dlmenu" id="dlmenu">
+        <div class="h">Country metrics</div>
+        <a href="data/countries.csv" download>countries.csv</a>
+        <a href="data/countries.geojson" download>countries.geojson</a>
+        <div class="h">River hotspots</div>
+        <a href="data/rivers.csv" download>rivers.csv</a>
+        <a href="data/rivers.json" download>rivers.json</a>
+        <div class="h">Time series</div>
+        <a href="data/production.json" download>production.json</a>
+        <a href="data/timeline-regions.json" download>timeline-regions.json</a>
+        <a href="data/timeline-trade.json" download>timeline-trade.json</a>
+        <div class="h">Metadata</div>
+        <a href="data/meta.json" download>meta.json (schema &amp; sources)</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="mapwrap">
+      <div class="loading" id="loading"><div class="spinner"></div><div>Loading global plastics data…</div></div>
+      <svg id="map" viewBox="0 14 720 292" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="tooltip" id="tip"></div>
+      <div class="legend" id="legend"></div>
+      <div class="zoom">
+        <button id="zin" title="Zoom in">+</button>
+        <button id="zout" title="Zoom out">−</button>
+        <button id="zrst" class="rst" title="Reset view">⤢</button>
+      </div>
+      <div class="story" id="story">
+        <div class="st-prog"></div>
+        <div class="st-title"></div>
+        <div class="st-text"></div>
+        <div class="st-controls">
+          <button id="stprev">‹ Back</button>
+          <button id="stnext">Next ›</button>
+          <button id="stexit">Exit tour</button>
+        </div>
+      </div>
+      <div class="timeline" id="timeline">
+        <button class="play" id="tlplay" title="Play">▶</button>
+        <div class="yr"><div class="y" id="tlyear">2019</div><div class="c">year</div></div>
+        <div class="tl-main">
+          <div class="tl-head">
+            <span class="lbl" id="tllbl">Global plastic production</span>
+            <span class="val"><span id="tlval">—</span></span>
+          </div>
+          <svg id="tlchart" viewBox="0 0 600 30" preserveAspectRatio="none"></svg>
+          <input type="range" id="tlrange" min="0" max="0" value="0" step="1">
+        </div>
+      </div>
+    </div>
+    <aside id="panel"></aside>
+  </main>
+
+  <footer>
+    <span class="pill">OPEN DATA</span>
+    <span id="sources">Loading sources…</span>
+    <span class="spacer"></span>
+    <span>Modeled estimates — treat as relative, not exact. <a href="#" id="aboutlink">About the data ›</a></span>
+  </footer>
+</div>
+
+<!-- About modal -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="mhead"><h2>About this data</h2><button class="close" id="modalclose">×</button></div>
+    <div class="mbody" id="modalbody"></div>
+  </div>
+</div>
+
+<script src="app.js?v=5"></script>
+</body>
+</html>

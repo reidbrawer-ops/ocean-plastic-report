@@ -1,0 +1,92 @@
+{
+  "generated": "2026-06-30",
+  "metrics": {
+    "mis": {
+      "label": "Mismanaged plastic waste",
+      "unit": "tonnes/yr",
+      "year": 2019,
+      "source": "Our World in Data (Jambeck 2015 / Lebreton 2017)"
+    },
+    "ocean": {
+      "label": "Share of global ocean plastic emissions",
+      "unit": "%",
+      "year": 2019,
+      "source": "Our World in Data (Meijer et al. 2021)"
+    },
+    "pc": {
+      "label": "Plastic waste per capita",
+      "unit": "kg/person/day",
+      "year": 2010,
+      "source": "Our World in Data (Jambeck et al. 2015)"
+    }
+  },
+  "sources": [
+    {
+      "name": "Our World in Data \u2014 plastic pollution",
+      "url": "https://ourworldindata.org/plastic-pollution",
+      "license": "CC-BY-4.0",
+      "role": "country emission metrics"
+    },
+    {
+      "name": "Lebreton et al. 2017 \u2014 river plastic emissions",
+      "url": "https://doi.org/10.1038/ncomms15611",
+      "license": "CC-BY-4.0",
+      "role": "river emission hotspots"
+    },
+    {
+      "name": "Natural Earth 110m Admin-0",
+      "url": "https://www.naturalearthdata.com/",
+      "license": "Public domain",
+      "role": "country geometry"
+    }
+  ],
+  "counts": {
+    "countries": 176,
+    "countries_with_data": 132,
+    "rivers": 150,
+    "production_years": [
+      1950,
+      2019
+    ]
+  },
+  "timeline": {
+    "label": "Global annual plastic production",
+    "unit": "tonnes",
+    "source": "Our World in Data (Geyer et al. 2017; OECD)",
+    "file": "production.json"
+  },
+  "timeLayers": [
+    {
+      "key": "ocean_acc",
+      "label": "Plastic in oceans (over time)",
+      "file": "timeline-regions.json",
+      "resolution": "region",
+      "theme": "pollution",
+      "years": [
+        2000,
+        2019
+      ]
+    },
+    {
+      "key": "exports",
+      "label": "Plastic waste exports (trade)",
+      "file": "timeline-trade.json",
+      "resolution": "country",
+      "theme": "trade",
+      "years": [
+        1988,
+        2024
+      ]
+    }
+  ],
+  "downloads": [
+    "countries.geojson",
+    "countries.csv",
+    "rivers.json",
+    "rivers.csv",
+    "production.json",
+    "timeline-regions.json",
+    "timeline-trade.json"
+  ],
+  "note": "Open data (CC-BY). Country metrics are single-year modeled snapshots (mismanaged 2019, per-capita 2010, ocean-share 2019) \u2014 treat as relative, not exact. The timeline is the GLOBAL production series 1950-2019; per-country data is not a time series."
+}

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ocean Plastic Source-Attribution Report — Saint Lucia</title>
+<style>
+  :root{
+    --navy:#16324f; --ink:#1f2933; --slate:#52606d; --muted:#7b8794;
+    --ocean:#0e7490; --ocean-soft:#e0f2f7; --line:#d9e2ec; --line-soft:#eef2f7;
+    --paper:#ffffff; --zebra:#f7fafc;
+    --tierA:#1b7f4b; --tierA-bg:#e7f4ed;
+    --tierB:#b45309; --tierB-bg:#fdf3e7;
+    --tierC:#b91c1c; --tierC-bg:#fbeaea;
+    --warn-bg:#fff7ed; --warn-bar:#c2410c;
+    --stub-bg:#fef9ec; --stub-bar:#b45309;
+    --note-bg:#eef6fb; --note-bar:#0e7490;
+  }
+  @page{ size:A4; margin:20mm 18mm 24mm 18mm; }
+  *{ box-sizing:border-box; }
+  html{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body{
+    font-family:Georgia,"Times New Roman",serif; color:var(--ink);
+    font-size:10.5pt; line-height:1.5; margin:0;
+  }
+  h1,h2,h3,.sans,th,.badge,.tier,.role,.eyebrow{ font-family:"Helvetica Neue",Arial,sans-serif; }
+  p{ margin:0 0 8pt; }
+  a{ color:var(--ocean); text-decoration:none; }
+  .muted{ color:var(--muted); }
+
+  /* ---------- Cover ---------- */
+  .cover{ height:247mm; display:flex; flex-direction:column; page-break-after:always; }
+  .cover .rule{ height:6px; background:var(--ocean); width:100%; }
+  .cover .eyebrow{ letter-spacing:.18em; text-transform:uppercase; font-size:9pt; color:var(--ocean); font-weight:700; margin-top:26mm; }
+  .cover h1{ font-size:30pt; line-height:1.12; color:var(--navy); margin:10pt 0 6pt; font-weight:700; }
+  .cover .sub{ font-size:15pt; color:var(--slate); margin-bottom:4pt; }
+  .cover .meta{ font-size:10pt; color:var(--muted); margin-top:2pt; }
+  .draft{ display:inline-block; margin-top:14pt; padding:5pt 12pt; border:1.5px solid var(--warn-bar);
+    color:var(--warn-bar); border-radius:3px; font-family:"Helvetica Neue",Arial,sans-serif;
+    font-weight:700; letter-spacing:.06em; font-size:9pt; text-transform:uppercase; }
+  .cover .spacer{ flex:1 1 auto; }
+  .cover .ceiling{ background:var(--warn-bg); border-left:5px solid var(--warn-bar);
+    padding:12pt 14pt; border-radius:3px; font-size:10pt; }
+  .cover .ceiling .h{ font-family:"Helvetica Neue",Arial,sans-serif; font-weight:700; color:var(--warn-bar);
+    text-transform:uppercase; letter-spacing:.05em; font-size:9.5pt; margin-bottom:4pt; }
+  .cover .prepared{ display:flex; gap:30pt; margin-top:14pt; font-size:9.5pt; color:var(--slate); }
+  .cover .prepared .k{ font-family:"Helvetica Neue",Arial,sans-serif; text-transform:uppercase; letter-spacing:.08em;
+    font-size:7.5pt; color:var(--muted); }
+
+  /* ---------- Sections ---------- */
+  section{ page-break-inside:auto; }
+  h2{ font-size:14pt; color:var(--navy); margin:18pt 0 8pt; padding-bottom:5pt;
+    border-bottom:2px solid var(--line); page-break-after:avoid; }
+  h2 .n{ color:var(--ocean); font-weight:700; margin-right:8pt; }
+  h2 .axis{ float:right; font-size:8.5pt; color:var(--muted); font-weight:600; letter-spacing:.04em;
+    text-transform:uppercase; padding-top:5pt; }
+  h3{ font-size:11pt; color:var(--navy); margin:12pt 0 5pt; page-break-after:avoid; }
+
+  /* ---------- Tables ---------- */
+  table{ width:100%; border-collapse:collapse; margin:6pt 0 10pt; font-size:9.7pt; page-break-inside:avoid; }
+  thead{ display:table-header-group; }
+  th{ background:var(--navy); color:#fff; text-align:left; padding:6pt 8pt; font-weight:600; font-size:8.6pt;
+    letter-spacing:.02em; }
+  td{ padding:5pt 8pt; border-bottom:1px solid var(--line); vertical-align:top; }
+  tbody tr:nth-child(even){ background:var(--zebra); }
+  .num{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  td.small,.small{ font-size:9pt; color:var(--slate); }
+
+  /* ---------- Tier + role badges ---------- */
+  .tier{ display:inline-block; min-width:16pt; text-align:center; padding:1pt 5pt; border-radius:10px;
+    font-size:8pt; font-weight:700; }
+  .tier-A{ background:var(--tierA-bg); color:var(--tierA); }
+  .tier-B{ background:var(--tierB-bg); color:var(--tierB); }
+  .tier-C{ background:var(--tierC-bg); color:var(--tierC); }
+  .role{ display:inline-block; padding:1pt 7pt; border-radius:3px; font-size:7.8pt; font-weight:700;
+    text-transform:uppercase; letter-spacing:.03em; }
+  .role-headline{ background:var(--ocean); color:#fff; }
+  .role-context{ background:#e3e8ee; color:var(--slate); }
+  .role-comparator{ background:#eceff3; color:var(--muted); }
+  .role-cross-check{ background:#eceff3; color:var(--muted); }
+
+  /* ---------- Bars ---------- */
+  .bars{ margin:6pt 0 10pt; page-break-inside:avoid; }
+  .bar-row{ display:flex; align-items:center; gap:8pt; margin:3pt 0; }
+  .bar-label{ flex:0 0 42%; font-size:9.3pt; }
+  .bar-label .tier{ margin-left:4pt; }
+  .bar-track{ flex:1 1 auto; height:13px; background:var(--line-soft); border-radius:7px; overflow:hidden; }
+  .bar-fill{ height:100%; background:var(--ocean); border-radius:7px; }
+  .bar-fill.b{ background:var(--stub-bar); }
+  .bar-val{ flex:0 0 52pt; text-align:right; font-size:9pt; font-variant-numeric:tabular-nums; color:var(--slate); }
+
+  /* ---------- Callouts ---------- */
+  .callout{ padding:9pt 12pt; border-radius:3px; margin:8pt 0; font-size:9.6pt; page-break-inside:avoid; }
+  .callout .h{ font-family:"Helvetica Neue",Arial,sans-serif; font-weight:700; font-size:9pt;
+    text-transform:uppercase; letter-spacing:.04em; margin-bottom:3pt; }
+  .callout.warn{ background:var(--warn-bg); border-left:5px solid var(--warn-bar); }
+  .callout.warn .h{ color:var(--warn-bar); }
+  .callout.stub{ background:var(--stub-bg); border-left:5px solid var(--stub-bar); }
+  .callout.stub .h{ color:var(--stub-bar); }
+  .callout.note{ background:var(--note-bg); border-left:5px solid var(--note-bar); }
+  .callout.note .h{ color:var(--note-bar); }
+  ul.tight{ margin:4pt 0; padding-left:16pt; } ul.tight li{ margin:2pt 0; }
+
+  /* ---------- Headline figure ---------- */
+  .headline{ background:var(--ocean-soft); border:1px solid #b6dde7; border-radius:5px; padding:12pt 14pt; margin:10pt 0;
+    page-break-inside:avoid; }
+  .headline .lbl{ font-family:"Helvetica Neue",Arial,sans-serif; font-size:8.5pt; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--ocean); font-weight:700; }
+  .headline .fig{ font-family:"Helvetica Neue",Arial,sans-serif; font-size:20pt; font-weight:700; color:var(--navy);
+    margin:2pt 0; }
+  .headline .note{ font-size:9pt; color:var(--slate); }
+
+  .tier-legend{ font-size:8.6pt; color:var(--slate); margin:2pt 0 0; }
+  .footnote{ font-size:8.5pt; color:var(--muted); }
+  .eyebrow-s{ font-family:"Helvetica Neue",Arial,sans-serif; font-size:8pt; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ocean); font-weight:700; }
+</style>
+</head>
+<body>
+
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="rule"></div>
+  <div class="eyebrow">Ocean Plastic · Source-Attribution &amp; Cost-Recovery</div>
+  <h1>Where Our Plastic Comes From,<br>and the Case for Cost-Recovery</h1>
+  <div class="sub">Saint Lucia — Eastern Caribbean (Lesser Antilles)</div>
+  <div class="meta">Prepared 2026-06-29 · oceanplastic v0.1 (MVP)</div>
+  <div class="draft">Draft · figures are illustrative</div>
+
+  <div class="spacer"></div>
+
+  <div class="ceiling">
+    <div class="h">⚠ What this report is — and is not</div>
+    As of mid-2026 there is no operative international mechanism that compels a polluting state or company to pay a coastal country for beached plastic. This document is therefore an evidence-and-leverage instrument — for domestic Extended Producer Responsibility (EPR) cost-recovery, treaty/regional-seas advocacy, and reputational pressure — not a binding invoice. Its credibility is its candor about what it cannot prove.
+  </div>
+  <div class="prepared">
+    <div><div class="k">Prepared for</div>Government of Saint Lucia</div>
+    <div><div class="k">Prepared by</div>[Your organization]</div>
+    <div><div class="k">Status</div>Draft for review</div>
+  </div>
+</div>
+
+<!-- ============ HOW TO READ ============ -->
+<section>
+  <div class="eyebrow-s">How to read every claim</div>
+  <p class="tier-legend">
+    <span class="tier tier-A">A</span> <strong>Defensible</strong> — producer of a branded item; material; item sector. &nbsp;
+    <span class="tier tier-B">B</span> <strong>Probabilistic</strong> — source region / emission pathway (disclose uncertainty). &nbsp;
+    <span class="tier tier-C">C</span> <strong>Never asserted</strong> — the emitting country of a specific item; a single origin.
+  </p>
+
+  <h2><span class="n">1</span>Observed evidence on our shore</h2>
+  <p><strong>74</strong> geotagged litter observations are documented along this
+  coastline across <strong>2</strong> clusters
+  (source: <strong>openlittermap</strong>, licence ODbL-1.0). This is a
+  <em>documented sample</em>, not a census of everything that has washed up.</p>
+</section>
+
+<!-- ============ AXIS 1 — PRODUCER ============ -->
+<section>
+  <h2><span class="axis">Tier A · corporate</span><span class="n">2</span>Producer responsibility</h2>
+  <p class="small">Computed from the Break Free From Plastic brand-audit dataset (Cowger et al. 2024, CC-BY-4.0)
+  at the <strong>regional</strong> level. Shares are of branded (attributable) items.</p>
+  <div class="bars">
+      <div class="bar-row">
+    <div class="bar-label">the coca-cola company <span class="tier tier-A">A</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:32.8%"></div></div>
+    <div class="bar-val">32.8%</div>
+  </div>
+
+      <div class="bar-row">
+    <div class="bar-label">pepsico <span class="tier tier-A">A</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:19.4%"></div></div>
+    <div class="bar-val">19.4%</div>
+  </div>
+
+      <div class="bar-row">
+    <div class="bar-label">unicel <span class="tier tier-A">A</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:4.6%"></div></div>
+    <div class="bar-val">4.6%</div>
+  </div>
+
+      <div class="bar-row">
+    <div class="bar-label">bolsas de agua <span class="tier tier-A">A</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:4.5%"></div></div>
+    <div class="bar-val">4.5%</div>
+  </div>
+
+      <div class="bar-row">
+    <div class="bar-label">grupo bimbo <span class="tier tier-A">A</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:4.3%"></div></div>
+    <div class="bar-val">4.3%</div>
+  </div>
+
+      <div class="bar-row">
+    <div class="bar-label">nestlé <span class="tier tier-A">A</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:4.0%"></div></div>
+    <div class="bar-val">4.0%</div>
+  </div>
+
+      <div class="bar-row">
+    <div class="bar-label">Other attributable producers <span class="tier tier-A">A</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:30.3%"></div></div>
+    <div class="bar-val">30.3%</div>
+  </div>
+
+  </div>
+  <div class="callout note">
+    <div class="h">Mandatory disclosures</div>
+    <ul class="tight">
+<li>~63% of audited items are UNBRANDED — the producer axis is silent on them. Shares above are of the branded remainder only.</li><li>Producer attribution is COUNT-BASED, not mass-based; rankings shift with audit location and ranking rule (volume vs geographic spread).</li><li>Brand strings are collaborator-entered and not fully standardized (BFFP data note).</li><li>Producer shares were computed at the &#39;regional&#39; level. Producer shares computed from 63 brand-audit events in 4 Caribbean-basin countries (Saint Lucia has no BFFP audits).</li>    </ul>
+  </div>
+  <p class="small"><strong>This axis names companies, never countries.</strong> It does not say any nation polluted Saint Lucia.</p>
+</section>
+
+<!-- ============ AXIS 2 — PATHWAY / REGION ============ -->
+<section>
+  <h2><span class="axis">Tier B · probabilistic</span><span class="n">3</span>Emission pathway &amp; source region</h2>
+  <div class="callout stub">
+    <div class="h">Illustrative prior — not a calibrated model</div>
+    Tier B — ILLUSTRATIVE PRIOR, not a calibrated drift ensemble. Pathway split is the Meijer &amp; van Sebille (2021) backtracking posterior; the region split is an analyst prior from the pilot config. Replace with an OpenDrift backtracking ensemble before relying on it.
+  </div>
+  <h3>Likely emission pathway</h3>
+  <div class="bars">
+  <div class="bar-row">
+    <div class="bar-label">Coastal land leakage <span class="tier tier-B">B</span></div>
+    <div class="bar-track"><div class="bar-fill b" style="width:66.5%"></div></div>
+    <div class="bar-val">66.5%</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">Riverine input <span class="tier tier-B">B</span></div>
+    <div class="bar-track"><div class="bar-fill b" style="width:13.3%"></div></div>
+    <div class="bar-val">13.3%</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">Fisheries / shipping <span class="tier tier-B">B</span></div>
+    <div class="bar-track"><div class="bar-fill b" style="width:20.2%"></div></div>
+    <div class="bar-val">20.2%</div>
+  </div>
+  </div>
+  <h3>Illustrative source-region prior for this basin</h3>
+  <div class="bars">
+  <div class="bar-row">
+    <div class="bar-label">Local — Saint Lucia &amp; Lesser Antilles coast <span class="tier tier-B">B</span></div>
+    <div class="bar-track"><div class="bar-fill b" style="width:40.0%"></div></div>
+    <div class="bar-val">40.0%</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">Wider Caribbean basin (regional rivers &amp; islands) <span class="tier tier-B">B</span></div>
+    <div class="bar-track"><div class="bar-fill b" style="width:25.0%"></div></div>
+    <div class="bar-val">25.0%</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">North Atlantic transport &amp; shipping lanes <span class="tier tier-B">B</span></div>
+    <div class="bar-track"><div class="bar-fill b" style="width:25.0%"></div></div>
+    <div class="bar-val">25.0%</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">South American river plumes (Amazon / Orinoco) <span class="tier tier-B">B</span></div>
+    <div class="bar-track"><div class="bar-fill b" style="width:10.0%"></div></div>
+    <div class="bar-val">10.0%</div>
+  </div>
+  </div>
+</section>
+
+<!-- ============ COMPOSITION ============ -->
+<section>
+  <h2><span class="axis">Tier A · composition only</span><span class="n">4</span>What kind of plastic</h2>
+  <table>
+    <thead><tr><th>By sector / use</th><th class="num">Share</th><th class="num">Tier</th>
+      <th>By material / polymer</th><th class="num">Share</th><th class="num">Tier</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>food packaging</td>
+        <td class="num">33.5%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+        <td>pet</td>
+        <td class="num">29.6%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+      </tr>
+      <tr>
+        <td>other</td>
+        <td class="num">7.3%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+        <td>o</td>
+        <td class="num">22.2%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+      </tr>
+      <tr>
+        <td>household products</td>
+        <td class="num">3.3%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+        <td>ps</td>
+        <td class="num">15.9%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+      </tr>
+      <tr>
+        <td>smoking materials</td>
+        <td class="num">2.6%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+        <td>pp</td>
+        <td class="num">12.0%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+      </tr>
+      <tr>
+        <td>packaging materials</td>
+        <td class="num">2.1%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+        <td>hdpe</td>
+        <td class="num">3.2%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+      </tr>
+      <tr>
+        <td>personal care</td>
+        <td class="num">1.0%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+        <td>ldpe</td>
+        <td class="num">1.5%</td>
+        <td class="num"><span class="tier tier-A">A</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="small muted">Polymer is material type only — it carries zero geographic provenance.</p>
+
+  <div class="callout warn">
+    <div class="h">The governing confound — manufactured-in ≠ consumed-in ≠ emitted-from</div>
+    <p style="margin-bottom:4pt">Where audited litter was <em>collected</em> (consumed-in) is not where it was made or emitted:</p>
+    <ul class="tight">
+<li>Mexico — 72.4% of audited items</li><li>Colombia — 17.9% of audited items</li><li>Jamaica — 9.6% of audited items</li><li>Puerto Rico — 0.0% of audited items</li>    </ul>
+  </div>
+</section>
+
+<!-- ============ MONETARY ============ -->
+<section>
+  <h2><span class="n">5</span>The monetary ask <span class="muted" style="font-size:9pt;font-weight:400">— banded, never point estimates</span></h2>
+  <p class="small">Estimated documented-sample mass: <strong>0.4 – 2.2 kg (central 0.9 kg)</strong>.
+Illustrative coastline-scaled mass: 1.2 – 111.0 kg (central 8.9 kg).</p>
+  <table>
+    <thead><tr><th>Layer</th><th class="num">Estimate (USD)</th><th>Role</th><th>Basis</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Local cleanup cost (documented sample)</td>
+        <td class="num">$0 – $6 (central $1)</td>
+        <td><span class="role role-headline">headline</span></td>
+        <td class="small">74 documented OpenLitterMap observations x 5.0-30.0 g/item x $0.5-2.5/kg cleanup.</td>
+      </tr>
+      <tr>
+        <td>Cleanup cost scaled to coastline (ILLUSTRATIVE)</td>
+        <td class="num">$1 – $278 (central $11)</td>
+        <td><span class="role role-context">context</span></td>
+        <td class="small">Documented sample / sample_fraction (0.02-0.3).</td>
+      </tr>
+      <tr>
+        <td>Ecosystem-service / natural-capital value</td>
+        <td class="num">$1 – $73 (central $9)</td>
+        <td><span class="role role-context">context</span></td>
+        <td class="small">Documented mass x UNEP/GESAMP $3,300-33,000 per tonne reduced marine natural capital.</td>
+      </tr>
+      <tr>
+        <td>Full-lifecycle social cost</td>
+        <td class="num">$7 – $333 (central $53)</td>
+        <td><span class="role role-comparator">comparator</span></td>
+        <td class="small">Documented mass x WWF/Dalberg $19-150 per kg lifecycle social cost.</td>
+      </tr>
+      <tr>
+        <td>Plastic-credit price (cross-check)</td>
+        <td class="num">$0 – $2 (central $0)</td>
+        <td><span class="role role-cross-check">cross-check</span></td>
+        <td class="small">Documented mass x World Bank/Verra $140-800 per tonne plastic-credit range.</td>
+      </tr>
+      <tr>
+        <td>Tourism / fisheries revenue at risk</td>
+        <td class="num">$5,500,000 – $55,000,000 (central $22,000,000)</td>
+        <td><span class="role role-headline">headline</span></td>
+        <td class="small">$1,100,000,000 annual tourism receipts x 0.5%-5.0% debris deterrence.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="headline">
+    <div class="lbl">Headline ask — defensible floor (Layer 1 + Layer 2)</div>
+    <div class="fig">$5,500,000 – $55,000,006 (central $22,000,001)</div>
+    <div class="note">Worked corporate example — <strong>the coca-cola company</strong> at
+      12.2% of all documented items → attributable share ≈
+      <strong>$670,786 – $6,707,857 (central $2,683,143)</strong>
+      <span class="muted">(an EPR/contribution figure, not a court award).</span></div>
+  </div>
+
+  <h3>Per-layer caveats</h3>
+  <ul class="tight small">
+<li><strong>Local cleanup cost (documented sample)</strong> (headline): Bottom-up local cost; replace the illustrative per-item mass and $/kg with measured local figures. Covers the documented sample only.</li><li><strong>Cleanup cost scaled to coastline (ILLUSTRATIVE)</strong> (context): Depends entirely on the assumed sampling fraction — illustrative, NOT a headline figure. A defensible report measures coastline density directly.</li><li><strong>Ecosystem-service / natural-capital value</strong> (context): Willingness-to-avoid valuation (2011-era), not an auditable invoice. Context anchor.</li><li><strong>Full-lifecycle social cost</strong> (comparator): Bundles GHG + health + waste externalities across the WHOLE lifecycle; overstates what is attributable to this coastline. Comparator only.</li><li><strong>Plastic-credit price (cross-check)</strong> (cross-check): Credits are contested (GAIA/BFFP greenwashing findings: additionality failures, incineration). Never the core ask; require registry-listed + audited + retired provenance.</li><li><strong>Tourism / fisheries revenue at risk</strong> (headline): Case-backed (e.g. Cape Town, Zanzibar); deterrence % is illustrative — calibrate locally.</li>  </ul>
+  <p class="small muted">Uncertainty context: bottom-up river models put global input at
+    1.1 – 2.4 Mt/yr (central 1.8 Mt/yr) (Lebreton 2017), while the top-down seawater constraint is
+    0.1 – 3.8 Mt/yr (central 0.7 Mt/yr) (Strokal 2023) — cited so this report is not accused of cherry-picking the high end.</p>
+</section>
+
+<!-- ============ LEGAL ============ -->
+<section>
+  <h2><span class="n">6</span>Where this goes &amp; the lever it pulls</h2>
+  <p class="small">Primary forum: <strong>domestic_epr</strong> · jurisdiction:
+    <strong>Saint Lucia</strong> · regional: Cartagena Convention (Wider Caribbean Region).</p>
+  <table>
+    <thead><tr><th>Forum</th><th>Principle</th><th>Enforceability</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Domestic EPR regulator</strong></td><td class="small">Extended Producer Responsibility</td>
+        <td class="small">HARD / enforceable — the only genuinely binding cost-recovery lever, but reaches only producers within your own jurisdiction.</td><td class="small">Lead ask</td></tr>
+      <tr><td><strong>UNEA / INC Global Plastics Treaty</strong></td><td class="small">Polluter-pays + loss-and-damage framing</td>
+        <td class="small">Soft / advocacy — negotiations deadlocked (INC-5.1/5.2/5.3); draft finance is implementation funding, not liability/compensation.</td><td class="small">Advocacy</td></tr>
+      <tr><td><strong>Regional Seas (Cartagena Convention, Wider Caribbean)</strong></td><td class="small">Cooperation + regional litter plans</td>
+        <td class="small">Mixed — concrete forum, some binding plans, but no victim-compensation machinery.</td><td class="small">Diplomacy</td></tr>
+      <tr><td><strong>Basel Convention</strong></td><td class="small">Prior Informed Consent on waste exports</td>
+        <td class="small">Binding but wrong remedy — lets you refuse/control imports, gives no right to be paid.</td><td class="small">Leverage</td></tr>
+      <tr><td><strong>IMO MARPOL Annex V</strong></td><td class="small">Ban on ship-source plastic discharge</td>
+        <td class="small">Binding but flag/port-state enforced — no coastal-state compensation right.</td><td class="small">Leverage</td></tr>
+      <tr><td><strong>UNCLOS Part XV / ITLOS</strong></td><td class="small">No-transboundary-harm duty + state responsibility</td>
+        <td class="small">Hard in theory, UNTESTED for plastics; consent-based jurisdiction. 2024 ITLOS / 2025 ICJ advisory opinions are tailwinds but advisory and about GHGs.</td><td class="small">Appendix only</td></tr>
+    </tbody>
+  </table>
+  <p class="small"><strong>Framing:</strong> lead with the enforceable EPR cost-recovery ask; present the
+    regional-seas / UNEA asks as advocacy leverage; reserve the UNCLOS pathway as a credible-but-untested appendix.</p>
+</section>
+
+<!-- ============ APPENDICES ============ -->
+<section>
+  <h2><span class="n">A</span>Global emission baseline <span class="muted" style="font-size:9pt;font-weight:400">— context, not blame</span></h2>
+  <p class="small">Top mismanaged-plastic emitters (Jambeck 2015 / Our World in Data, 2010 base year). Global
+    context — <em>not</em> a claim about who polluted Saint Lucia; the basin drift prior in §3 speaks to this shoreline.</p>
+  <table>
+    <thead><tr><th>Country</th><th class="num">Mismanaged plastic (Mt/yr, 2010)</th><th class="num">Share of listed</th></tr></thead>
+    <tbody>
+      <tr><td>China</td><td class="num">8.82</td><td class="num">35.4%</td></tr>
+      <tr><td>Indonesia</td><td class="num">3.22</td><td class="num">12.9%</td></tr>
+      <tr><td>Philippines</td><td class="num">1.88</td><td class="num">7.5%</td></tr>
+      <tr><td>Vietnam</td><td class="num">1.83</td><td class="num">7.3%</td></tr>
+      <tr><td>Sri Lanka</td><td class="num">1.59</td><td class="num">6.4%</td></tr>
+      <tr><td>Thailand</td><td class="num">1.03</td><td class="num">4.1%</td></tr>
+      <tr><td>Egypt</td><td class="num">0.97</td><td class="num">3.9%</td></tr>
+      <tr><td>Malaysia</td><td class="num">0.94</td><td class="num">3.8%</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="n">B</span>Limitations &amp; credibility risks</h2>
+  <p class="small">The things that could get this report dismissed — and how each is caveated so it survives scrutiny.</p>
+  <ol class="tight small">
+<li><strong>Manufactured-in != emitted-from.</strong> Producer responsibility and emission pathway are reported as SEPARATE axes; no emitting country is named from item-level evidence (the Inaccessible Island trap).</li><li><strong>Brand audits blind to ~half the items, count-not-mass.</strong> The unbranded share is stated; counts and (where possible) mass kept separate; rankings noted to shift with audit location and ranking rule.</li><li><strong>River/country emission models weakly validated, disagree by ~2 orders of magnitude.</strong> Figures are ranges, used as ordinal/relative; the Strokal-2023 top-down ~0.7 Mt/yr anchor is cited against the bottom-up centrals.</li><li><strong>Drift attribution is probabilistic, dominated by unknown floating time.</strong> Region/pathway are an illustrative Tier-B prior (a STUB), never a country/river for a single item; the full build outputs a probability map with ensemble spread.</li><li><strong>Plastic-credit valuation invites greenwashing attack.</strong> Credits are a cross-check only, never the core ask; GAIA/BFFP critiques disclosed.</li><li><strong>No enforceable forum exists.</strong> Framed as EPR cost-recovery + a contribution case (the L&amp;D no-liability template), not a verdict.</li><li><strong>Data-license / provenance traps.</strong> License tracked per record; CC-BY-NC sources quarantined; commercial-safe sources preferred.</li><li><strong>Single-vendor / single-source figures.</strong> Such figures are labelled; multiply-corroborated numbers (Jambeck headline, Cowger brand shares, World Bank credit range) are led with.</li>  </ol>
+
+  <h2><span class="n">C</span>Data sources &amp; licences</h2>
+  <table>
+    <thead><tr><th>Source</th><th>Role</th><th>Licence</th><th class="num">Commercial-safe</th></tr></thead>
+    <tbody>
+      <tr><td>OpenLitterMap</td><td class="small">item-observations</td><td class="small">ODbL-1.0</td>
+        <td class="num">yes</td></tr>
+      <tr><td>Break Free From Plastic brand audit (Cowger et al. 2024)</td><td class="small">producer-attribution</td><td class="small">CC-BY-4.0</td>
+        <td class="num">yes</td></tr>
+      <tr><td>Lebreton et al. 2017 river plastic emissions</td><td class="small">river-baseline</td><td class="small">CC-BY-4.0</td>
+        <td class="num">yes</td></tr>
+      <tr><td>Jambeck et al. 2015 mismanaged plastic waste (via Our World in Data)</td><td class="small">country-baseline</td><td class="small">CC-BY-4.0</td>
+        <td class="num">yes</td></tr>
+      <tr><td>Strokal/Weiss et al. 2023 top-down seawater constraint</td><td class="small">uncertainty-anchor</td><td class="small">CC-BY-4.0</td>
+        <td class="num">yes</td></tr>
+      <tr><td>Meijer et al. 2021 (via theoceancleanup.com framing)</td><td class="small">river-baseline</td><td class="small">CC-BY-NC-ND-3.0</td>
+        <td class="num"><span class="tier tier-C">quarantined</span></td></tr>
+      <tr><td>Minderoo Global Plastic Watch (satellite)</td><td class="small">land-leakage-context</td><td class="small">CC-BY-NC-2.0</td>
+        <td class="num"><span class="tier tier-C">quarantined</span></td></tr>
+      <tr><td>Ocean Conservancy TIDES (International Coastal Cleanup)</td><td class="small">item-observations</td><td class="small">unresolved</td>
+        <td class="num"><span class="tier tier-C">quarantined</span></td></tr>
+    </tbody>
+  </table>
+  <p class="footnote">Quarantined (CC-BY-NC / unresolved terms), used for context only:
+Meijer et al. 2021 (via theoceancleanup.com framing); Minderoo Global Plastic Watch (satellite); Ocean Conservancy TIDES (International Coastal Cleanup).</p>
+
+  <p class="footnote" style="margin-top:14pt">Generated by the oceanplastic MVP. Replace illustrative defaults
+    (per-item mass, $/kg, deterrence %, sampling fraction, drift prior) with locally-measured values before any real submission.</p>
+</section>
+
+</body>
+</html>

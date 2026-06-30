@@ -1,0 +1,83 @@
+# Source registry. `normalize.tag_license` reads this to stamp every record with its
+# license + commercial_ok flag. `commercial_ok: false` sources are QUARANTINED: they are
+# excluded from any commercial-output path (see the --commercial CLI flag) and are used
+# for context only. Verified during the research pass (see docs/DATA_SOURCES.md).
+
+sources:
+  openlittermap:
+    name: OpenLitterMap
+    url: https://openlittermap.com
+    api: https://openlittermap.com/api/clusters
+    access: api                       # public, no-auth GeoJSON
+    license: ODbL-1.0
+    license_url: https://opendatacommons.org/licenses/odbl/
+    commercial_ok: true               # ODbL: commercial OK *with* attribution + share-alike
+    share_alike: true
+    role: item-observations
+    note: "Local observation density. /api/download needs auth; /timeseries & /categories do not exist."
+
+  bffp_cowger_2024:
+    name: "Break Free From Plastic brand audit (Cowger et al. 2024)"
+    url: https://doi.org/10.5281/zenodo.8428296
+    zenodo_record: "10849603"
+    zenodo_file: "wincowgerDEV/BFFP-FinalPub.zip"
+    access: download
+    license: CC-BY-4.0
+    commercial_ok: true
+    role: producer-attribution
+    note: "1.87M items, 84 countries, 2018-2022. ~51% unbranded. Count-based, not mass-based."
+
+  lebreton_2017:
+    name: "Lebreton et al. 2017 river plastic emissions"
+    url: https://figshare.com/articles/dataset/River_plastic_emissions_to_the_world_s_oceans/4725541
+    access: download
+    license: CC-BY-4.0
+    commercial_ok: true
+    role: river-baseline
+    note: "1.15-2.41 Mt/yr, 40,760 catchments. Commercial-safe base river layer (prefer over Meijer-site)."
+
+  jambeck_2015_owid:
+    name: "Jambeck et al. 2015 mismanaged plastic waste (via Our World in Data)"
+    url: https://ourworldindata.org/ocean-plastics
+    access: embedded                  # small curated table shipped in the repo
+    license: CC-BY-4.0
+    commercial_ok: true
+    role: country-baseline
+    note: "Country-level mismanaged-waste, 2010 base year. Use as ordinal/relative, not exact."
+
+  strokal_2023:
+    name: "Strokal/Weiss et al. 2023 top-down seawater constraint"
+    url: https://www.nature.com/articles/s41467-023-37108-5
+    access: reference
+    license: CC-BY-4.0
+    commercial_ok: true
+    role: uncertainty-anchor
+    note: "Seawater-constrained ~0.7 Mt/yr (CI 0.13-3.8). Cite to keep uncertainty bands honest."
+
+  # ---- QUARANTINED (CC-BY-NC / unresolved terms): context only ----
+  meijer_2021_oceancleanup_site:
+    name: "Meijer et al. 2021 (via theoceancleanup.com framing)"
+    url: https://theoceancleanup.com/sources/
+    access: reference
+    license: CC-BY-NC-ND-3.0
+    commercial_ok: false              # QUARANTINED — use the figshare CC-BY copy instead
+    role: river-baseline
+    note: "Site framing is NC-ND. The figshare copy (14515590) is CC-BY-4.0 and is the safe one."
+
+  minderoo_gpw:
+    name: "Minderoo Global Plastic Watch (satellite)"
+    url: https://globalplasticwatch.org/
+    access: api-gated
+    license: CC-BY-NC-2.0
+    commercial_ok: false              # QUARANTINED — non-commercial
+    role: land-leakage-context
+    note: "Satellite land-aggregation sites. Non-commercial; API behind a registration form."
+
+  ocean_conservancy_tides:
+    name: "Ocean Conservancy TIDES (International Coastal Cleanup)"
+    url: https://www.coastalcleanupdata.org/
+    access: manual
+    license: unresolved
+    commercial_ok: false              # QUARANTINED — redistribution terms unresolved
+    role: item-observations
+    note: "Largest volunteer trash dataset; resolve redistribution terms before relying on it."

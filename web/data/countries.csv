@@ -1,0 +1,177 @@
+iso,name,continent,mismanaged_tonnes,ocean_share_pct,per_capita_kg_day
+FJI,Fiji,Oceania,3858,0.0373,0.189
+TZA,Tanzania,Africa,1716400,0.5906,0.023
+ESH,W. Sahara,Africa,4114,0.0039,
+CAN,Canada,North America,23587,0.0243,0.093
+USA,United States of America,North America,267469,0.2482,0.335
+KAZ,Kazakhstan,Asia,54242,0.0013,
+UZB,Uzbekistan,Asia,,,
+PNG,Papua New Guinea,Oceania,119538,0.3123,0.103
+IDN,Indonesia,Asia,824234,5.7514,0.057
+ARG,Argentina,South America,465808,0.4224,0.183
+CHL,Chile,South America,30767,0.0329,0.119
+COD,Dem. Rep. Congo,Africa,1369730,0.0429,0.045
+SOM,Somalia,Africa,42,0.0002,0.054
+KEN,Kenya,Africa,289917,0.0264,0.027
+SDN,Sudan,Africa,781625,0.0108,0.103
+TCD,Chad,Africa,,,
+HTI,Haiti,North America,237968,0.7074,0.09
+DOM,Dominican Rep.,North America,194018,0.6408,0.144
+RUS,Russia,Europe,363389,0.0553,0.112
+BHS,Bahamas,North America,2212,0.002,0.39
+FLK,Falkland Is.,South America,,,0.252
+NOR,Norway,Europe,1494,0.0,0.28
+GRL,Greenland,North America,,,0.252
+ATF,Fr. S. Antarctic Lands,Seven seas (open ocean),,,
+TLS,Timor-Leste,Asia,17244,0.073,
+ZAF,South Africa,Africa,708467,0.4355,0.24
+LSO,Lesotho,Africa,30391,0.0,
+MEX,Mexico,North America,430614,0.3586,0.087
+URY,Uruguay,South America,92620,0.1019,0.252
+BRA,Brazil,South America,3296700,3.8592,0.165
+BOL,Bolivia,South America,,,
+PER,Peru,South America,140313,0.0264,0.144
+COL,Colombia,South America,85454,0.044,0.144
+PAN,Panama,North America,36339,0.5347,0.145
+CRI,Costa Rica,North America,5751,0.0459,0.258
+NIC,Nicaragua,North America,110862,0.1496,0.143
+HND,Honduras,North America,145995,0.2487,0.189
+SLV,El Salvador,North America,21693,0.0825,0.147
+GTM,Guatemala,North America,311003,0.7292,0.28
+BLZ,Belize,North America,6021,0.0382,0.172
+VEN,Venezuela,South America,671431,0.6114,0.252
+GUY,Guyana,South America,27565,0.1272,0.586
+SUR,Suriname,South America,22933,0.1712,0.163
+FRA,France,Europe,27780,0.024,0.192
+ECU,Ecuador,South America,108797,0.116,0.147
+PRI,Puerto Rico,North America,1293,0.0072,0.252
+JAM,Jamaica,North America,49673,0.2383,0.034
+CUB,Cuba,North America,,,0.089
+ZWE,Zimbabwe,Africa,524865,0.0,
+BWA,Botswana,Africa,,,
+NAM,Namibia,Africa,20892,0.0002,0.144
+SEN,Senegal,Africa,65660,0.0173,0.103
+MLI,Mali,Africa,,,
+MRT,Mauritania,Africa,20796,0.013,0.045
+BEN,Benin,Africa,133335,0.1673,0.043
+NER,Niger,Africa,,,
+NGA,Nigeria,Africa,1948950,1.9031,0.103
+CMR,Cameroon,Africa,578798,1.0895,0.046
+TGO,Togo,Africa,121783,0.0445,0.057
+GHA,Ghana,Africa,520002,0.4273,0.04
+CIV,Côte d'Ivoire,Africa,291614,0.4884,0.103
+GIN,Guinea,Africa,147997,0.2396,0.03
+GNB,Guinea-Bissau,Africa,20465,0.0252,0.054
+LBR,Liberia,Africa,39930,0.2693,0.084
+SLE,Sierra Leone,Africa,91239,0.37,0.041
+BFA,Burkina Faso,Africa,317298,0.0,
+CAF,Central African Rep.,Africa,,,
+COG,Congo,Africa,65291,0.069,0.069
+GAB,Gabon,Africa,5991,0.0454,0.054
+GNQ,Eq. Guinea,Africa,9403,0.0413,0.144
+ZMB,Zambia,Africa,,,
+MWI,Malawi,Africa,,,
+MOZ,Mozambique,Africa,434432,0.2597,0.015
+SWZ,eSwatini,Africa,,,
+AGO,Angola,Africa,236946,0.0878,0.062
+BDI,Burundi,Africa,,,
+ISR,Israel,Asia,6060,0.0034,0.297
+LBN,Lebanon,Asia,46622,0.0698,0.094
+MDG,Madagascar,Africa,25250,0.0791,0.016
+PSE,Palestine,Asia,2129,0.012,0.063
+GMB,Gambia,Africa,35095,0.043,0.048
+TUN,Tunisia,Africa,289538,0.0702,0.144
+DZA,Algeria,Africa,764578,0.5895,0.144
+JOR,Jordan,Asia,124425,0.0001,0.144
+ARE,United Arab Emirates,Asia,5135,0.0014,0.199
+QAT,Qatar,Asia,1532,0.0,0.16
+KWT,Kuwait,Asia,2640,0.0007,0.686
+IRQ,Iraq,Asia,491771,0.0068,0.103
+OMN,Oman,Asia,1251,0.0001,0.084
+VUT,Vanuatu,Oceania,,,0.295
+KHM,Cambodia,Asia,247495,0.1136,0.066
+THA,Thailand,Asia,1361690,2.3284,0.144
+LAO,Laos,Asia,,,
+MMR,Myanmar,Asia,434432,0.2597,0.075
+VNM,Vietnam,Asia,1112790,2.8813,0.103
+PRK,North Korea,Asia,322,0.0051,0.054
+KOR,South Korea,Asia,12156,0.0395,0.112
+MNG,Mongolia,Asia,,,
+IND,India,Asia,12994100,12.9166,0.01
+BGD,Bangladesh,Asia,1021990,2.5157,0.034
+BTN,Bhutan,Asia,,,
+NPL,Nepal,Asia,,,
+PAK,Pakistan,Asia,1346460,0.0891,0.103
+AFG,Afghanistan,Asia,,,
+TJK,Tajikistan,Asia,,,
+KGZ,Kyrgyzstan,Asia,,,
+TKM,Turkmenistan,Asia,,,
+IRN,Iran,Asia,495965,0.0947,0.144
+SYR,Syria,Asia,502,0.0045,0.178
+ARM,Armenia,Asia,,,
+SWE,Sweden,Europe,4255,0.0037,0.048
+BLR,Belarus,Europe,,,
+UKR,Ukraine,Europe,393777,0.0877,0.103
+POL,Poland,Europe,14124,0.003,0.097
+AUT,Austria,Europe,,,
+HUN,Hungary,Europe,,,
+MDA,Moldova,Europe,,,
+ROU,Romania,Europe,52161,0.0082,0.042
+LTU,Lithuania,Europe,1037,0.0007,0.132
+LVA,Latvia,Europe,955,0.0009,0.124
+EST,Estonia,Europe,600,0.0012,0.176
+DEU,Germany,Europe,50676,0.0137,0.485
+BGR,Bulgaria,Europe,3117,0.0007,0.154
+GRC,Greece,Europe,4506,0.0221,0.2
+TUR,Turkey,Asia,1656110,1.463,0.212
+ALB,Albania,Europe,69833,0.1598,0.069
+HRV,Croatia,Europe,17544,0.0229,0.252
+CHE,Switzerland,Europe,,,
+LUX,Luxembourg,Europe,,,
+BEL,Belgium,Europe,2284,0.0035,0.08
+NLD,Netherlands,Europe,15233,0.0277,0.424
+PRT,Portugal,Europe,3818,0.0078,0.265
+ESP,Spain,Europe,20350,0.024,0.277
+IRL,Ireland,Europe,2675,0.0117,0.43
+NCL,New Caledonia,Oceania,,,0.252
+SLB,Solomon Is.,Oceania,3520,0.0102,0.103
+NZL,New Zealand,Oceania,1714,0.0069,0.331
+AUS,Australia,Oceania,5266,0.0033,0.112
+LKA,Sri Lanka,Asia,155466,0.9856,0.357
+CHN,China,Asia,12272200,7.219,0.121
+TWN,Taiwan,Asia,7502,0.0542,0.252
+ITA,Italy,Europe,38803,0.0423,0.134
+DNK,Denmark,Europe,390,0.0009,0.047
+GBR,United Kingdom,Europe,29914,0.0718,0.215
+ISL,Iceland,Europe,151,0.0,0.281
+AZE,Azerbaijan,Asia,,,
+GEO,Georgia,Asia,307,0.0003,0.068
+PHL,Philippines,Asia,4025300,36.3845,0.075
+MYS,Malaysia,Asia,814454,7.4631,0.198
+BRN,Brunei,Asia,692,0.0137,0.026
+SVN,Slovenia,Europe,844,0.0011,0.145
+FIN,Finland,Europe,2621,0.0,0.234
+SVK,Slovakia,Europe,1719,0.0,
+CZE,Czechia,Europe,,,
+ERI,Eritrea,Africa,84088,0.0049,0.045
+JPN,Japan,Asia,35684,0.1873,0.171
+PRY,Paraguay,South America,,,
+YEM,Yemen,Asia,291737,0.0257,0.103
+SAU,Saudi Arabia,Asia,7176,0.0003,0.156
+-99,N. Cyprus,Asia,,,
+CYP,Cyprus,Asia,837,0.0003,0.248
+MAR,Morocco,Africa,295488,0.1838,0.073
+EGY,Egypt,Africa,1435510,0.2523,0.178
+LBY,Libya,Africa,188535,0.0897,0.144
+ETH,Ethiopia,Africa,,,
+DJI,Djibouti,Africa,10289,0.0004,0.103
+-99,Somaliland,Africa,,,
+UGA,Uganda,Africa,,,
+RWA,Rwanda,Africa,,,
+BIH,Bosnia and Herz.,Europe,55551,0.0006,0.144
+MKD,North Macedonia,Europe,,,
+SRB,Serbia,Europe,,,
+MNE,Montenegro,Europe,16,0.0,0.144
+-99,Kosovo,Europe,,,
+TTO,Trinidad and Tobago,North America,73139,0.3632,0.29
+SSD,S. Sudan,Africa,,,
