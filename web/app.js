@@ -31,7 +31,7 @@
   var view = { scale: 1, cx: BASE.x + BASE.w / 2, cy: BASE.y + BASE.h / 2 };
   var pan = { active: false, x: 0, y: 0, moved: false };
   var raf = null, playT = null, toastT = null;
-  var DATA, RIVERS, META, PROD, REGIONS, TRADE, byIso = {}, expSeries, oceanSeries;
+  var DATA, RIVERS, META, PROD, REGIONS, TRADE, PROJECTS, byIso = {}, expSeries, oceanSeries;
   var kMis, kRiver, kProdL, kProdF, kOceL, kOceF;
 
   var app = document.getElementById('app');
@@ -322,7 +322,20 @@
       + stat('Plastic waste per capita', fmtSnap('pc', p.pc), 'rank ' + (rankOf(p.iso, 'pc') || '—'))
       + (expRec ? '<div style="padding:11px 13px;border:1px solid #e6ecf1;border-radius:10px;margin-bottom:9px"><div style="font:600 10px \'IBM Plex Mono\';color:#9aa7b2;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Plastic-waste exports over time</div>' + miniSpark(p.iso, true) + '</div>' : '')
       + '<div style="display:flex;gap:8px;margin-top:4px"><button class="gpw-btn" data-act="cmp-toggle" data-arg="' + p.iso + '" style="flex:1;background:' + (cmp ? '#fff' : A) + ';border:1px solid ' + (cmp ? '#dde5ec' : A) + ';color:' + (cmp ? '#48586a' : '#fff') + ';font:600 13px \'IBM Plex Sans\';padding:10px;border-radius:9px;cursor:pointer">' + (cmp ? '✓ In compare — remove' : '+ Add to compare') + '</button><button class="gpw-btn" data-act="focus-country" data-arg="' + p.iso + '" style="background:#fff;border:1px solid #dde5ec;color:#0c1e2e;font:600 13px \'IBM Plex Sans\';padding:10px 13px;border-radius:9px;cursor:pointer">⤢ Zoom</button></div>'
+      + fundLinks(p.iso)
       + '<div style="font:500 11px/1.5 \'IBM Plex Mono\';color:#9aa7b2;margin-top:12px">Estimates are modeled single-year snapshots — relative, not exact.</div></div></div></div>';
+  }
+  function fundLinks(iso) {
+    if (!PROJECTS || PROJECTS.country_iso !== iso) return '';
+    var sites = PROJECTS.projects.filter(function (x) { return x.type !== 'prevention'; });
+    if (!sites.length) return '';
+    var rows = sites.slice(0, 4).map(function (s) {
+      return '<a href="fund.html#proj-' + s.id + '" style="display:flex;align-items:center;justify-content:space-between;gap:8px;text-decoration:none;padding:7px 0;border-top:1px solid #eef2f5"><span style="font:600 12px \'IBM Plex Sans\';color:#0c1e2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + s.name + '</span><span style="flex:none;font:600 11px \'IBM Plex Mono\';color:' + A + '">Fund →</span></a>';
+    }).join('');
+    return '<div style="margin-top:14px;border:1px solid #cfe3e6;border-radius:10px;padding:11px 13px;background:#f3fafb">'
+      + '<div style="font:600 10px \'IBM Plex Mono\';color:' + A + ';text-transform:uppercase;letter-spacing:.5px">♥ Fund a cleanup here</div>'
+      + '<div style="font:500 11px \'IBM Plex Sans\';color:#8b98a3;margin:3px 0 2px">' + sites.length + ' vetted local project' + (sites.length > 1 ? 's' : '') + ' you can support</div>'
+      + rows + '</div>';
   }
   function buildAbout() {
     if (!state.aboutOpen) return '';
@@ -450,9 +463,10 @@
     fetch('data/meta.json').then(function (r) { return r.json(); }),
     fetch('data/production.json').then(function (r) { return r.json(); }),
     fetch('data/timeline-regions.json').then(function (r) { return r.json(); }),
-    fetch('data/timeline-trade.json').then(function (r) { return r.json(); })
+    fetch('data/timeline-trade.json').then(function (r) { return r.json(); }),
+    fetch('data/projects.json').then(function (r) { return r.json(); }).catch(function () { return null; })
   ]).then(function (res) {
-    DATA = res[0]; RIVERS = res[1]; META = res[2]; PROD = res[3].series; REGIONS = res[4]; TRADE = res[5];
+    DATA = res[0]; RIVERS = res[1]; META = res[2]; PROD = res[3].series; REGIONS = res[4]; TRADE = res[5]; PROJECTS = res[6];
     process(); state.year = expSeries[expSeries.length - 1][0]; state.loaded = true; render();
   }).catch(function (err) { console.error(err); state.err = String(err); render(); });
 })();

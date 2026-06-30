@@ -1,5 +1,6 @@
 {
   "note": "Pilot cleanup projects (Philippines). Priority = Severity × Exposure × Ecology (each 1–5) → 0–100. The donation card (Option 1c 'Tangible Ask') shows an impact calculator: amount chips → kg removed (amount/50 × impact_per50) → a bar maxing at impact_ceiling_kg. impact_per50 derives from local $0.50–$2.50/kg cleanup ($50 ≈ 20–100 kg). All figures are modeled estimates, NOT guarantees; the picked amount is a PREVIEW — the actual gift is entered on the org's own page.",
+  "country_iso": "PHL",
   "amount_chips": [25, 50, 100, 250],
   "default_amount": 50,
   "projects": [

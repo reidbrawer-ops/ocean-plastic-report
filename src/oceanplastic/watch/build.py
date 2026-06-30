@@ -93,6 +93,20 @@ def _fetch_owid(slug: str, cache: Path, offline: bool) -> Dict[str, float]:
     return {k: v[0] for k, v in out.items()}
 
 
+def _fetch_fx(offline: bool) -> dict:
+    """USD→PHP/EUR for the donation cards. Live (open.er-api.com, free, no key) with a fallback."""
+    fallback = {"base": "USD", "php": 61.21, "eur": 0.876, "asof": "2026-06-30"}
+    if offline:
+        return fallback
+    try:
+        d = requests.get("https://open.er-api.com/v6/latest/USD", timeout=20).json()
+        r = d.get("rates", {})
+        return {"base": "USD", "php": round(float(r["PHP"]), 2), "eur": round(float(r["EUR"]), 4),
+                "asof": (d.get("time_last_update_utc", "") or "")[:16]}
+    except Exception:
+        return fallback
+
+
 def _fetch_series(slug: str, cache: Path, offline: bool) -> List[list]:
     """Fetch a global time series (Entity=World) as sorted [[year, value], ...]."""
     path = cache / f"owid-{slug}.csv"
@@ -381,6 +395,7 @@ def build_dataset(out_dir: str | Path, cache: str | Path = ".cache", top_rivers:
 
     meta = {
         "generated": generated_date or _dt.date.today().isoformat(),
+        "fx": _fetch_fx(offline),
         "metrics": METRICS,
         "sources": SOURCES,
         "counts": {"countries": len(feats), "countries_with_data": matched, "rivers": len(rivers),

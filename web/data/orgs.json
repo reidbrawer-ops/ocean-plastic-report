@@ -29,7 +29,9 @@
       "location": "Burgos, Siargao Island (Surigao del Norte)",
       "official_url": "https://www.globalgiving.org/projects/siargao-recycling-art-studio/",
       "donate_url": "https://www.globalgiving.org/projects/siargao-recycling-art-studio/", "donate_label": "Donate via GlobalGiving",
+      "gg_projid": "",
       "funds": "The specific Siargao Recycling Art Studio project — up-cycling ~1,000 kg of plastic/month into products. Project-scoped on GlobalGiving.",
+      "prefill_note": "Set gg_projid to this project's numeric GlobalGiving ID (from its Share tab) to pass the picked amount through as a prefilled checkout: globalgiving.org/dy/cart/view/gg.html?cmd=addItem&projid=<ID>&frequency=ONCE&amount=<USD>.",
       "evidence": "Hosted on GlobalGiving (independent KYC/due-diligence, 'Vetted since 2024') · corroborated by Epson–WWF 'Project UPcycle' (2024)."
     },
     {

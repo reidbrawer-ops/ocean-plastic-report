@@ -10,7 +10,14 @@
     HAIR = 'rgba(31,42,40,.10)';
   var UI = "'Hanken Grotesk',system-ui,sans-serif", SERIF = "'Newsreader',Georgia,serif", MONO = "'Spline Sans Mono',ui-monospace,monospace";
   var SEVW = { 5: 'very high', 4: 'high', 3: 'moderate', 2: 'low', 1: 'very low' };
+  var FX = { php: 61.21, eur: 0.876, asof: '' };   // overridden from meta.fx on load
+  var DEFAULT_AMT = 50;
   var root = document.getElementById('fund');
+  function php(usd) { return '₱' + Math.round(usd * FX.php).toLocaleString(); }
+  // GlobalGiving direct-link checkout with a prefilled USD amount (only place clean prefill works).
+  function ggUrl(projid, amt) {
+    return 'https://www.globalgiving.org/dy/cart/view/gg.html?cmd=addItem&projid=' + projid + '&rf=ggWidget_custom_donation_link&frequency=ONCE&amount=' + amt;
+  }
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
   // ---- impact calculator (spec §07): kg = amount/50 × per50; bar maxes at ceiling ----
@@ -25,10 +32,13 @@
   function orgRow(org, primary, divider) {
     if (!org) return '';
     var verified = org.status === 'verified' && org.donate_url;
+    var href = org.gg_projid ? ggUrl(org.gg_projid, DEFAULT_AMT) : org.donate_url;
+    var ggData = org.gg_projid ? ' data-gg="' + esc(org.gg_projid) + '"' : '';
+    var style = primary
+      ? 'flex:none;background:' + TEAL + ';color:#fff;border:1px solid ' + TEAL + ';padding:11px 15px;border-radius:11px;font:600 13px ' + UI + ';text-decoration:none;white-space:nowrap'
+      : 'flex:none;background:transparent;color:' + TEAL + ';border:1.5px solid ' + TEAL + ';padding:9.5px 18px;border-radius:11px;font:600 13px ' + UI + ';text-decoration:none;white-space:nowrap';
     var cta = verified
-      ? (primary
-        ? '<a class="fund-cta-1" href="' + esc(org.donate_url) + '" target="_blank" rel="noopener" style="flex:none;background:' + TEAL + ';color:#fff;border:1px solid ' + TEAL + ';padding:11px 15px;border-radius:11px;font:600 13px ' + UI + ';text-decoration:none;white-space:nowrap">' + esc(org.donate_label || 'Donate') + ' ↗</a>'
-        : '<a class="fund-cta-2" href="' + esc(org.donate_url) + '" target="_blank" rel="noopener" style="flex:none;background:transparent;color:' + TEAL + ';border:1.5px solid ' + TEAL + ';padding:9.5px 18px;border-radius:11px;font:600 13px ' + UI + ';text-decoration:none;white-space:nowrap">' + esc(org.donate_label || 'Donate') + ' ↗</a>')
+      ? '<a class="' + (primary ? 'fund-cta-1' : 'fund-cta-2') + (org.gg_projid ? ' gg-cta' : '') + '" href="' + esc(href) + '"' + ggData + ' target="_blank" rel="noopener" style="' + style + '">' + esc(org.donate_label || 'Donate') + ' ↗</a>'
       : '<span style="flex:none;color:' + MUTED2 + ';border:1px dashed ' + HAIR + ';padding:10px 13px;border-radius:11px;font:600 12px ' + UI + '">Verification pending</span>';
     var earmark = org.earmark ? '<div style="font:500 11px/1.45 ' + UI + ';color:#9a5a2a;background:#fbf1e9;border-radius:7px;padding:6px 9px;margin-top:7px">⚠ ' + esc(org.earmark) + '</div>' : '';
     return '<div style="padding:13px 0;' + (divider ? 'border-top:1px solid ' + HAIR + ';' : '') + '">'
@@ -47,7 +57,8 @@
     }).join('');
     return '<div class="calc" data-lo50="' + per[0] + '" data-hi50="' + per[1] + '" data-ceil="' + ceil + '" style="background:' + PANEL + ';border:1px solid ' + HAIR + ';border-radius:16px;padding:20px;margin-top:20px">'
       + '<div style="font:600 11px ' + UI + ';letter-spacing:.09em;text-transform:uppercase;color:' + LABEL + ';margin-bottom:11px">See what your gift removes</div>'
-      + '<div style="display:flex;gap:9px;margin-bottom:16px">' + chips + '</div>'
+      + '<div style="display:flex;gap:9px;margin-bottom:10px">' + chips + '</div>'
+      + '<div class="amt-php" style="font:500 11.5px ' + UI + ';color:' + MUTED + ';margin-bottom:13px">$' + DEFAULT_AMT + ' ≈ ' + php(DEFAULT_AMT) + ' <span style="color:' + MUTED2 + '">· charged in the org\'s currency ($, ₱ or €)</span></div>'
       + '<div style="display:flex;align-items:baseline;gap:6px"><span class="kg-num" style="font:600 36px ' + SERIF + ';line-height:.95;color:' + TEALINK + '">' + d.label + '</span><span style="font:600 17px ' + UI + ';color:' + TEALINK + '">kg</span></div>'
       + '<div style="font:400 13.5px ' + UI + ';color:' + SEC + ';margin:6px 0 12px">' + esc(p.readout_sub || 'of plastic removed') + '</div>'
       + '<div style="height:7px;border-radius:4px;background:rgba(15,107,115,.13);overflow:hidden"><div class="bar-fill" style="height:100%;border-radius:4px;background:' + TEAL + ';width:' + d.barPct + '%;transition:width .35s ease"></div></div>'
@@ -69,7 +80,7 @@
     var calc = prevention ? '' : calcPanel(p);
     var askLabel = '<div style="font:600 11px ' + UI + ';letter-spacing:.10em;text-transform:uppercase;color:' + LABEL + ';margin:' + (prevention ? '18px' : '22px') + ' 0 2px">Donate through a vetted local organization</div>';
     var rows = p.org_ids.map(function (id, i) { return orgRow(orgs[id], i === 0, i > 0); }).join('');
-    return '<section style="background:' + SURFACE + ';border:1px solid ' + HAIR + ';border-radius:20px;padding:24px;margin-bottom:18px;box-shadow:0 1px 2px rgba(31,42,40,.04),0 14px 40px -16px rgba(31,42,40,.16)">'
+    return '<section id="proj-' + p.id + '" style="background:' + SURFACE + ';border:1px solid ' + HAIR + ';border-radius:20px;padding:24px;margin-bottom:18px;box-shadow:0 1px 2px rgba(31,42,40,.04),0 14px 40px -16px rgba(31,42,40,.16);scroll-margin-top:16px">'
       + identity + problem + calc + askLabel + rows + '</section>';
   }
 
@@ -79,7 +90,9 @@
     fetch('data/meta.json').then(function (r) { return r.json(); })
   ]).then(function (res) {
     var P = res[0], O = res[1], meta = res[2];
+    if (meta.fx) FX = meta.fx;
     window.__chips = P.amount_chips || [25, 50, 100, 250];
+    DEFAULT_AMT = P.default_amount || 50;
     var orgs = {}; O.orgs.forEach(function (o) { orgs[o.id] = o; });
     var sites = P.projects.filter(function (p) { return p.type !== 'prevention'; }).sort(function (a, b) { return b.priority - a.priority; });
     var prevention = P.projects.filter(function (p) { return p.type === 'prevention'; });
@@ -107,6 +120,17 @@
 
     root.style.background = PAGE;
     root.innerHTML = header + '<main class="gpw-scroll" style="flex:1;overflow:auto;font-family:' + UI + '">' + intro + body + footer + '</main>';
+    if (location.hash.indexOf('proj-') > -1) {
+      var hid = location.hash.slice(1);
+      setTimeout(function () {   // let fonts/layout settle, then scroll the inner container
+        var main = document.querySelector('#fund main'), t = document.getElementById(hid);
+        if (main && t) {
+          main.scrollTop += t.getBoundingClientRect().top - main.getBoundingClientRect().top - 12;
+          t.style.outline = '2px solid ' + TEAL; t.style.outlineOffset = '3px';
+          setTimeout(function () { t.style.outline = ''; }, 2400);
+        }
+      }, 160);
+    }
   }).catch(function (err) {
     root.innerHTML = '<div style="padding:40px;text-align:center;color:' + SEC + ';font:500 14px ' + UI + '">Couldn\'t load the pilot data. Serve this folder over HTTP (python -m http.server).</div>';
     console.error(err);
@@ -122,6 +146,9 @@
     calc.querySelector('.bar-fill').style.width = r.barPct + '%';
     Array.prototype.forEach.call(calc.querySelectorAll('[data-act="amt"]'), function (c) { c.style.boxShadow = 'none'; c.style.color = INK; });
     chip.style.boxShadow = 'inset 0 0 0 2px ' + TEAL; chip.style.color = TEALINK;
+    var ap = calc.querySelector('.amt-php'); if (ap) ap.innerHTML = '$' + amt + ' ≈ ' + php(amt) + ' <span style="color:' + MUTED2 + '">· charged in the org\'s currency ($, ₱ or €)</span>';
+    // pass the picked amount through to any GlobalGiving CTA in this card (prefill the donation)
+    var sec = chip.closest('section'); if (sec) Array.prototype.forEach.call(sec.querySelectorAll('.gg-cta'), function (a) { a.href = ggUrl(a.getAttribute('data-gg'), amt); });
     // (Analytics hook: capture {siteId, previewAmount} here — distinct from amount actually donated.)
   });
 })();
