@@ -79,8 +79,9 @@
   // ---- actions ----
   function setLens(k) { stopPlay(); state.lens = k; if (LENSES[k].kind === 'time' && state.year == null) state.year = expSeries[expSeries.length - 1][0]; render(); }
   function toggleRegion(c) { var i = state.regions.indexOf(c); if (i >= 0) state.regions.splice(i, 1); else state.regions.push(c); render(); }
-  function selectCountry(iso) { var next = iso === state.selIso ? null : iso; state.selIso = next; render(); if (next) focusCountry(next); else resetView(); }
-  function closeDrawer() { state.selIso = null; render(); resetView(); }
+  function syncHash() { try { history.replaceState(null, '', state.selIso ? '#c=' + state.selIso : location.pathname + location.search); } catch (e) { } }
+  function selectCountry(iso) { var next = iso === state.selIso ? null : iso; state.selIso = next; render(); syncHash(); if (next) focusCountry(next); else resetView(); }
+  function closeDrawer() { state.selIso = null; render(); syncHash(); resetView(); }
   function addCompare(iso) { if (state.compare.indexOf(iso) >= 0) return; if (state.compare.length >= 6) { flash('Compare holds up to 6 countries'); return; } state.compare.push(iso); var f = byIso[iso]; flash((f ? f.properties.name : iso) + ' added to compare'); render(); }
   function removeCompare(iso) { state.compare = state.compare.filter(function (x) { return x !== iso; }); render(); }
   function flash(msg) { state.toast = msg; renderToastOnly(); if (toastT) clearTimeout(toastT); toastT = setTimeout(function () { state.toast = null; renderToastOnly(); }, 1900); }
@@ -467,6 +468,10 @@
     fetch('data/projects.json').then(function (r) { return r.json(); }).catch(function () { return null; })
   ]).then(function (res) {
     DATA = res[0]; RIVERS = res[1]; META = res[2]; PROD = res[3].series; REGIONS = res[4]; TRADE = res[5]; PROJECTS = res[6];
-    process(); state.year = expSeries[expSeries.length - 1][0]; state.loaded = true; render();
+    process(); state.year = expSeries[expSeries.length - 1][0]; state.loaded = true;
+    var hc = (location.hash.match(/c=([A-Za-z]{2,3})/) || [])[1];   // deep-link e.g. #c=PHL opens that country's drawer (+ fund block)
+    if (hc && byIso[hc.toUpperCase()]) state.selIso = hc.toUpperCase();
+    render();
+    if (state.selIso) focusCountry(state.selIso);
   }).catch(function (err) { console.error(err); state.err = String(err); render(); });
 })();
